@@ -9,6 +9,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+    {
+      path: '/properties/create',
+      name: 'property.create',
+      component: () => import('../views/properties/form.property.vue')
+    }
   ]
 })
 

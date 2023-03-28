@@ -32,11 +32,11 @@ async function disconnect() {
 }
 </script>
 <template>
-  <header class="bg-white">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-x-6 p-6 lg:px-8" aria-label="Global">
+  <header class="bg-gray-800 text-gray-300">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-x-6 py-6" aria-label="Global">
       <div class="flex lg:flex-1">
         <RouterLink :to="{name: 'home'}" class="">
-          <span>Aqaro</span>
+          <span>Placeholder</span>
         </RouterLink>
       </div>
       <div class="flex lg:hidden">
@@ -48,7 +48,7 @@ async function disconnect() {
         </button>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
-        <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
+        <RouterLink :to="{name: 'property.create'}" class="-mx-3 block rounded-md bg-gray-800 border-2 border-purple-500 py-2.5 px-3 text-base font-semibold leading-7 text-purple-500 hover:text-purple-700 hover:border-purple-700">List Property</RouterLink>
 
         <button v-if="!connected" v-on:click="connect" class="block rounded-md bg-purple-500 py-2.5 px-3 text-base font-semibold leading-7 text-white hover:bg-purple-600">
           Connect

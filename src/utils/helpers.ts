@@ -35,6 +35,7 @@ export async function connectMetaMask() {
         ethereum.on('chainChanged', (chainId) => {
             console.log('chainChanged');
             console.log(chainId);
+            setChainSettings();
         });
     }
 }
@@ -52,3 +53,4 @@ export async function setChainSettings() {
     const store = walletConnectionStore();
     store.setChainId(Number(network.chainId.toString()));
 }
+
