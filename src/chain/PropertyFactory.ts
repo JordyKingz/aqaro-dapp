@@ -13,7 +13,9 @@ export default class PropertyFactory {
     constructor(chain: number) {
         console.log(chain, propertyFactoryAddress);
         // @ts-ignore
-        this.provider = new ethers.BrowserProvider(window.ethereum);
+        // this.provider = new ethers.BrowserProvider(window.ethereum);
+        this.provider = new ethers.providers.Web3Provider(window.ethereum);
+        this.signer = this.provider.getSigner();
 
         if (chain === 1) {
             this.contractAddress = propertyFactoryAddress;
@@ -22,36 +24,34 @@ export default class PropertyFactory {
         } else {
             this.contractAddress = propertyFactoryAddress;
         }
+
+        this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
     }
 
     async getContract() {
-        this.signer = await this.provider.getSigner();
-        this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
         return this.contractInterface;
     }
 
-    async getSigner() {
-        this.signer = await this.provider.getSigner();
-        return this.signer;
+    async getAllPropertyContracts() {
+        return await this.contractInterface.getPropertyContracts();
     }
 
     async listProperty(property: any) {
-        await this.getContract();
+        // await this.getContract();
         return await this.contractInterface.createProperty(property);
     }
 
-    async getPropertiesForOwner(wallet: string) {
-        await this.getContract();
-        return await this.contractInterface.properties(wallet);
+    async getPropertiesForOwner() {
+        return await this.contractInterface.getPropertiesForCaller();
     }
 
     async getPropertyCounter() {
-        await this.getContract();
+        // await this.getContract();
         return await this.contractInterface.propertyCount();
     }
 
     async getPropertyInfoById(id: number) {
-        await this.getContract();
+        // await this.getContract();
         return await this.contractInterface.propertyInfo(id);
     }
 }

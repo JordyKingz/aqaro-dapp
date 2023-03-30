@@ -8,7 +8,8 @@ export async function connectMetaMask() {
         const store = walletConnectionStore();
 
         // @ts-ignore
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        // const provider = new ethers.BrowserProvider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         await provider.send("eth_requestAccounts", []);
 
         // @ts-ignore
@@ -48,9 +49,16 @@ export function formatAddress(address: string) {
 
 export async function setChainSettings() {
     // @ts-ignore
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const network = await provider.getNetwork();
+    // const provider = new ethers.BrowserProvider(window.ethereum);
+    // const network = await provider.getNetwork();
+    // const store = walletConnectionStore();
+    // store.setChainId(Number(network.chainId.toString()));
+
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const chainId = await signer.getChainId();
     const store = walletConnectionStore();
-    store.setChainId(Number(network.chainId.toString()));
+    store.setChainId(Number(chainId.toString()));
 }
 
