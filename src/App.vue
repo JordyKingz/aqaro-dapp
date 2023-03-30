@@ -4,7 +4,9 @@ import Header from './components/layout/Header.vue'
 </script>
 
 <template>
-  <Header />
-  <RouterView />
+  <div class="wrapper min-h-screen">
+    <Header />
+    <RouterView />
+  </div>
 </template>
 
