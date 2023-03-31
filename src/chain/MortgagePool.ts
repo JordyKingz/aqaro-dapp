@@ -27,6 +27,10 @@ export default class MortgagePool {
         this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
     }
 
+    async getContractBalance() {
+        return await this.contractInterface.contractBalance();
+    }
+
     async provideMortgageLiquidity(amount: number) {
         return await this.contractInterface.provideMortgageLiquidity({value: ethers.utils.parseEther(amount.toString())});
     }

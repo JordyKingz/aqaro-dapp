@@ -1,10 +1,28 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import MortgagePool from "@/chain/MortgagePool";
+import {ethers} from "ethers";
 
 const store = walletConnectionStore();
 const ethAmount = ref('');
+
+const contractBalance = ref('0');
+
+onBeforeMount(async() => {
+    await getMortgagePoolBalance();
+});
+
+async function getMortgagePoolBalance() {
+    const contract = new MortgagePool(store.chainId);
+    await contract.getContractBalance()
+        .then((response: any) => {
+            contractBalance.value = ethers.utils.formatEther(response.toString());
+        })
+        .catch((error: any) => {
+            console.log(error);
+        })
+}
 
 async function provideLiquidity() {
     const contract = new MortgagePool(store.chainId);
@@ -47,7 +65,11 @@ async function provideLiquidity() {
           </div>
       </div>
       <div class="col-span-5 bg-gray-100 shadow rounded-lg">
-        Provided liquidity and your share of the pool.
+
+
+          {{contractBalance}}ETH in pool
+<br>
+          Provided liquidity and your share of the pool.
 
         <p>Chart data</p>
       </div>

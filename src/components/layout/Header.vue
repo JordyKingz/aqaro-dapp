@@ -19,8 +19,6 @@ async function connect() {
   await connectMetaMask();
   await setChainSettings();
 
-  console.log(store)
-
   wallet.value = formatAddress(store.getConnectedWallet);
 
   if (wallet.value) {
@@ -63,6 +61,7 @@ async function disconnect() {
         </button>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
+        <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
         <RouterLink v-if="store.isConnected" :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
         <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="-mx-3 block rounded-md border-2 border-gray-800 py-2.5 px-3 text-base font-semibold leading-7 text-gray-800">List Property</RouterLink>
 

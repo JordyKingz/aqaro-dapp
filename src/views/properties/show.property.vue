@@ -3,13 +3,20 @@ import {onBeforeMount, ref} from "vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRoute} from "vue-router";
 import Property from "@/chain/Property";
+import {ethers} from "ethers";
 
 const store = walletConnectionStore();
 const route = useRoute();
 
 const property = ref('');
+const highestBid = ref('0');
+const bidOpen = ref(false);
+const contractOpenDate = ref(0);
 onBeforeMount(async () => {
   await getProperty(`${route.params.address}`);
+  await getBidOpen(`${route.params.address}`);
+
+  await getHighestBid(`${route.params.address}`);
 });
 
 async function getProperty(address: string) {
@@ -18,6 +25,33 @@ async function getProperty(address: string) {
     await contract.getPropertyInfo()
         .then(async (result: any) => {
             property.value = result;
+        })
+        .catch((error: any) => {
+            console.log(error);
+        });
+}
+
+async function getBidOpen(address: string) {
+    const contract = new Property(store.getChainId, address);
+
+    await contract.biddingOpenTime()
+        .then(async (result: any) => {
+            const currentDate = new Date().getTime();
+            contractOpenDate.value = new Date(result.toString() * 1000).getTime();
+
+            bidOpen.value = currentDate >= contractOpenDate.value;
+        })
+        .catch((error: any) => {
+            console.log(error);
+        });
+}
+
+async function getHighestBid(address: string) {
+    const contract = new Property(store.getChainId, address);
+
+    await contract.getHighestBid()
+        .then(async (result: any) => {
+            highestBid.value = ethers.utils.formatEther(result.toString());
         })
         .catch((error: any) => {
             console.log(error);
@@ -57,8 +91,33 @@ async function getProperty(address: string) {
               </p>
           </div>
       </div>
-      <div class="col-span-2 bg-gray-50">
-
+      <div class="col-span-2 bg-gray-50 p-3">
+        <p v-if="Number(highestBid) === 0">
+            No bids yet
+        </p>
+        <p v-else>
+            {{ highestBid }}ETH
+        </p>
+        <div v-if="bidOpen">
+          <div>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Bid
+            </button>
+          </div>
+        </div>
+        <div v-else>
+            Biding will open on {{ new Date(contractOpenDate) }}
+        </div>
+        <div class="mt-4">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Request mortgage
+          </button>
+        </div>
+        <div class="mt-4">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Plan visit
+          </button>
+        </div>
       </div>
     </div>
   </div>

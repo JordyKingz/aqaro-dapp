@@ -35,4 +35,12 @@ export default class Property {
     async getPropertyInfo() {
         return await this.contractInterface.propertyInfo();
     }
+
+    async biddingOpenTime() {
+        return await this.contractInterface.biddingOpenTime();
+    }
+
+    async getHighestBid() {
+        return await this.contractInterface.highestBid();
+    }
 }
