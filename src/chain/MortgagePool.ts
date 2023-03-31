@@ -34,5 +34,4 @@ export default class MortgagePool {
     async provideMortgageLiquidity(amount: number) {
         return await this.contractInterface.provideMortgageLiquidity({value: ethers.utils.parseEther(amount.toString())});
     }
-
 }

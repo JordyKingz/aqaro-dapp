@@ -93,10 +93,10 @@ async function getHighestBid(address: string) {
       </div>
       <div class="col-span-2 bg-gray-50 p-3">
         <p v-if="Number(highestBid) === 0">
-            No bids yet
+          No bids yet
         </p>
         <p v-else>
-            {{ highestBid }}ETH
+          {{ highestBid }}ETH
         </p>
         <div v-if="bidOpen">
           <div>
@@ -106,7 +106,7 @@ async function getHighestBid(address: string) {
           </div>
         </div>
         <div v-else>
-            Biding will open on {{ new Date(contractOpenDate) }}
+          Biding will open on {{ new Date(contractOpenDate) }}
         </div>
         <div class="mt-4">
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
