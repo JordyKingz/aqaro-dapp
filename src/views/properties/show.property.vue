@@ -11,12 +11,17 @@ const route = useRoute();
 const property = ref('');
 const highestBid = ref('0');
 const bidOpen = ref(false);
-const contractOpenDate = ref(0);
-onBeforeMount(async () => {
-  await getProperty(`${route.params.address}`);
-  await getBidOpen(`${route.params.address}`);
+const contractOpenDate = ref(new Date());
+const propertyContractAddress = ref('');
 
-  await getHighestBid(`${route.params.address}`);
+onBeforeMount(async () => {
+    if (route.params.address) {
+        propertyContractAddress.value = `${route.params.address}`;
+        await getProperty(`${route.params.address}`);
+        await getBidOpen(`${route.params.address}`);
+
+        await getHighestBid(`${route.params.address}`);
+    }
 });
 
 async function getProperty(address: string) {
@@ -37,9 +42,10 @@ async function getBidOpen(address: string) {
     await contract.biddingOpenTime()
         .then(async (result: any) => {
             const currentDate = new Date().getTime();
-            contractOpenDate.value = new Date(result.toString() * 1000).getTime();
+            const contractOpenTime = new Date(result.toString() * 1000).getTime();
+            contractOpenDate.value = new Date(result.toString() * 1000);
 
-            bidOpen.value = currentDate >= contractOpenDate.value;
+            bidOpen.value = currentDate >= contractOpenTime;
         })
         .catch((error: any) => {
             console.log(error);
@@ -92,13 +98,13 @@ async function getHighestBid(address: string) {
           </div>
       </div>
       <div class="col-span-2 bg-gray-50 p-3">
-        <p v-if="Number(highestBid) === 0">
-          No bids yet
-        </p>
-        <p v-else>
-          {{ highestBid }}ETH
-        </p>
         <div v-if="bidOpen">
+          <p v-if="Number(highestBid) === 0">
+              No bids yet
+          </p>
+          <p v-else>
+              {{ highestBid }}ETH
+          </p>
           <div>
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Bid
@@ -106,12 +112,12 @@ async function getHighestBid(address: string) {
           </div>
         </div>
         <div v-else>
-          Biding will open on {{ new Date(contractOpenDate) }}
+          Biding will open on {{ contractOpenDate.toLocaleString() }}
         </div>
         <div class="mt-4">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Request mortgage
-          </button>
+          </RouterLink>
         </div>
         <div class="mt-4">
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

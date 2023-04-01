@@ -27,8 +27,10 @@ async function getMortgagePoolBalance() {
 async function provideLiquidity() {
     const contract = new MortgagePool(store.chainId);
     await contract.provideMortgageLiquidity(Number(ethAmount.value))
-        .then((response: any) => {
+        .then(async (response: any) => {
             console.log(response);
+            await getMortgagePoolBalance();
+            ethAmount.value = '';
         })
         .catch((error: any) => {
             console.log(error);
@@ -65,10 +67,8 @@ async function provideLiquidity() {
           </div>
       </div>
       <div class="col-span-5 bg-gray-100 shadow rounded-lg">
-
-
           {{contractBalance}}ETH in pool
-<br>
+          <br>
           Provided liquidity and your share of the pool.
 
         <p>Chart data</p>

@@ -13,7 +13,7 @@ type Address = {
 }
 type Property = {
   addr: Address,
-  askingPrice: number,
+  askingPrice: string,
 }
 
 const store = walletConnectionStore();
@@ -37,7 +37,8 @@ async function listProperty() {
   const contract = new PropertyFactory(store.getChainId);
 
   await contract.listProperty(property.value)
-      .then((result: any) => {
+      .then(async (result: any) => {
+          await result.wait(1);
         console.log(result);
       });
 }
@@ -46,16 +47,15 @@ async function listProperty() {
 </script>
 <template>
   <div v-if="store.isConnected" class="mx-auto max-w-7xl pb-12">
-      {{propertiesStore.properties}}
+    {{propertiesStore.properties}}
     <div class="bg-gray-100 shadow rounded-md p-4">
       <div>
         <h2 class="text-base font-semibold leading-7 text-gray-800">Property Information</h2>
-
         <div class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-6">
           <div class="col-span-full">
             <label for="street-address" class="block text-sm font-medium leading-6 text-gray-800">Asking price</label>
             <div class="mt-2">
-              <input type="number" v-model="property.askingPrice" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+              <input type="text" v-model="property.askingPrice" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
           <div class="col-span-full">

@@ -49,7 +49,7 @@ async function disconnect() {
     <nav class="mx-auto flex max-w-7xl items-center justify-between gap-x-6 py-6" aria-label="Global">
       <div class="flex lg:flex-1">
         <RouterLink :to="{name: 'home'}" class="">
-          <span>Placeholder</span>
+            <img src="@/assets/logo-aqaro.png" class="w-32" alt="">
         </RouterLink>
       </div>
       <div class="flex lg:hidden">
@@ -62,6 +62,7 @@ async function disconnect() {
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
         <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
+        <RouterLink :to="{name: 'presale.token'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Presale</RouterLink>
         <RouterLink v-if="store.isConnected" :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
         <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="-mx-3 block rounded-md border-2 border-gray-800 py-2.5 px-3 text-base font-semibold leading-7 text-gray-800">List Property</RouterLink>
 
