@@ -6,7 +6,9 @@ import {connectMetaMask, formatAddress, setChainSettings} from "@/utils/helpers"
 import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {propertyStore} from "@/stores/property.store";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const store = walletConnectionStore();
 const propertiesStore = propertyStore();
 
@@ -35,6 +37,7 @@ async function setListeners() {
     await contract.on('PropertyCreated', (propertyAddress: string, owner: string, propertyId: any) => {
         if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
             propertiesStore.addProperty(propertyAddress);
+            router.push({name: 'property.detail', params: {address: propertyAddress}});
         }
     });
 }
