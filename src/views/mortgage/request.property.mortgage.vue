@@ -20,11 +20,11 @@ const propertyContractAddress = ref('');
 
 const mortgageRequest = ref({
     income: '',
-    extraMortgageAmount: '',
-    ownMoney: '',
-    interestRate: 1.0381,
+    extraMortgageAmount: '0',
+    ownMoney: '0',
     // monthlyMortgageAmount: 0, // start with 35% of income
 });
+const interestRate = ref(3.81);
 const monthlyMortgageAmount = ref(0);
 
 const monthlyMortgageAmountSet = ref(0);
@@ -70,123 +70,31 @@ async function getBidOpen(address: string) {
         });
 }
 
-function calculateTotalMortgage() {
-    let totalYearsMortgagePaid = 0;
-    let mortgageYear = 0;
-    let totalInterestPaidOff = 0;
+function calculateMortgageTotalAmount(income: number, propertyCost: number) {
+    totalMortgage.value = propertyCost;
+    const monthlyInterestRate = (interestRate.value / 100) / 12; // monthly interest rate
+    const loanAmount = propertyCost; // assume full property cost as loan amount
+    const n = -Math.log(1 - monthlyInterestRate * loanAmount / monthlyMortgageAmount.value) /
+      Math.log(1 + monthlyInterestRate); // number of months to pay off loan
 
-    // total amount paid off after mortgage
-    let totalAmount = 0;
+    totalMortgageYears.value = n/12;
+    const totalPaid = monthlyMortgageAmount.value * n; // total amount paid over the loan term
+    totalAmountPaidOff.value = Number(totalPaid.toFixed(2));
+    totalInterestPaid.value = Number((totalPaid - loanAmount).toFixed(2));
+    return totalPaid.toFixed(2); // round to 2 decimal places
+}
 
+function calcMortgage() {
     const ETHPrice = 1870;
-    const income = Number(mortgageRequest.value.income);
-    const extraMortgageAmount = Number(mortgageRequest.value.extraMortgageAmount);
-    const ownMoney = Number(mortgageRequest.value.ownMoney);
-
-    // when first set value is 35% of income
-    const monthlyMortgagePrice = monthlyMortgageAmount.value;
-
-    if (property.value && income > 1850) {
-        const askingPriceInDollars = Number(property.value.askingPrice.toString()) * ETHPrice;
-        const extraMortgageAmountInDollars = Number(extraMortgageAmount) * ETHPrice;
-        const ownMoneyInDollars = Number(ownMoney) * ETHPrice;
-
-        // totalMortgage in Dollars
-        let totalMortgagePrice = (askingPriceInDollars + extraMortgageAmountInDollars) - ownMoneyInDollars;
-        totalMortgage.value = totalMortgagePrice;
-        console.log(totalMortgagePrice); // 187000
-
-        // total months mortgage duration before mortgage is paid off
-        const monthlyMortgageDuration = totalMortgagePrice / monthlyMortgagePrice;
-
-        // total years for mortgage
-        const yearlyMortgageDuration = Number(monthlyMortgageDuration / 12).toFixed() // 14.8 = 15
-        let monthlyDecreaseMonth = [];
-        for (let i = 1; i <= Number(yearlyMortgageDuration); i++) {
-            const result = i * 12 - 1; // -1 used in next for loop
-            monthlyDecreaseMonth.push(result);
-        }
-        // result: [11, 23, 35, 47, 59, 71, 83, 95, 107, 119, 131, 143, 155, 167]
-
-        // console.log(monthlyMortgageDuration);
-        //
-        // console.log(monthlyDecreaseMonth); // array of months when on year mortgage is paid off
-        // so interest rest is calculated over this rest value and incremented with interest.
-
-        // payoff each year: ex: 12.600 = 1.050pm
-        const mortgagePayOfEachYear = monthlyMortgagePrice * 12;
-        console.log(mortgagePayOfEachYear); // 12600
-        // first year mortgage calculation
-        let mortgagePriceLeft = totalMortgagePrice * mortgageRequest.value.interestRate;
-        for(let i = 0; i <= monthlyMortgageDuration; i++) {
-            for(let j = 0; j <= monthlyDecreaseMonth.length; j++) {
-                // is called 15 times
-                if (monthlyDecreaseMonth[j] === i) {
-                    // year is paid of, decrement with yearly payoff value
-                    // increment with interest rate
-                    // year has ended, deduct mortgagePayOfEachYear and calculate
-                    // new total price with incremented interest rate
-                    console.log(`we've entered month ${monthlyDecreaseMonth[j]}`);
-                    let currentMortgagePrice = mortgagePriceLeft;
-                    console.log(`current mortgage to pay off: ${currentMortgagePrice}`);
-
-                    console.log(`In this year ${currentMortgagePrice} is reduced with ${mortgagePayOfEachYear}`);
-                    console.log(`${mortgageYear + 1} year is paid off`);
-
-                    let yearlyMortgageDeduction = currentMortgagePrice - mortgagePayOfEachYear;
-
-                    console.log(`After first year, this is what is left of mortgage: ${yearlyMortgageDeduction}`);
-
-                    let newMortgagePrice = yearlyMortgageDeduction * mortgageRequest.value.interestRate;
-                    console.log(`We increment this new mortgage with interest rate`);
-                    console.log(`${newMortgagePrice}`);
-                    console.log(`new mortgage price after ${i} months ${newMortgagePrice}`);
-
-
-                    totalInterestPaidOff += (newMortgagePrice - yearlyMortgageDeduction);
-                    mortgagePriceLeft = newMortgagePrice;
-
-                    totalYearsMortgagePaid++;
-                    mortgageYear++;
-                    console.log(mortgageYear, totalYearsMortgagePaid);
-                    // mortgagePriceLeft = yearlyMortgageDeduction * mortgageRequest.value.interestRate;
-                }
-            }
-
-            // mortgagePriceLeft -= monthlyMortgagePrice;
-            totalAmount += monthlyMortgagePrice;
-        }
-        // after 14 years there is 57500 still to be paid off
-        console.log(mortgagePriceLeft);
-        // interest paid off 42.214 in 15 years = 234.50pm interest for ETH liq providers
-        console.log(`in ${totalYearsMortgagePaid} years total profits are ${totalInterestPaidOff}`);
-
-        // // we have a rest value for the mortgage and we're not calculating any interest anymore.
-        // const restYearsToPay = (mortgagePriceLeft / monthlyMortgagePrice) / 12;
-        //
-        // const restMonthsToPay = (restYearsToPay * 12) * totalAmount
-        // mortgageYear += restYearsToPay;
-        // // still rest value of 57500... = 4.5 years extra pay off
-        //
-        // totalAmount += restMonthsToPay
-    }
-
-    const endAmountPaid = totalAmount + totalInterestPaidOff;
-    console.log(`TOTAL MORTGAGE PAY OFF IS ${endAmountPaid}`);
-
-    totalInterestPaidOff = endAmountPaid - totalMortgage.value;
-    totalAmountPaidOff.value = endAmountPaid;
-    totalInterestPaid.value = totalInterestPaidOff;
-    totalMortgageYears.value = mortgageYear;
-    //console.log(`TOTAL MORTGAGE PAY OFF IS ${totalAmount}`); // value is totally wrong xD
-    // console.log(`mortgage will be paid off in ${mortgageYear} years`);
+    const mortgageNeeded = (Number(property.value?.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney)
+    const result = calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice);
 }
 
 watch(mortgageRequest, () => {
     if(mortgageRequest.value.income !== '') {
         monthlyMortgageAmount.value = Number(mortgageRequest.value.income) * 0.35; // 35% of income
         monthlyMortgageAmountSet.value = monthlyMortgageAmount.value;
-        calculateTotalMortgage();
+        calcMortgage();
     }
 }, {deep: true});
 
@@ -195,7 +103,7 @@ watch(monthlyMortgageAmount, () => {
         monthlyMortgageAmount.value = Number(mortgageRequest.value.income) * 0.35;
     }
     if (monthlyMortgageAmount.value !== monthlyMortgageAmountSet.value && monthlyMortgageAmount.value >= 500) {
-        calculateTotalMortgage();
+        calcMortgage();
     }
 })
 </script>
@@ -255,9 +163,17 @@ watch(monthlyMortgageAmount, () => {
                   <div class="col-span-full">
                       <label class="block text-sm font-medium leading-6 text-gray-800">Preferred Monthly Mortgage Amount</label>
                       <div class="mt-2">
-                          <input type="number" v-model="monthlyMortgageAmount" :max="mortgageRequest.income * 0.35" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                          <input type="number" v-model="monthlyMortgageAmount" :max="(mortgageRequest.income * 0.35)" :min="(mortgageRequest.income * 0.35) / 1.6" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
                             <div v-if="mortgageRequest.income !== ''" class="bg-blue-100 p-2 mt-2 rounded-lg border border-blue-500 text-blue-500">
                                 Max monthly mortgage amount: ${{mortgageRequest.income * 0.35}}
+                                <br>
+                                Min monthly mortgage amount:
+                                <span v-if="(mortgageRequest.income * 0.35) / 1.8 < 500">
+                                    $500
+                                </span>
+                                <span v-else>
+                                    ${{(mortgageRequest.income * 0.35) / 1.8}}
+                                </span>
                             </div>
                       </div>
                   </div>
@@ -265,6 +181,7 @@ watch(monthlyMortgageAmount, () => {
                       <div class="bg-blue-100 p-2 mt-2 rounded-lg border border-blue-500 text-blue-500">
                         Information about your mortgage:<br>
                           <code>
+                              Interest Rate: {{interestRate}}% <br>
                               Total Years to pay off: {{totalMortgageYears}} <br>
                               Total Mortgage amount: {{totalMortgage}} <br>
                               Total Interest paid: {{totalInterestPaid}} <br>

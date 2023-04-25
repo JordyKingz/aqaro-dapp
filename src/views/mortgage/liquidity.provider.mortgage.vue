@@ -28,7 +28,7 @@ async function provideLiquidity() {
     const contract = new MortgagePool(store.chainId);
     await contract.provideMortgageLiquidity(Number(ethAmount.value))
         .then(async (response: any) => {
-            console.log(response);
+            await response.wait(1);
             await getMortgagePoolBalance();
             ethAmount.value = '';
         })

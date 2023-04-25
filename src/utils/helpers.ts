@@ -15,7 +15,6 @@ export async function connectMetaMask() {
         // @ts-ignore
         ethereum.request({method: "eth_requestAccounts"})
             .then(async (accounts: string[]) => {
-                console.log(accounts[0])
                 store.setConnectedWallet(accounts[0]);
                 store.setConnected(true);
             })

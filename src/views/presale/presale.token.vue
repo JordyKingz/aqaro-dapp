@@ -15,19 +15,19 @@ const tokensSold = ref();
 const tokenPrice = 0.0003;
 
 const presaleContractBalance = 10_000_000;
+const tokenBalance = ref();
 
 onBeforeMount(async () => {
     await initPage();
 });
 
 async function initPage() {
-    await getContractBalance();
+    await getContractEthBalance();
     await getTokensSold();
-
     await getPresaleEndTime();
 }
 
-async function getContractBalance() {
+async function getContractEthBalance() {
   const contract = new AqaroPresale(store.getChainId);
   await contract.getEthBalance()
       .then(async (response: any) => {
@@ -46,6 +46,7 @@ async function getTokensSold() {
 
             const amountOfTokensFormatted = ethers.utils.formatEther(response.toString());
             tokensSold.value = presaleContractBalance - Number(amountOfTokensFormatted);
+            tokenBalance.value = Number(amountOfTokensFormatted);
         })
         .catch((error: any) => {
             console.log(error);
@@ -69,14 +70,16 @@ async function participateInPresale() {
 
 async function getPresaleEndTime() {
     const contract = new AqaroPresale(store.getChainId);
-    await contract.getPresaleEndTime()
+    await contract.getPresaleEndDate()
         .then(async (response: any) => {
             console.log(response.toString());
+            console.log(new Date(response.toString() * 1000).toLocaleString());
         })
         .catch((error: any) => {
             console.log(error);
         });
 }
+
 </script>
 <template>
     <div v-if="store.isConnected" class="mx-auto max-w-7xl pb-12">
@@ -103,6 +106,8 @@ async function getPresaleEndTime() {
                 {{contractBalance}}ETH in contract
                 <br>
                 {{tokensSold}} Aqaro tokens sold
+                <br>
+                {{tokenBalance}} Aqaro tokens left
             </div>
         </div>
     </div>
