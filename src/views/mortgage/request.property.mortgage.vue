@@ -10,10 +10,21 @@ const store = walletConnectionStore();
 const route = useRoute();
 
 type Property = {
-    askingPrice: '',
+    addr: Address,
+    askingPrice: string,
+    id: string,
+    seller: string,
+    created: string
+}
+type Address = {
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
 }
 
-const property = ref<Property>();
+const property = ref<Property>({} as Property);
 const bidOpen = ref(false);
 const contractOpenDate = ref(new Date());
 const propertyContractAddress = ref('');
@@ -22,11 +33,10 @@ const mortgageRequest = ref({
     income: '',
     extraMortgageAmount: '0',
     ownMoney: '0',
-    // monthlyMortgageAmount: 0, // start with 35% of income
 });
-const interestRate = ref(3.81);
+const interestRate = ref(2.5);
 const monthlyMortgageAmount = ref(0);
-
+const minMonthlyAmount = ref(0); // when mortgage takes longer than 35 years, this is the minimum monthly amount
 const monthlyMortgageAmountSet = ref(0);
 
 const totalAmountPaidOff = ref(0);
@@ -46,8 +56,10 @@ async function getProperty(address: string) {
     const contract = new Property(store.getChainId, address);
 
     await contract.getPropertyInfo()
-        .then(async (result: any) => {
+        .then(async (result: Property) => {
             property.value = result;
+
+            console.log({property: property.value})
         })
         .catch((error: any) => {
             console.log(error);
@@ -74,8 +86,39 @@ function calculateMortgageTotalAmount(income: number, propertyCost: number) {
     totalMortgage.value = propertyCost;
     const monthlyInterestRate = (interestRate.value / 100) / 12; // monthly interest rate
     const loanAmount = propertyCost; // assume full property cost as loan amount
-    const n = -Math.log(1 - monthlyInterestRate * loanAmount / monthlyMortgageAmount.value) /
+
+    console.log({totalMortgage, monthlyInterestRate, loanAmount, monthlyMortgageAmount})
+
+    let n = -Math.log(1 - monthlyInterestRate * loanAmount / monthlyMortgageAmount.value) /
       Math.log(1 + monthlyInterestRate); // number of months to pay off loan
+
+    console.log(n);
+    if (n > 420) { // limit number of mortgage years to maximum of 35 years
+        let copyOfN = n;
+        n = 420;
+        let monthlyMortgage = loanAmount * monthlyInterestRate /
+          (1 - Math.pow(1 + monthlyInterestRate, -n));
+        // @ts-ignore
+        minMonthlyAmount.value = Number(monthlyMortgage).toFixed(2);
+
+        console.log({minMonthlyAmount, monthlyMortgageAmount})
+        if (Number(minMonthlyAmount.value) > Number(monthlyMortgageAmount.value)) {
+            // @ts-ignore
+            monthlyMortgageAmount.value = Number(monthlyMortgageAmount.value).toFixed(2);
+            // @ts-ignore
+            minMonthlyAmount.value = Number(monthlyMortgage).toFixed(2);
+
+            n = copyOfN;
+        } else {
+            // @ts-ignore
+            monthlyMortgageAmount.value = Number(monthlyMortgage).toFixed(2);
+        }
+    } else {
+        // calculate what min should be
+        let m = 420;
+        minMonthlyAmount.value = loanAmount * monthlyInterestRate /
+          (1 - Math.pow(1 + monthlyInterestRate, -m));
+    }
 
     totalMortgageYears.value = n/12;
     const totalPaid = monthlyMortgageAmount.value * n; // total amount paid over the loan term
@@ -84,10 +127,56 @@ function calculateMortgageTotalAmount(income: number, propertyCost: number) {
     return totalPaid.toFixed(2); // round to 2 decimal places
 }
 
+let providerStakeResults = ref([]);
+let totalStake = ref(0);
+let totalAmount = ref(0);
+async function provideMortgageLiquidity() {
+    totalStake.value = 0;
+    providerStakeResults.value = [];
+    totalAmount.value = 0;
+
+    const profitToShare = 145.384; // total ETH staked by all liquidity providers
+    const numProviders = 10000; // number of liquidity providers
+    const maxStake = 30; // maximum stake for the first 20 liquidity providers
+    const minStake = 0.5; // minimum stake for the last 80 liquidity providers
+    // const increment = (maxStake - minStake) / 4; // amount to decrement at every 10th provider
+    let providerShare = 0; // ETH share per liquidity provider
+
+    const providerShares = []; // array to hold the share of each provider
+
+    for (let i = 1; i <= numProviders; i++) {
+        if (i <= 20) { // first 20 liquidity providers
+            providerShare = maxStake;
+        } else { // remaining 80 liquidity providers
+            const stake = maxStake -  Math.floor((i - 21) / 10);
+            providerShare = Math.max(stake, minStake);
+        }
+        totalStake.value += providerShare;
+
+        providerShares.push(providerShare);
+        console.log(`Liquidity provider ${i} gets ${providerShare.toFixed(2)} ETH`);
+    }
+
+    console.log(`Total of ${totalStake}ETH staked by all liquidity providers`);
+
+
+    for (let i = 0; i < providerShares.length; i++) {
+        const share = providerShares[i] / totalStake.value * 100;
+        totalAmount.value +=  profitToShare / 100 * share;
+        const amount = profitToShare / 100 * share;
+        const result = `Liquidity provider ${i} staked ${providerShares[i]}ETH and has a share of ${share}%. Resulting in $${amount.toFixed(4)} profit.`;
+        providerStakeResults.value.push(result);
+    }
+
+}
+
 function calcMortgage() {
     const ETHPrice = 1870;
-    const mortgageNeeded = (Number(property.value?.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney)
-    const result = calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice);
+    const mortgageNeeded = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney)
+    calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice);
+
+    // if (Number(mortgageRequest.value.income) > 1800)
+    //     provideMortgageLiquidity();
 }
 
 watch(mortgageRequest, () => {
@@ -102,7 +191,8 @@ watch(monthlyMortgageAmount, () => {
     if (monthlyMortgageAmount.value > (Number(mortgageRequest.value.income) * 0.35)) {
         monthlyMortgageAmount.value = Number(mortgageRequest.value.income) * 0.35;
     }
-    if (monthlyMortgageAmount.value !== monthlyMortgageAmountSet.value && monthlyMortgageAmount.value >= 500) {
+    if (monthlyMortgageAmount.value !== monthlyMortgageAmountSet.value && monthlyMortgageAmount.value > 0) {
+        monthlyMortgageAmountSet.value = monthlyMortgageAmount.value;
         calcMortgage();
     }
 })
@@ -168,12 +258,8 @@ watch(monthlyMortgageAmount, () => {
                                 Max monthly mortgage amount: ${{mortgageRequest.income * 0.35}}
                                 <br>
                                 Min monthly mortgage amount:
-                                <span v-if="(mortgageRequest.income * 0.35) / 1.8 < 500">
-                                    $500
-                                </span>
-                                <span v-else>
-                                    ${{(mortgageRequest.income * 0.35) / 1.8}}
-                                </span>
+
+                                ${{ Number(minMonthlyAmount).toFixed(2) }}
                             </div>
                       </div>
                   </div>
@@ -188,6 +274,16 @@ watch(monthlyMortgageAmount, () => {
                               Total amount paid: {{totalAmountPaidOff}} <br>
                           </code>
                       </div>
+                  </div>
+                  <div v-if="providerStakeResults.length > 0" class="mt-4 col-span-full">
+                      <div class="bg-yellow-100 p-2 mt-2 rounded-lg border border-yellow-500 text-yellow-500">
+                          <h3 class="text-lg font-bold">Provider Stake Results: {{totalStake}}ETH Staked</h3>
+                          <span v-for="result in providerStakeResults" class="block w-full pb-2">
+                              {{result}}
+                          </span>
+                          <h3 class="text-lg font-bold">Total Payout: {{totalAmount}}</h3>
+                      </div>
+
                   </div>
               </div>
               <div class="mt-8 block">

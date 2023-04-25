@@ -8,7 +8,22 @@ import {ethers} from "ethers";
 const store = walletConnectionStore();
 const route = useRoute();
 
-const property = ref('');
+type Property = {
+  addr: Address,
+  askingPrice: string,
+  id: string,
+  seller: string,
+  created: string
+}
+type Address = {
+  street: string;
+  city: string;
+  state: string;
+  country: string;
+  zip: string;
+}
+
+const property = ref({} as Property);
 const highestBid = ref('0');
 const bidOpen = ref(false);
 const contractOpenDate = ref(new Date());
@@ -28,7 +43,7 @@ async function getProperty(address: string) {
     const contract = new Property(store.getChainId, address);
 
     await contract.getPropertyInfo()
-        .then(async (result: any) => {
+        .then(async (result: Property) => {
             property.value = result;
         })
         .catch((error: any) => {

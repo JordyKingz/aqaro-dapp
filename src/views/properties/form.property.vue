@@ -3,6 +3,7 @@ import {onBeforeMount, ref} from "vue";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {propertyStore} from "@/stores/property.store";
+import {ethers} from "ethers";
 
 type Address = {
   street: string;
