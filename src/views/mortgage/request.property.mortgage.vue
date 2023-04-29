@@ -32,7 +32,7 @@ const propertyContractAddress = ref('');
 const mortgageRequest = ref({
     income: '',
     extraMortgageAmount: '0',
-    ownMoney: '0',
+    ownMoney: '103',
 });
 const interestRate = ref(2.5);
 const monthlyMortgageAmount = ref(0);
@@ -135,30 +135,27 @@ async function provideMortgageLiquidity() {
     providerStakeResults.value = [];
     totalAmount.value = 0;
 
-    const profitToShare = 145.384; // total ETH staked by all liquidity providers
-    const numProviders = 10000; // number of liquidity providers
-    const maxStake = 30; // maximum stake for the first 20 liquidity providers
-    const minStake = 0.5; // minimum stake for the last 80 liquidity providers
-    // const increment = (maxStake - minStake) / 4; // amount to decrement at every 10th provider
-    let providerShare = 0; // ETH share per liquidity provider
-
+    const profitToShare = 24391; // total ETH staked by all liquidity providers // 128370 (100 properties?)
+    const totalETH = 10000; // total amount to be staked
+    const numStakers = 1824; // number of stakers
+    const maxStake = 10; // maximum stake for the first staker
+    const minStake = 1; // minimum stake for the last staker
+    const decrement = (maxStake - minStake) / (numStakers - 1); // amount to decrement for each subsequent staker
+    let currentStake = maxStake; // current stake amount
+    let totalStaked = 0; // total amount staked
     const providerShares = []; // array to hold the share of each provider
 
-    for (let i = 1; i <= numProviders; i++) {
-        if (i <= 20) { // first 20 liquidity providers
-            providerShare = maxStake;
-        } else { // remaining 80 liquidity providers
-            const stake = maxStake -  Math.floor((i - 21) / 10);
-            providerShare = Math.max(stake, minStake);
-        }
-        totalStake.value += providerShare;
-
-        providerShares.push(providerShare);
-        console.log(`Liquidity provider ${i} gets ${providerShare.toFixed(2)} ETH`);
+    for (let i = 1; i <= numStakers; i++) {
+        currentStake = Math.max(currentStake - decrement, minStake); // calculate current stake
+        const remainingETH = totalETH - totalStaked; // calculate remaining ETH to be staked
+        const stakedETH = Math.min(currentStake, remainingETH); // stake either current stake or remaining ETH
+        providerShares.push(stakedETH);
+        console.log(`Staker ${i} staked ${stakedETH.toFixed(2)} ETH`);
+        totalStaked += stakedETH; // add staked amount to total
+        totalStake.value += stakedETH;
     }
 
     console.log(`Total of ${totalStake}ETH staked by all liquidity providers`);
-
 
     for (let i = 0; i < providerShares.length; i++) {
         const share = providerShares[i] / totalStake.value * 100;
@@ -175,8 +172,9 @@ function calcMortgage() {
     const mortgageNeeded = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney)
     calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice);
 
-    // if (Number(mortgageRequest.value.income) > 1800)
-    //     provideMortgageLiquidity();
+    if (minMonthlyAmount.value / 0.35 >= Number(mortgageRequest.value.income)) {
+        provideMortgageLiquidity();
+    }
 }
 
 watch(mortgageRequest, () => {
@@ -207,6 +205,8 @@ watch(monthlyMortgageAmount, () => {
                   KYC data is stored privately, only needed information is shared with the lender.
                   <br>
                   {{ property.askingPrice.toString() }}ETH
+                  <br>
+                  ${{ Number(property.askingPrice.toString()) * 1870 }}
               </p>
               <div class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-6">
                   <div class="col-span-full">
