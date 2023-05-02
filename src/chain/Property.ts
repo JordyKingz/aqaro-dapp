@@ -1,7 +1,4 @@
 import {ethers} from "ethers";
-import {
-    propertyFactoryAddress,
-} from "@/chain/config/smartContracts";
 // @ts-ignore
 import contractAbi from "@/chain/config/abis/Property.json";
 export default class Property {
@@ -11,7 +8,6 @@ export default class Property {
     private contractAddress: string;
 
     constructor(chain: number, propertyAddress: string) {
-        console.log(chain, propertyFactoryAddress);
         // @ts-ignore
         // this.provider = new ethers.BrowserProvider(window.ethereum);
         this.provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -34,5 +30,13 @@ export default class Property {
 
     async getPropertyInfo() {
         return await this.contractInterface.propertyInfo();
+    }
+
+    async biddingOpenTime() {
+        return await this.contractInterface.biddingOpenTime();
+    }
+
+    async getHighestBid() {
+        return await this.contractInterface.highestBid();
     }
 }

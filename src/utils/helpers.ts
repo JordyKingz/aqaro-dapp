@@ -15,7 +15,6 @@ export async function connectMetaMask() {
         // @ts-ignore
         ethereum.request({method: "eth_requestAccounts"})
             .then(async (accounts: string[]) => {
-                console.log(accounts[0])
                 store.setConnectedWallet(accounts[0]);
                 store.setConnected(true);
             })
@@ -42,8 +41,8 @@ export async function connectMetaMask() {
 }
 
 export function formatAddress(address: string) {
-    const first = address.substring(0, 5);
-    const last = address.slice(-4);
+    const first = address.substring(0, 6);
+    const last = address.slice(-6);
     return `${first}...${last}`;
 }
 

@@ -1,10 +1,10 @@
 import {ethers} from "ethers";
 import {
-    MortgagePoolAddress,
+    MortgageFactoryAddress,
 } from "@/chain/config/smartContracts";
 // @ts-ignore
-import contractAbi from "@/chain/config/abis/MortgagePool.json";
-export default class MortgagePool {
+import contractAbi from "@/chain/config/abis/MortgageFactory.json";
+export default class MortgageFactory {
     private provider: any;
     private signer: any;
     private contractInterface: any;
@@ -17,21 +17,13 @@ export default class MortgagePool {
         this.signer = this.provider.getSigner();
 
         if (chain === 1) {
-            this.contractAddress = MortgagePoolAddress;
+            this.contractAddress = MortgageFactoryAddress;
         } else if (chain === 31337) {
-            this.contractAddress = MortgagePoolAddress;
+            this.contractAddress = MortgageFactoryAddress;
         } else {
-            this.contractAddress = MortgagePoolAddress;
+            this.contractAddress = MortgageFactoryAddress;
         }
 
         this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
-    }
-
-    async getContractBalance() {
-        return await this.contractInterface.contractBalance();
-    }
-
-    async provideMortgageLiquidity(amount: number) {
-        return await this.contractInterface.provideMortgageLiquidity({value: ethers.utils.parseEther(amount.toString())});
     }
 }

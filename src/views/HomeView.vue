@@ -5,6 +5,9 @@ import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {propertyStore} from "@/stores/property.store";
 import Property from "@/chain/Property";
+import Hero from "@/components/Hero.vue";
+import LaunchNotify from "@/components/LaunchNotify.vue";
+import EarnAPY from "@/components/EarnAPY.vue";
 
 const store = walletConnectionStore();
 const propertiesStore = propertyStore();
@@ -82,30 +85,43 @@ watch(store, async () => {
 </script>
 
 <template>
-    <div v-if="properties.length > 0" class="mx-auto max-w-7xl">
-        <div class="grid grid-cols-8 gap-3">
-            <div class="col-span-2 bg-gray-50 shadow rounded-lg p-3">
-                filters
+    <Hero />
+    <div v-if="properties.length > 0" class="bg-gray-800">
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <div class="flex items-center justify-between space-x-4">
+                <h2 class="text-lg font-medium text-white">Recent Listings</h2>
+                <a href="#" class="whitespace-nowrap text-sm font-medium text-indigo-500 hover:text-indigo-600">
+                    View all
+                    <span aria-hidden="true"> &rarr;</span>
+                </a>
             </div>
-            <div class="col-span-6">
-                <div class="grid grid-cols-1 gap-3">
-                    <div v-for="property in properties" :key="property.id" class="bg-gray-100 shadow col-span-1 rounded-lg">
-                        <RouterLink class="grid grid-cols-3 gap-3" :to="{name: 'property.detail', params: {address: property.address}}">
-                            <div class="col-span-1">
-                                <div class="block border-2 border-gray-200 rounded-lg h-40"></div>
+            <div class="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
+                <div v-for="property in properties" :key="property.id" class="group relative bg-gray-900 rounded-lg">
+                    <div class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" :alt="property.addr.street"  />
+                        <div class="flex items-end p-4" aria-hidden="true">
+                            <div class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 px-4 py-2 text-center text-sm font-medium text-white backdrop-blur backdrop-filter">
+                                View Product
                             </div>
-                            <div class="col-span-2 py-3">
-                                <h2 class="text-2xl font-bold text-gray-800">{{ property.addr.street }}</h2>
-                                <p>{{ property.addr.zip }} {{ property.addr.city }}</p>
-                                <div class="mt-4">
-                                    <p class="text-lg font-bold text-gray-800">{{ property.askingPrice }}ETH</p>
-                                    <p><span>m2</span> <span>x rooms</span></p>
-                                </div>
-                            </div>
-                        </RouterLink>
+                        </div>
+                    </div>
+                    <div class="p-5 block">
+                        <div class="flex items-center justify-between space-x-8 text-base font-medium text-gray-500">
+                            <h3>
+                                <RouterLink :to="{name: 'property.detail', params: {address: property.address}}">
+                                    <span aria-hidden="true" class="absolute inset-0" />
+                                    <h2 class="text-2xl font-bold text-white">Poelestraat</h2>
+                                    <p>{{ property.addr.zip }} {{ property.addr.city }}</p>
+                                </RouterLink>
+                            </h3>
+                            <p class="text-lg font-bold text-gray-500">{{ property.askingPrice }}ETH</p>
+                        </div>
+                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <EarnAPY />
+    <LaunchNotify />
 </template>

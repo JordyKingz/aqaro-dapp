@@ -1,10 +1,10 @@
 import {ethers} from "ethers";
 import {
-    MortgagePoolAddress,
+    AqaroTokenAddress,
 } from "@/chain/config/smartContracts";
 // @ts-ignore
-import contractAbi from "@/chain/config/abis/MortgagePool.json";
-export default class MortgagePool {
+import contractAbi from "@/chain/config/abis/AqaroToken.json";
+export default class AqaroToken {
     private provider: any;
     private signer: any;
     private contractInterface: any;
@@ -17,21 +17,17 @@ export default class MortgagePool {
         this.signer = this.provider.getSigner();
 
         if (chain === 1) {
-            this.contractAddress = MortgagePoolAddress;
+            this.contractAddress = AqaroTokenAddress;
         } else if (chain === 31337) {
-            this.contractAddress = MortgagePoolAddress;
+            this.contractAddress = AqaroTokenAddress;
         } else {
-            this.contractAddress = MortgagePoolAddress;
+            this.contractAddress = AqaroTokenAddress;
         }
 
         this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
     }
 
-    async getContractBalance() {
-        return await this.contractInterface.contractBalance();
-    }
-
-    async provideMortgageLiquidity(amount: number) {
-        return await this.contractInterface.provideMortgageLiquidity({value: ethers.utils.parseEther(amount.toString())});
+    async balanceOf(address: string) {
+        return await this.contractInterface.balanceOf(address);
     }
 }
