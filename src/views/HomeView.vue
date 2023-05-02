@@ -96,26 +96,28 @@ watch(store, async () => {
                 </a>
             </div>
             <div class="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-                <div v-for="property in properties" :key="property.id" class="group relative">
+                <div v-for="property in properties" :key="property.id" class="group relative bg-gray-900 rounded-lg">
                     <div class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
                         <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" :alt="property.addr.street"  />
                         <div class="flex items-end p-4" aria-hidden="true">
-                            <div class="w-full rounded-md bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white backdrop-blur backdrop-filter">
+                            <div class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 px-4 py-2 text-center text-sm font-medium text-white backdrop-blur backdrop-filter">
                                 View Product
                             </div>
                         </div>
                     </div>
-                    <div class="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-500">
-                        <h3>
-                            <RouterLink :to="{name: 'property.detail', params: {address: property.address}}">
-                                <span aria-hidden="true" class="absolute inset-0" />
-                                <h2 class="text-2xl font-bold text-white">Poelestraat</h2>
-                                <p>{{ property.addr.zip }} {{ property.addr.city }}</p>
-                            </RouterLink>
-                        </h3>
-                        <p class="text-lg font-bold text-gray-500">{{ property.askingPrice }}ETH</p>
+                    <div class="p-5 block">
+                        <div class="flex items-center justify-between space-x-8 text-base font-medium text-gray-500">
+                            <h3>
+                                <RouterLink :to="{name: 'property.detail', params: {address: property.address}}">
+                                    <span aria-hidden="true" class="absolute inset-0" />
+                                    <h2 class="text-2xl font-bold text-white">Poelestraat</h2>
+                                    <p>{{ property.addr.zip }} {{ property.addr.city }}</p>
+                                </RouterLink>
+                            </h3>
+                            <p class="text-lg font-bold text-gray-500">{{ property.askingPrice }}ETH</p>
+                        </div>
+                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>
                     </div>
-                    <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>
                 </div>
             </div>
         </div>

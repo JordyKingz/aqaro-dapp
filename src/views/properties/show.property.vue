@@ -4,6 +4,7 @@ import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRoute} from "vue-router";
 import Property from "@/chain/Property";
 import {ethers} from "ethers";
+import Show from "@/components/property/show.vue";
 
 const store = walletConnectionStore();
 const route = useRoute();
@@ -44,7 +45,21 @@ async function getProperty(address: string) {
 
     await contract.getPropertyInfo()
         .then(async (result: Property) => {
-            property.value = result;
+            console.log(result);
+            property.value = {
+                id: result.id.toString(),
+                askingPrice: result.askingPrice.toString(),
+                addr: {
+                    street: result.addr.street,
+                    city: result.addr.city,
+                    state: result.addr.state,
+                    country: result.addr.country,
+                    zip: result.addr.zip
+                },
+                seller: result.seller,
+                created: result.created.toString()
+            }
+            // property.value = result;
         })
         .catch((error: any) => {
             console.log(error);
@@ -58,7 +73,8 @@ async function getBidOpen(address: string) {
         .then(async (result: any) => {
             const currentDate = new Date().getTime();
             const contractOpenTime = new Date(result.toString() * 1000).getTime();
-            contractOpenDate.value = new Date(result.toString() * 1000);
+            // @ts-ignore
+            contractOpenDate.value = new Date(result.toString() * 1000).toLocaleString();
 
             bidOpen.value = currentDate >= contractOpenTime;
         })
@@ -80,68 +96,10 @@ async function getHighestBid(address: string) {
 }
 </script>
 <template>
-  <div class="bg-gray-900 py-16">
-    <div v-if="store.isConnected" class="mx-auto max-w-7xl">
-      <div class="block w-full h-96 object-cover">
-        <img class="w-full max-h-96 object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="property image">
-      </div>
-      <div class="grid grid-cols-8 gap-3 mt-4">
-        <div class="col-span-6">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Poelestraat</h1>
-                <h2 class="text-xl font-bold text-gray-900 mt-2">{{ property.addr.zip }} {{ property.addr.city }}</h2>
-
-                <div class="mt-4">
-                    <span>x m2</span> <span>x rooms</span>
-                </div>
-                <h1 class="text-xl font-bold text-gray-900 mt-4">{{ property.askingPrice }}ETH</h1>
-            </div>
-            <div class="mt-6">
-                <h1 class="text-3xl font-bold text-gray-900">Description</h1>
-                <p class="mt-4">
-  <!--                  {{ property }}-->
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
-                    Aspernatur commodi dignissimos explicabo molestias numquam ratione repellendus sit totam!
-                    A excepturi maiores optio perspiciatis repellat?
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
-                    Aspernatur commodi dignissimos explicabo molestias numquam ratione repellendus sit totam!
-                    A excepturi maiores optio perspiciatis repellat?
-                </p>
-            </div>
-        </div>
-        <div class="col-span-2 bg-gray-800 p-3">
-          <div v-if="bidOpen">
-            <p v-if="Number(highestBid) === 0">
-                No bids yet
-            </p>
-            <p v-else>
-                {{ highestBid }}ETH
-            </p>
-            <div>
-              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Bid
-              </button>
-            </div>
-          </div>
-          <div v-else>
-            Biding will open on {{ contractOpenDate.toLocaleString() }}
-          </div>
-          <div class="mt-4">
-            <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Request mortgage
-            </RouterLink>
-          </div>
-          <div class="mt-4">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Plan visit
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <Show v-if="store.isConnected"
+    :property="property"
+    :contractOpenDate="contractOpenDate"
+    :propertyContractAddress="propertyContractAddress"
+    :bidOpen="bidOpen"
+  />
 </template>
