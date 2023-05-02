@@ -32,7 +32,7 @@ const propertyContractAddress = ref('');
 const mortgageRequest = ref({
     income: '',
     extraMortgageAmount: '0',
-    ownMoney: '103',
+    ownMoney: '',
 });
 const interestRate = ref(2.5);
 const monthlyMortgageAmount = ref(0);

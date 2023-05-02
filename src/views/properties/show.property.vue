@@ -87,7 +87,7 @@ async function getHighestBid(address: string) {
     <div class="grid grid-cols-8 gap-3 mt-4">
       <div class="col-span-6">
           <div>
-              <h1 class="text-3xl font-bold text-gray-900">{{ property.addr.street }}</h1>
+              <h1 class="text-3xl font-bold text-gray-900">Poelestraat</h1>
               <h2 class="text-xl font-bold text-gray-900 mt-2">{{ property.addr.zip }} {{ property.addr.city }}</h2>
 
               <div class="mt-4">
@@ -98,7 +98,7 @@ async function getHighestBid(address: string) {
           <div class="mt-6">
               <h1 class="text-3xl font-bold text-gray-900">Description</h1>
               <p class="mt-4">
-                  {{ property }}
+<!--                  {{ property }}-->
               </p>
               <p>
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
