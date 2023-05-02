@@ -48,17 +48,17 @@ async function disconnect() {
 }
 </script>
 <template>
-    <header class="bg-white">
-        <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <header class="bg-gray-900">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between h-28 p-6 lg:px-8" aria-label="Global">
             <div class="flex items-center gap-x-12">
                 <RouterLink :to="{name: 'home'}" class="-m-1.5 p-1.5">
-                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
+                    <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
                 </RouterLink>
                 <div class="hidden lg:flex lg:gap-x-12">
-                    <RouterLink :to="{name: 'home'}" class="text-sm font-semibold leading-6 text-gray-900">Home</RouterLink>
-                    <RouterLink :to="{name: 'presale.token'}" class="text-sm font-semibold leading-6 text-gray-900">Presale</RouterLink>
-                    <RouterLink v-if="store.isConnected" :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-gray-900">Earn</RouterLink>
-                    <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="text-sm font-semibold leading-6 text-gray-900">List Property</RouterLink>
+                    <RouterLink :to="{name: 'home'}" class="text-sm font-semibold leading-6 text-white">Home</RouterLink>
+                    <RouterLink :to="{name: 'presale.token'}" class="text-sm font-semibold leading-6 text-white">Presale</RouterLink>
+                    <RouterLink v-if="store.isConnected" :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Earn</RouterLink>
+                    <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="text-sm font-semibold leading-6 text-white">List Property</RouterLink>
                 </div>
             </div>
             <div class="flex lg:hidden">
@@ -68,8 +68,8 @@ async function disconnect() {
                 </button>
             </div>
             <div class="hidden lg:flex">
-                <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold leading-6 text-gray-900">Connect <span aria-hidden="true">&rarr;</span></span>
-                <button v-if="connected" v-on:click="disconnect" class="text-gray-800 font-medium bg-gray-100 py-3.5 px-3.5 rounded-3xl">
+                <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
+                <button v-if="connected" v-on:click="disconnect" class="text-white font-medium bg-indigo-500 py-3.5 px-3.5 rounded-3xl">
                     <span class="flex">
 <!--                        <span class="bg-gray-800 w-8 h-8 rounded-3xl"></span>-->
                         <span>

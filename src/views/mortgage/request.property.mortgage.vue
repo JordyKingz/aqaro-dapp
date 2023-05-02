@@ -196,100 +196,102 @@ watch(monthlyMortgageAmount, () => {
 })
 </script>
 <template>
-  <div v-if="store.isConnected" class="mx-auto max-w-7xl pb-12">
-      <div class="bg-gray-100 shadow rounded-md p-4">
-          <div>
-              <h2 class="text-base font-semibold leading-7 text-gray-800">Personal Information</h2>
-              <p class="text-xs">
-                  Please provide your personal information to be considered for a mortgage.
-                  KYC data is stored privately, only needed information is shared with the lender.
-                  <br>
-                  {{ property.askingPrice.toString() }}ETH
-                  <br>
-                  ${{ Number(property.askingPrice.toString()) * 1870 }}
-              </p>
-              <div class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-6">
-                  <div class="col-span-full">
-                      <label class="block text-sm font-medium leading-6 text-gray-800">Property Asking Price</label>
-                      <div class="mt-2">
-                          <input type="text" disabled :value="`${property.askingPrice.toString()} ETH`" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+<div class="bg-gray-900 py-16">
+      <div v-if="store.isConnected" class="mx-auto max-w-7xl">
+          <div class="bg-gray-800 shadow rounded-md p-4">
+              <div>
+                  <h2 class="text-base font-semibold leading-7 text-white">Personal Information</h2>
+                  <p class="text-xs text-gray-400">
+                      Please provide your personal information to be considered for a mortgage.
+                      KYC data is stored privately, only needed information is shared with the lender.
+                      <br>
+                      {{ property.askingPrice.toString() }}ETH
+                      <br>
+                      ${{ Number(property.askingPrice.toString()) * 1870 }}
+                  </p>
+                  <div class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-6">
+                      <div class="col-span-full">
+                          <label class="block text-sm font-medium leading-6 text-white">Property Asking Price</label>
+                          <div class="mt-2">
+                              <input type="text" disabled :value="`${property.askingPrice.toString()} ETH`" class="block bg-gray-900 w-full rounded-md border-0 py-2.5 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-span-full">
-                      <label class="block text-sm font-medium leading-6 text-gray-800">Extra funds needed (max 15% of asking price)</label>
-                      <p class="text-xs">
-                          {{(Number(property.askingPrice.toString()) * 0.15)}}ETH
-                      </p>
-                      <div class="mt-2">
-                          <input
-                            type="number"
-                            :max="(Number(property.askingPrice.toString()) * 0.15)"
-                            v-model="mortgageRequest.extraMortgageAmount"
-                            class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                      <div class="col-span-full">
+                          <label class="block text-sm font-medium leading-6 text-white">Extra funds needed (max 15% of asking price)</label>
+                          <p class="text-xs text-gray-400">
+                              {{(Number(property.askingPrice.toString()) * 0.15)}}ETH
+                          </p>
+                          <div class="mt-2">
+                              <input
+                                type="number"
+                                :max="(Number(property.askingPrice.toString()) * 0.15)"
+                                v-model="mortgageRequest.extraMortgageAmount"
+                                class="block bg-gray-900 w-full rounded-md border-0 py-2.5 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-span-full">
-                      <label class="block text-sm font-medium leading-6 text-gray-800">Own Money, in ETH</label>
-                      <div class="mt-2">
-                          <input type="text" v-model="mortgageRequest.ownMoney" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                      <div class="col-span-full">
+                          <label class="block text-sm font-medium leading-6 text-white">Own Money, in ETH</label>
+                          <div class="mt-2">
+                              <input type="text" v-model="mortgageRequest.ownMoney" class="block bg-gray-900 w-full rounded-md border-0 py-2.5 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-span-full">
-                      <label class="block text-sm font-medium leading-6 text-gray-800">Mortgage Needed</label>
-                      <div class="mt-2">
-                          <input
-                            type="text"
-                            disabled
-                            :value="(Number(property.askingPrice.toString()) + Number(mortgageRequest.extraMortgageAmount)) - Number(mortgageRequest.ownMoney)"
-                            class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                      <div class="col-span-full">
+                          <label class="block text-sm font-medium leading-6 text-white">Mortgage Needed</label>
+                          <div class="mt-2">
+                              <input
+                                type="text"
+                                disabled
+                                :value="(Number(property.askingPrice.toString()) + Number(mortgageRequest.extraMortgageAmount)) - Number(mortgageRequest.ownMoney)"
+                                class="block bg-gray-900 w-full rounded-md border-0 py-2.5 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-span-full">
-                      <label class="block text-sm font-medium leading-6 text-gray-800">Income</label>
-                      <div class="mt-2">
-                          <input type="text" v-model="mortgageRequest.income" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                      <div class="col-span-full">
+                          <label class="block text-sm font-medium leading-6 text-white">Income</label>
+                          <div class="mt-2">
+                              <input type="text" v-model="mortgageRequest.income" class="block bg-gray-900 w-full rounded-md border-0 py-2.5 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-span-full">
-                      <label class="block text-sm font-medium leading-6 text-gray-800">Preferred Monthly Mortgage Amount</label>
-                      <div class="mt-2">
-                          <input type="number" v-model="monthlyMortgageAmount" :max="(mortgageRequest.income * 0.35)" :min="(mortgageRequest.income * 0.35) / 1.6" class="block w-full rounded-md border-0 py-2.5 px-3 text-gray-800 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
-                            <div v-if="mortgageRequest.income !== ''" class="bg-blue-100 p-2 mt-2 rounded-lg border border-blue-500 text-blue-500">
-                                Max monthly mortgage amount: ${{mortgageRequest.income * 0.35}}
-                                <br>
-                                Min monthly mortgage amount:
+                      <div class="col-span-full">
+                          <label class="block text-sm font-medium leading-6 text-white">Preferred Monthly Mortgage Amount</label>
+                          <div class="mt-2">
+                              <input type="number" v-model="monthlyMortgageAmount" :max="(mortgageRequest.income * 0.35)" :min="(mortgageRequest.income * 0.35) / 1.6" class="block w-full bg-gray-900 rounded-md border-0 py-2.5 px-3 text-gray-500 shadow-sm ring-1 ring-inset ring-purple-500 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6" />
+                                <div v-if="mortgageRequest.income !== ''" class="bg-blue-100 p-2 mt-2 rounded-lg border border-blue-500 text-blue-500">
+                                    Max monthly mortgage amount: ${{mortgageRequest.income * 0.35}}
+                                    <br>
+                                    Min monthly mortgage amount:
 
-                                ${{ Number(minMonthlyAmount).toFixed(2) }}
-                            </div>
+                                    ${{ Number(minMonthlyAmount).toFixed(2) }}
+                                </div>
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-span-full">
-                      <div class="bg-blue-100 p-2 mt-2 rounded-lg border border-blue-500 text-blue-500">
-                        Information about your mortgage:<br>
-                          <code>
-                              Interest Rate: {{interestRate}}% <br>
-                              Total Years to pay off: {{totalMortgageYears}} <br>
-                              Total Mortgage amount: {{totalMortgage}} <br>
-                              Total Interest paid: {{totalInterestPaid}} <br>
-                              Total amount paid: {{totalAmountPaidOff}} <br>
-                          </code>
+                      <div class="col-span-full">
+                          <div class="bg-blue-100 p-2 mt-2 rounded-lg border border-blue-500 text-blue-500">
+                            Information about your mortgage:<br>
+                              <code>
+                                  Interest Rate: {{interestRate}}% <br>
+                                  Total Years to pay off: {{totalMortgageYears}} <br>
+                                  Total Mortgage amount: {{totalMortgage}} <br>
+                                  Total Interest paid: {{totalInterestPaid}} <br>
+                                  Total amount paid: {{totalAmountPaidOff}} <br>
+                              </code>
+                          </div>
                       </div>
-                  </div>
-                  <div v-if="providerStakeResults.length > 0" class="mt-4 col-span-full">
-                      <div class="bg-yellow-100 p-2 mt-2 rounded-lg border border-yellow-500 text-yellow-500">
-                          <h3 class="text-lg font-bold">Provider Stake Results: {{totalStake}}ETH Staked</h3>
-                          <span v-for="result in providerStakeResults" class="block w-full pb-2">
-                              {{result}}
-                          </span>
-                          <h3 class="text-lg font-bold">Total Payout: {{totalAmount}}</h3>
-                      </div>
+                      <div v-if="providerStakeResults.length > 0" class="mt-4 col-span-full">
+                          <div class="bg-yellow-100 p-2 mt-2 rounded-lg border border-yellow-500 text-yellow-500">
+                              <h3 class="text-lg font-bold">Provider Stake Results: {{totalStake}}ETH Staked</h3>
+                              <span v-for="result in providerStakeResults" class="block w-full pb-2">
+                                  {{result}}
+                              </span>
+                              <h3 class="text-lg font-bold">Total Payout: {{totalAmount}}</h3>
+                          </div>
 
+                      </div>
                   </div>
-              </div>
-              <div class="mt-8 block">
-                  <button class="border-2 border-yellow-500 text-yellow-500 rounded-md px-2 py-3">Request Mortgage</button>
+                  <div class="mt-8 block">
+                      <button class="border-2 border-yellow-500 text-yellow-500 rounded-md px-2 py-3">Request Mortgage</button>
+                  </div>
               </div>
           </div>
       </div>
-  </div>
+</div>
 </template>

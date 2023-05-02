@@ -82,32 +82,34 @@ async function getPresaleEndTime() {
 
 </script>
 <template>
-    <div v-if="store.isConnected" class="mx-auto max-w-7xl pb-12">
-        <div class="grid grid-cols-8 gap-3">
-            <div class="col-span-3 bg-gray-100 shadow rounded-lg p-3">
-                <div class="w-full">
-                    <label class="text-gray-900 w-full text-xl">Amount of Tokens to purchase</label>
-                    <input
-                            type="text"
-                            class="bg-gray-50 w-full px-4 py-3 mt-2 rounded-lg placeholder-gray-400 text-gray-900"
-                            v-model="tokenAmount"
-                            placeholder="Enter amount of Tokens to buy">
+    <div class="bg-gray-900 py-16">
+        <div v-if="store.isConnected" class="mx-auto max-w-7xl">
+            <div class="grid grid-cols-8 gap-3">
+                <div class="col-span-3 bg-gray-800 shadow rounded-lg p-3">
+                    <div class="w-full">
+                        <label class="text-gray-900 w-full text-xl">Amount of Tokens to purchase</label>
+                        <input
+                                type="text"
+                                class="bg-gray-700 w-full px-4 py-3 mt-2 rounded-lg placeholder-gray-400 text-gray-900"
+                                v-model="tokenAmount"
+                                placeholder="Enter amount of Tokens to buy">
+                    </div>
+                    <div class="my-4">
+                        ETH to pay: {{ (tokenAmount * tokenPrice).toFixed(5) }}ETH
+                    </div>
+                    <div class="text-center w-full mt-4">
+                        <button v-on:click="participateInPresale" class="px-2 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg">
+                            Purchase Tokens
+                        </button>
+                    </div>
                 </div>
-                <div class="my-4">
-                    ETH to pay: {{ (tokenAmount * tokenPrice).toFixed(5) }}ETH
+                <div class="col-span-5 bg-gray-800 shadow rounded-lg">
+                    {{contractBalance}}ETH in contract
+                    <br>
+                    {{tokensSold}} Aqaro tokens sold
+                    <br>
+                    {{tokenBalance}} Aqaro tokens left
                 </div>
-                <div class="text-center w-full mt-4">
-                    <button v-on:click="participateInPresale" class="px-2 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg">
-                        Purchase Tokens
-                    </button>
-                </div>
-            </div>
-            <div class="col-span-5 bg-gray-100 shadow rounded-lg">
-                {{contractBalance}}ETH in contract
-                <br>
-                {{tokensSold}} Aqaro tokens sold
-                <br>
-                {{tokenBalance}} Aqaro tokens left
             </div>
         </div>
     </div>

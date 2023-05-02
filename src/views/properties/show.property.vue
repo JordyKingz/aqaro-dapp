@@ -80,64 +80,66 @@ async function getHighestBid(address: string) {
 }
 </script>
 <template>
-  <div v-if="store.isConnected" class="mx-auto max-w-7xl pb-12">
-    <div class="block w-full h-96 object-cover">
-      <img class="w-full max-h-96 object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="property image">
-    </div>
-    <div class="grid grid-cols-8 gap-3 mt-4">
-      <div class="col-span-6">
-          <div>
-              <h1 class="text-3xl font-bold text-gray-900">Poelestraat</h1>
-              <h2 class="text-xl font-bold text-gray-900 mt-2">{{ property.addr.zip }} {{ property.addr.city }}</h2>
-
-              <div class="mt-4">
-                  <span>x m2</span> <span>x rooms</span>
-              </div>
-              <h1 class="text-xl font-bold text-gray-900 mt-4">{{ property.askingPrice }}ETH</h1>
-          </div>
-          <div class="mt-6">
-              <h1 class="text-3xl font-bold text-gray-900">Description</h1>
-              <p class="mt-4">
-<!--                  {{ property }}-->
-              </p>
-              <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
-                  Aspernatur commodi dignissimos explicabo molestias numquam ratione repellendus sit totam!
-                  A excepturi maiores optio perspiciatis repellat?
-              </p>
-              <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
-                  Aspernatur commodi dignissimos explicabo molestias numquam ratione repellendus sit totam!
-                  A excepturi maiores optio perspiciatis repellat?
-              </p>
-          </div>
+  <div class="bg-gray-900 py-16">
+    <div v-if="store.isConnected" class="mx-auto max-w-7xl">
+      <div class="block w-full h-96 object-cover">
+        <img class="w-full max-h-96 object-cover" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="property image">
       </div>
-      <div class="col-span-2 bg-gray-50 p-3">
-        <div v-if="bidOpen">
-          <p v-if="Number(highestBid) === 0">
-              No bids yet
-          </p>
-          <p v-else>
-              {{ highestBid }}ETH
-          </p>
-          <div>
+      <div class="grid grid-cols-8 gap-3 mt-4">
+        <div class="col-span-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Poelestraat</h1>
+                <h2 class="text-xl font-bold text-gray-900 mt-2">{{ property.addr.zip }} {{ property.addr.city }}</h2>
+
+                <div class="mt-4">
+                    <span>x m2</span> <span>x rooms</span>
+                </div>
+                <h1 class="text-xl font-bold text-gray-900 mt-4">{{ property.askingPrice }}ETH</h1>
+            </div>
+            <div class="mt-6">
+                <h1 class="text-3xl font-bold text-gray-900">Description</h1>
+                <p class="mt-4">
+  <!--                  {{ property }}-->
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
+                    Aspernatur commodi dignissimos explicabo molestias numquam ratione repellendus sit totam!
+                    A excepturi maiores optio perspiciatis repellat?
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae distinctio error illo magni sit.
+                    Aspernatur commodi dignissimos explicabo molestias numquam ratione repellendus sit totam!
+                    A excepturi maiores optio perspiciatis repellat?
+                </p>
+            </div>
+        </div>
+        <div class="col-span-2 bg-gray-800 p-3">
+          <div v-if="bidOpen">
+            <p v-if="Number(highestBid) === 0">
+                No bids yet
+            </p>
+            <p v-else>
+                {{ highestBid }}ETH
+            </p>
+            <div>
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Bid
+              </button>
+            </div>
+          </div>
+          <div v-else>
+            Biding will open on {{ contractOpenDate.toLocaleString() }}
+          </div>
+          <div class="mt-4">
+            <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Request mortgage
+            </RouterLink>
+          </div>
+          <div class="mt-4">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Bid
+              Plan visit
             </button>
           </div>
-        </div>
-        <div v-else>
-          Biding will open on {{ contractOpenDate.toLocaleString() }}
-        </div>
-        <div class="mt-4">
-          <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Request mortgage
-          </RouterLink>
-        </div>
-        <div class="mt-4">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Plan visit
-          </button>
         </div>
       </div>
     </div>
