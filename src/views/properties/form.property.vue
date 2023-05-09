@@ -14,16 +14,25 @@ type Address = {
   country: string;
   zip: string;
 }
+type Seller = {
+    wallet: string,
+    name: string,
+    email: string,
+    status: number
+}
 type Property = {
   addr: Address,
+  seller: Seller,
   description: string,
   askingPrice: string,
+  price: string,
 }
 
 const store = walletConnectionStore();
 
 const propertiesStore = propertyStore();
 
+const lastName = ref('');
 let property = ref<Property>(
   {
     addr: {
@@ -34,12 +43,23 @@ let property = ref<Property>(
       zip: ""
     },
     description: "",
-    askingPrice: ""
+    askingPrice: "",
+    price: "",
+    seller: {
+      wallet: "",
+      name: "",
+      email: "",
+      status: 0
+    }
   }
 );
 
 async function listProperty() {
   const contract = new PropertyFactory(store.getChainId);
+  property.value.seller.wallet = store.connectedWallet;
+  const priceInDollars = Number(property.value.askingPrice) * 1900;
+  property.value.price = priceInDollars.toString();
+  property.value.seller.name = `${property.value.seller.name} ${lastName.value}`;
 
   await contract.listProperty(property.value)
       .then(async (result: any) => {
@@ -114,22 +134,22 @@ async function listProperty() {
                         <p class="mt-3 text-sm leading-6 text-gray-400">Write a few sentences about the property you sell.</p>
                     </div>
 
-                    <div class="col-span-full">
-                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-white">Property Photos</label>
-                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
-                            <div class="text-center">
-                                <PhotoIcon class="mx-auto h-12 w-12 text-gray-500" aria-hidden="true" />
-                                <div class="mt-4 flex text-sm leading-6 text-gray-400">
-                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
-                                </div>
-                                <p class="text-xs leading-5 text-gray-400">PNG, JPG up to 10MB</p>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="col-span-full">-->
+<!--                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-white">Property Photos</label>-->
+<!--                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">-->
+<!--                            <div class="text-center">-->
+<!--                                <PhotoIcon class="mx-auto h-12 w-12 text-gray-500" aria-hidden="true" />-->
+<!--                                <div class="mt-4 flex text-sm leading-6 text-gray-400">-->
+<!--                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">-->
+<!--                                        <span>Upload a file</span>-->
+<!--                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />-->
+<!--                                    </label>-->
+<!--                                    <p class="pl-1">or drag and drop</p>-->
+<!--                                </div>-->
+<!--                                <p class="text-xs leading-5 text-gray-400">PNG, JPG up to 10MB</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
 
@@ -141,108 +161,107 @@ async function listProperty() {
                     <div class="sm:col-span-3">
                         <label for="first-name" class="block text-sm font-medium leading-6 text-white">First name</label>
                         <div class="mt-2">
-                            <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            <input type="text" v-model="property.seller.name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
 
                     <div class="sm:col-span-3">
                         <label for="last-name" class="block text-sm font-medium leading-6 text-white">Last name</label>
                         <div class="mt-2">
-                            <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            <input type="text" v-model="lastName" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
-
                     <div class="sm:col-span-4">
                         <label for="email" class="block text-sm font-medium leading-6 text-white">Email address</label>
                         <div class="mt-2">
-                            <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            <input type="email" v-model="property.seller.email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="border-b border-white/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-white">Passport and Income information</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-400">
-                    We’ll only use this for verification purposes.
-                </p>
+<!--            <div class="border-b border-white/10 pb-12">-->
+<!--                <h2 class="text-base font-semibold leading-7 text-white">Passport and Income information</h2>-->
+<!--                <p class="mt-1 text-sm leading-6 text-gray-400">-->
+<!--                    We’ll only use this for verification purposes.-->
+<!--                </p>-->
 
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-2 sm:col-start-1">
-                        <label for="city" class="block text-sm font-medium leading-6 text-white">Full Name</label>
-                        <div class="mt-2">
-                            <input type="text" name="city" id="city" autocomplete="address-level2" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label for="region" class="block text-sm font-medium leading-6 text-white">Country Of Residence</label>
-                        <div class="mt-2">
-                            <input type="text" name="region" id="region" autocomplete="address-level1" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label for="postal-code" class="block text-sm font-medium leading-6 text-white">Net Income</label>
-                        <div class="mt-2">
-                            <input type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                    <div class="col-span-full">
-                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-white">Documents</label>
-                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">
-                            <div class="text-center">
-                                <PhotoIcon class="mx-auto h-12 w-12 text-gray-500" aria-hidden="true" />
-                                <div class="mt-4 flex text-sm leading-6 text-gray-400">
-                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
-                                </div>
-                                <p class="text-xs leading-5 text-gray-400">PNG, JPG up to 10MB</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">-->
+<!--                    <div class="sm:col-span-2 sm:col-start-1">-->
+<!--                        <label for="city" class="block text-sm font-medium leading-6 text-white">Full Name</label>-->
+<!--                        <div class="mt-2">-->
+<!--                            <input type="text" name="city" id="city" autocomplete="address-level2" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="sm:col-span-2">-->
+<!--                        <label for="region" class="block text-sm font-medium leading-6 text-white">Country Of Residence</label>-->
+<!--                        <div class="mt-2">-->
+<!--                            <input type="text" name="region" id="region" autocomplete="address-level1" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="sm:col-span-2">-->
+<!--                        <label for="postal-code" class="block text-sm font-medium leading-6 text-white">Net Income</label>-->
+<!--                        <div class="mt-2">-->
+<!--                            <input type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-span-full">-->
+<!--                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-white">Documents</label>-->
+<!--                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">-->
+<!--                            <div class="text-center">-->
+<!--                                <PhotoIcon class="mx-auto h-12 w-12 text-gray-500" aria-hidden="true" />-->
+<!--                                <div class="mt-4 flex text-sm leading-6 text-gray-400">-->
+<!--                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">-->
+<!--                                        <span>Upload a file</span>-->
+<!--                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />-->
+<!--                                    </label>-->
+<!--                                    <p class="pl-1">or drag and drop</p>-->
+<!--                                </div>-->
+<!--                                <p class="text-xs leading-5 text-gray-400">PNG, JPG up to 10MB</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="border-b border-white/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-white">Notifications</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-400">We'll always let you know about important changes, but you pick what else you want to hear about.</p>
+<!--            <div class="border-b border-white/10 pb-12">-->
+<!--                <h2 class="text-base font-semibold leading-7 text-white">Notifications</h2>-->
+<!--                <p class="mt-1 text-sm leading-6 text-gray-400">We'll always let you know about important changes, but you pick what else you want to hear about.</p>-->
 
-                <div class="mt-10 space-y-10">
-                    <fieldset>
-                        <div class="space-y-6">
-                            <div class="relative flex gap-x-3">
-                                <div class="flex h-6 items-center">
-                                    <input id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />
-                                </div>
-                                <div class="text-sm leading-6">
-                                    <label for="comments" class="font-medium text-white">DAO</label>
-                                    <p class="text-gray-400">Get notified when DAO decides to list your property.</p>
-                                </div>
-                            </div>
-                            <div class="relative flex gap-x-3">
-                                <div class="flex h-6 items-center">
-                                    <input id="candidates" name="candidates" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />
-                                </div>
-                                <div class="text-sm leading-6">
-                                    <label for="candidates" class="font-medium text-white">Mortgages</label>
-                                    <p class="text-gray-400">Get notified when a potential buyer creates a mortgage request for your property.</p>
-                                </div>
-                            </div>
-                            <div class="relative flex gap-x-3">
-                                <div class="flex h-6 items-center">
-                                    <input id="offers" name="offers" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />
-                                </div>
-                                <div class="text-sm leading-6">
-                                    <label for="offers" class="font-medium text-white">Offers</label>
-                                    <p class="text-gray-400">Get notified when a potential buyer makes an offer.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-            </div>
+<!--                <div class="mt-10 space-y-10">-->
+<!--                    <fieldset>-->
+<!--                        <div class="space-y-6">-->
+<!--                            <div class="relative flex gap-x-3">-->
+<!--                                <div class="flex h-6 items-center">-->
+<!--                                    <input id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />-->
+<!--                                </div>-->
+<!--                                <div class="text-sm leading-6">-->
+<!--                                    <label for="comments" class="font-medium text-white">DAO</label>-->
+<!--                                    <p class="text-gray-400">Get notified when DAO decides to list your property.</p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="relative flex gap-x-3">-->
+<!--                                <div class="flex h-6 items-center">-->
+<!--                                    <input id="candidates" name="candidates" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />-->
+<!--                                </div>-->
+<!--                                <div class="text-sm leading-6">-->
+<!--                                    <label for="candidates" class="font-medium text-white">Mortgages</label>-->
+<!--                                    <p class="text-gray-400">Get notified when a potential buyer creates a mortgage request for your property.</p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="relative flex gap-x-3">-->
+<!--                                <div class="flex h-6 items-center">-->
+<!--                                    <input id="offers" name="offers" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />-->
+<!--                                </div>-->
+<!--                                <div class="text-sm leading-6">-->
+<!--                                    <label for="offers" class="font-medium text-white">Offers</label>-->
+<!--                                    <p class="text-gray-400">Get notified when a potential buyer makes an offer.</p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </fieldset>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">

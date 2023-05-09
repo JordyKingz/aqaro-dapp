@@ -31,6 +31,10 @@ export default class MortgagePool {
         return await this.contractInterface.contractBalance();
     }
 
+    async getStakedBalance(address: string) {
+        return await this.contractInterface.mortgageLiquidity(address);
+    }
+
     async provideMortgageLiquidity(amount: number) {
         return await this.contractInterface.provideMortgageLiquidity({value: ethers.utils.parseEther(amount.toString())});
     }

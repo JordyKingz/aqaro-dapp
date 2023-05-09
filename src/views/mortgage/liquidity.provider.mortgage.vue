@@ -8,9 +8,11 @@ const store = walletConnectionStore();
 const ethAmount = ref('');
 
 const contractBalance = ref('0');
+const stakedBalance = ref('0');
 
 onBeforeMount(async() => {
     await getMortgagePoolBalance();
+    await getStakedBalance();
 });
 
 async function getMortgagePoolBalance() {
@@ -22,6 +24,16 @@ async function getMortgagePoolBalance() {
         .catch((error: any) => {
             console.log(error);
         })
+}
+
+async function getStakedBalance() {
+    const contract = new MortgagePool(store.chainId);
+    await contract.getStakedBalance(store.connectedWallet)
+        .then((response: any) => {
+            stakedBalance.value = ethers.utils.formatEther(response.toString());
+        }).catch((error: any) => {
+            console.log(error);
+        });
 }
 
 async function provideLiquidity() {
@@ -97,7 +109,7 @@ async function provideLiquidity() {
                                 <div class="flex">
                                     <div>
                                         <label class="text-gray-300 w-full text-xl">Provided Liquidity</label>
-                                        <p class="text-gray-300 text-xl">{{ contractBalance }} ETH</p>
+                                        <p class="text-gray-300 text-xl">{{ stakedBalance }} ETH</p>
                                         <div class="w-full mt-4">
                                             <button v-if="Number(ethAmount) && Number(ethAmount) > 0" v-on:click="provideLiquidity" class="px-2 py-2 w-full border-2 border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white">
                                                 Claim Rewards
@@ -109,7 +121,7 @@ async function provideLiquidity() {
                                     </div>
                                     <div class="pl-6">
                                         <label class="text-gray-300 w-full text-xl">Earned</label>
-                                        <p class="text-gray-300 text-xl">{{ contractBalance }} ETH</p>
+                                        <p class="text-gray-300 text-xl">(earned) ETH</p>
                                     </div>
                                 </div>
                             </div>

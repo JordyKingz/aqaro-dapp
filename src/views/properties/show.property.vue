@@ -9,11 +9,19 @@ import Show from "@/components/property/show.vue";
 const store = walletConnectionStore();
 const route = useRoute();
 
+type Seller = {
+    wallet: string,
+    name: string,
+    email: string,
+    status: number
+}
 type Property = {
   addr: Address,
   askingPrice: string,
+  price: string,
   id: string,
-  seller: string,
+  seller: Seller,
+    description: string,
   created: string
 }
 type Address = {
@@ -49,6 +57,8 @@ async function getProperty(address: string) {
             property.value = {
                 id: result.id.toString(),
                 askingPrice: result.askingPrice.toString(),
+                price: result.price.toString(),
+                description: result.description,
                 addr: {
                     street: result.addr.street,
                     city: result.addr.city,
@@ -56,7 +66,12 @@ async function getProperty(address: string) {
                     country: result.addr.country,
                     zip: result.addr.zip
                 },
-                seller: result.seller,
+                seller: {
+                    wallet: result.seller.wallet,
+                    name: result.seller.name,
+                    email: result.seller.email,
+                    status: result.seller.status
+                },
                 created: result.created.toString()
             }
             // property.value = result;

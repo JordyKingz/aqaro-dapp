@@ -2,12 +2,20 @@
 import {PropType, ref} from 'vue';
 import { StarIcon } from '@heroicons/vue/20/solid';
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
-
+import { EnvelopeIcon, PhoneIcon } from '@heroicons/vue/20/solid'
+type Seller = {
+    wallet: string,
+    name: string,
+    email: string,
+    status: number
+}
 type Property = {
     addr: Address,
     askingPrice: string,
+    price: string,
     id: string,
-    seller: string,
+    seller: Seller,
+    description: string,
     created: string
 }
 type Address = {
@@ -73,9 +81,7 @@ const product = {
         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 }
 
-function propertyInDollars(priceInEth: string) {
-    const priceInDollars = parseFloat(priceInEth) * 1850;
-
+function propertyInDollars(value: string) {
     let formatter;
     formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -83,7 +89,7 @@ function propertyInDollars(priceInEth: string) {
         minimumFractionDigits: 2
     });
 
-    return formatter.format(Number(priceInDollars));
+    return formatter.format(Number(value));
 }
 </script>
 <template>
@@ -112,21 +118,43 @@ function propertyInDollars(priceInEth: string) {
                 <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                     <h1 class="text-2xl font-bold tracking-tight text-gray-200 sm:text-3xl">{{ property.addr.street }}</h1>
                     <h2 class="text-xl font-bold tracking-tight text-gray-400">{{ property.addr.zip }} {{ property.addr.city }}</h2>
-
-                    <code class="text-xs block mt-8 text-gray-400">
-                        {{ property }}
-                    </code>
                 </div>
 
                 <div class="mt-8 lg:row-span-3">
                     <h2 class="sr-only">Property information</h2>
-                    <p class="text-2xl tracking-tight text-white">{{ propertyInDollars(property.askingPrice) }}</p>
+                    <p class="text-2xl tracking-tight text-white">{{ propertyInDollars(property.price) }}</p>
                     <p class="text-xl tracking-tight text-white">{{ property.askingPrice }}ETH</p>
 
                     <p class="text-gray-400 mt-8">
                         Sale start date: <br>
                         {{contractOpenDate}}
                     </p>
+
+                    <div class="mt-8 bg-gray-800 rounded-xl">
+                        <div class="flex w-full items-center justify-between space-x-6 p-6">
+                            <div class="flex-1 truncate">
+                                <div class="flex items-center space-x-3">
+                                    <h3 class="truncate text-sm font-medium text-gray-300">{{ property.seller.name }}</h3>
+                                    <span v-if="property.seller.status === 0" class="inline-flex flex-shrink-0 items-center rounded-full bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700 ring-1 ring-inset ring-green-600/20">
+                                        KYC: NONE
+                                    </span>
+                                    <span v-if="property.seller.status === 1" class="inline-flex flex-shrink-0 items-center rounded-full bg-yellow-50 px-1.5 py-0.5 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-green-600/20">
+                                        KYC: PENDING
+                                    </span>
+                                    <span v-if="property.seller.status === 2" class="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                        KYC: VERIFIED
+                                    </span>
+                                </div>
+                                <p class="mt-1 truncate text-sm text-gray-500">{{ property.seller.wallet }}</p>
+                                <div class="truncate text-sm text-gray-500">
+                                    <a :href="`mailto:${property.seller.email}`" class="flex py-4 text-sm font-semibold text-gray-300">
+                                        <EnvelopeIcon class="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                        <span class="pl-2">Email</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <button v-if="bidOpen" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -141,12 +169,8 @@ function propertyInDollars(priceInEth: string) {
                     <div>
                         <div class="space-y-6">
                             <p class="text-base text-gray-400">
-                                Welcome to your new home!
-                                This stunning 3-bedroom apartment offers over 100m² of luxurious living space in the heart of downtown.
-                                The bright and airy open plan living area is perfect for relaxing or entertaining guests, while the fully equipped kitchen features high-quality finishes and fittings.
-                                Step outside onto your private balcony and enjoy the peaceful view of the beautifully landscaped garden.
-                                With three spacious bedrooms, this apartment is perfect for families or professionals seeking a comfortable and convenient living experience.
-                                Don't miss your chance to own this exceptional property - schedule a viewing today and make it yours!</p>
+                                {{ property.description }}
+                            </p>
                         </div>
                     </div>
 

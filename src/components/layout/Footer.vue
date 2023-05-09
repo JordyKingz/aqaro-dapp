@@ -35,7 +35,7 @@ const navigation = {
         },
         {
             name: 'GitHub',
-            href: 'https://github.com/JordyKingz',
+            href: 'https://github.com/JordyKingz/aqaro-smart-contracts',
             icon: defineComponent({
                 render: () =>
                     h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
