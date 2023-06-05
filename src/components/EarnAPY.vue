@@ -1,3 +1,5 @@
+<script setup lang="ts">
+</script>
 <template>
     <div class="bg-gray-800">
         <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -23,8 +25,8 @@
                         <a href="#" class="text-sm font-semibold leading-6 text-white">Learn more <span aria-hidden="true">→</span></a>
                     </div>
                 </div>
-                <div class="relative mt-16 h-80 lg:mt-8">
-                    <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="App screenshot" width="1824" height="1080" />
+                <div class="relative">
+                    <img class="absolute left-0 top-0 w-[38rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="/liq_providers_xl.png" alt="Provide ETH liquidity to earn interest" />
                 </div>
             </div>
         </div>

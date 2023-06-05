@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {PropType, ref} from 'vue';
-import { StarIcon } from '@heroicons/vue/20/solid';
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/vue/20/solid'
+import { EnvelopeIcon} from '@heroicons/vue/20/solid'
 type Seller = {
     wallet: string,
     name: string,
@@ -26,9 +23,10 @@ type Address = {
     zip: string;
 }
 
+
 defineProps({
     property: {
-        type: Object as PropType<Property>,
+        type: Object,
         required: true,
     },
     contractOpenDate: {

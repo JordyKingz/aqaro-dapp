@@ -10,11 +10,28 @@ import LaunchNotify from "@/components/LaunchNotify.vue";
 import EarnAPY from "@/components/EarnAPY.vue";
 
 const store = walletConnectionStore();
-const propertiesStore = propertyStore();
+
+type Address = {
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
+}
+
+type PropertyType = {
+    id: string,
+    askingPrice: string,
+    price: string,
+    addr: Address,
+    seller: string,
+    address: string
+}
+
 
 const propertyContracts = ref([]);
-const properties = ref([]);
-const ownerProperties = ref([]);
+const properties = ref<PropertyType[]>([]);
+
 
 onBeforeMount(async() => {
   if (store.isConnected) {
@@ -84,7 +101,7 @@ function formatDollars(value: string) {
         currency: 'USD',
         minimumFractionDigits: 2
     });
-
+    // @ts-ignore
     return formatter.format(value);
 }
 

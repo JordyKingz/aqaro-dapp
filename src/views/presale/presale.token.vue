@@ -117,7 +117,7 @@ async function getPresaleEndTime() {
                                         placeholder="Enter amount of Tokens to buy">
                             </div>
                             <div class="my-4">
-                                ETH to pay: {{ (tokenAmount * tokenPrice).toFixed(5) }}ETH
+                                ETH to pay: {{ (Number(tokenAmount) * tokenPrice).toFixed(5) }}ETH
                             </div>
                             <div>
                                 <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
