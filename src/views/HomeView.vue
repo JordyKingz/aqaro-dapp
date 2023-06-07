@@ -10,11 +10,28 @@ import LaunchNotify from "@/components/LaunchNotify.vue";
 import EarnAPY from "@/components/EarnAPY.vue";
 
 const store = walletConnectionStore();
-const propertiesStore = propertyStore();
+
+type Address = {
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
+}
+
+type PropertyType = {
+    id: string,
+    askingPrice: string,
+    price: string,
+    addr: Address,
+    seller: string,
+    address: string
+}
+
 
 const propertyContracts = ref([]);
-const properties = ref([]);
-const ownerProperties = ref([]);
+const properties = ref<PropertyType[]>([]);
+
 
 onBeforeMount(async() => {
   if (store.isConnected) {
@@ -45,7 +62,7 @@ async function getAllPropertyContracts() {
 
 async function getPropertyContracts() {
     for (let i = 0; i < propertyContracts.value.length; i++) {
-        await getPropertyByAddress(propertyContracts.value[i])
+        await getPropertyByAddress(propertyContracts.value[i]);
     }
 }
 
@@ -54,17 +71,20 @@ async function getPropertyByAddress(address: string) {
 
     await contract.getPropertyInfo()
         .then(async (result: any) => {
+            console.log(result);
             const property = {
                 address: address,
                 id: result.id.toString(),
                 askingPrice: result.askingPrice.toString(),
+                price: result.price.toString(),
                 addr: {
                     street: result.addr.street,
                     city: result.addr.city,
                     state: result.addr.state,
                     country: result.addr.country,
                     zip: result.addr.zip
-                }
+                },
+                seller: result.seller,
             }
             // @ts-ignore
             properties.value.push(property);
@@ -72,6 +92,17 @@ async function getPropertyByAddress(address: string) {
         .catch((error: any) => {
             console.log(error);
         });
+}
+
+function formatDollars(value: string) {
+    let formatter;
+    formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
+    // @ts-ignore
+    return formatter.format(value);
 }
 
 watch(store, async () => {
@@ -96,7 +127,7 @@ watch(store, async () => {
                 </a>
             </div>
             <div class="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-                <div v-for="property in properties" :key="property.id" class="group relative bg-gray-900 rounded-lg">
+                <div v-for="property in properties" :key="property.id" class="group relative bg-gray-900 rounded-2xl">
                     <div class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
                         <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" :alt="property.addr.street"  />
                         <div class="flex items-end p-4" aria-hidden="true">
@@ -116,7 +147,9 @@ watch(store, async () => {
                             </h3>
                             <p class="text-lg font-bold text-gray-500">{{ property.askingPrice }}ETH</p>
                         </div>
-                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>
+<!--                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>-->
+                        <p class="mt-1 text-sm text-gray-500">{{formatDollars(property.price)}}</p>
+
                     </div>
                 </div>
             </div>
