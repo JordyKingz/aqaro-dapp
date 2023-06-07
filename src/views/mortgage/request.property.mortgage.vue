@@ -89,7 +89,8 @@ async function getBidOpen(address: string) {
 async function requestMortgage() {
     const mortgageRequester = {
         name: mortgageRequest.value.name,
-        income: mortgageRequest.value.income,
+        incomeYearly: mortgageRequest.value.income,// todo
+        incomeMonthly: mortgageRequest.value.income,
         KYCVerified: false
     }
     const mortgageETHAmount = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
