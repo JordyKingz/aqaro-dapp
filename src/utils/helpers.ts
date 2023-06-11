@@ -3,17 +3,13 @@ import {ethers} from "ethers";
 import {walletConnectionStore} from "@/stores/wallet.store";
 
 export async function connectMetaMask() {
-    // @ts-ignore
-    if (window.ethereum) {
+    if ((window as any).ethereum) {
         const store = walletConnectionStore();
 
-        // @ts-ignore
-        // const provider = new ethers.BrowserProvider(window.ethereum);
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider((window as any).ethereum);
         await provider.send("eth_requestAccounts", []);
 
-        // @ts-ignore
-        ethereum.request({method: "eth_requestAccounts"})
+        (window as any).ethereum.request({method: "eth_requestAccounts"})
             .then(async (accounts: string[]) => {
                 store.setConnectedWallet(accounts[0]);
                 store.setConnected(true);
@@ -21,9 +17,8 @@ export async function connectMetaMask() {
             .catch((err: any) => console.log(err))
 
         // @ts-ignore
-        ethereum.on('accountsChanged', async () => {
-            // @ts-ignore
-            ethereum.request({method: "eth_requestAccounts"})
+        window.ethereum.on('accountsChanged', async () => {
+            (window as any).ethereum.request({method: "eth_requestAccounts"})
                 .then(async (accounts: string[]) => {
                     store.setConnectedWallet(accounts[0]);
                     store.setConnected(true);
@@ -31,8 +26,7 @@ export async function connectMetaMask() {
                 .catch((err: any) => console.log(err))
         });
 
-        // @ts-ignore
-        ethereum.on('chainChanged', (chainId) => {
+        (window as any).ethereum.on('chainChanged', (chainId: any) => {
             console.log('chainChanged');
             console.log(chainId);
             setChainSettings();

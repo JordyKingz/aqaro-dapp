@@ -4,6 +4,7 @@ import {
 } from "@/chain/config/smartContracts";
 // @ts-ignore
 import contractAbi from "@/chain/config/abis/MortgageFactory.json";
+
 export default class MortgageFactory {
     private provider: any;
     private signer: any;
@@ -25,5 +26,13 @@ export default class MortgageFactory {
         }
 
         this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
+    }
+
+    async getContract() {
+        return this.contractInterface;
+    }
+
+    public async requestMortgage(propContract: string, sender: any, mortgagePayment: any): Promise<any> {
+        return await this.contractInterface.requestMortgage(propContract, sender, mortgagePayment);
     }
 }
