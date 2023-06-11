@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {onBeforeMount, ref, watch} from "vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import Property from "@/chain/Property";
+import MortgageFactory from "@/chain/MortgageFactory";
+import {ethers} from "ethers";
+import PropertyFactory from "@/chain/PropertyFactory";
 
 const store = walletConnectionStore();
+const router = useRouter();
 const route = useRoute();
 
 type Property = {
@@ -87,21 +91,44 @@ async function getBidOpen(address: string) {
 }
 
 async function requestMortgage() {
+    const yearlyIncome = (Number(mortgageRequest.value.income) * 12) * 1e6;
+    const monthlyIncome = Number(mortgageRequest.value.income) * 1e6;
     const mortgageRequester = {
         name: mortgageRequest.value.name,
-        incomeYearly: mortgageRequest.value.income,// todo
-        incomeMonthly: mortgageRequest.value.income,
+        incomeYearly: yearlyIncome,
+        incomeMonthly: monthlyIncome,
         KYCVerified: false
     }
+
     const mortgageETHAmount = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
     const mortgagePayment = {
         amountETH: mortgageETHAmount,
         amountUSD: mortgageETHAmount * ETH_PRICE,
         totalPayments: totalMonthlyPayments.value, // in months
-        endDate: mortgageEndDate.value.getTime() / 1000,
-        interestRate: interestRate.value,
+        endDate: mortgageEndDate.value.getTime(),
+        interestRate: interestRate.value * 1000,
     }
     propertyContractAddress.value;
+
+    const contract = new MortgageFactory(store.getChainId);
+
+    // Set Listener for PropertyCreated event
+    const contractInstance = await contract.getContract();
+    await contractInstance.on('MortgageRequested', (mortgageContract: string, propertyContract: string, owner: any) => {
+        if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
+            console.log({mortgageContract, propertyContract, owner});
+            router.push({name: 'dao.mortgage.detail', params: {address: mortgageContract}});
+        }
+    });
+
+    await contract.requestMortgage(propertyContractAddress.value, mortgageRequester, mortgagePayment)
+        .then(async (result: any) => {
+            await result.wait(1);
+            console.log(result);
+        })
+        .catch((error: any) => {
+            console.log(error);
+        });
 }
 
 function calculateMortgageTotalAmount(income: number, propertyCost: number) {
@@ -330,7 +357,7 @@ watch(monthlyMortgageAmount, () => {
                           </label>
                           <div class="mt-2">
                               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                  <input type="number"
+                                  <input type="text"
                                          v-model="mortgageRequest.name"
                                          class="flex-1 border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" />
                               </div>

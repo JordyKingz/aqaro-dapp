@@ -11,7 +11,6 @@ export default class PropertyFactory {
     private contractAddress: string;
 
     constructor(chain: number) {
-        console.log(chain, PropertyFactoryAddress);
         // @ts-ignore
         // this.provider = new ethers.BrowserProvider(window.ethereum);
         this.provider = new ethers.providers.Web3Provider(window.ethereum);

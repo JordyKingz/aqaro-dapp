@@ -5,6 +5,8 @@ import PropertyDetail from '../views/properties/show.property.vue'
 import MortgageLiquidityProvider from '../views/mortgage/liquidity.provider.mortgage.vue'
 import MortgagePropertyRequest from '../views/mortgage/request.property.mortgage.vue'
 
+import DaoMortgageDetail from '../views/dao/mortgage.detail.vue'
+
 import TokenPresale from '../views/presale/presale.token.vue'
 
 
@@ -40,6 +42,11 @@ const router = createRouter({
       path: '/mortgage/request/:address',
       name: 'mortgage.property.request',
       component: MortgagePropertyRequest
+    },
+    {
+      path: '/dao/mortgage/:address',
+      name: 'dao.mortgage.detail',
+      component: DaoMortgageDetail
     }
   ]
 })
