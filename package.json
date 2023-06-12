@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.12",
-    "@heroicons/vue": "^2.0.16",
+    "@heroicons/vue": "^2.0.18",
     "@metamask/sdk": "^0.3.2",
+    "axios": "^1.4.0",
     "ethers": "^5.7.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",

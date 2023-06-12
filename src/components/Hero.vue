@@ -23,7 +23,7 @@ import { ChevronRightIcon } from '@heroicons/vue/20/solid'
                     <a href="#" class="inline-flex space-x-6">
 <!--                        <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">What's new</span>-->
                         <span class="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300">
-                          <span>Just shipped alpha dev v0.0.1</span>
+                          <span>Just shipped v0.0.1</span>
                           <ChevronRightIcon class="h-5 w-5 text-gray-500" aria-hidden="true" />
                         </span>
                     </a>
