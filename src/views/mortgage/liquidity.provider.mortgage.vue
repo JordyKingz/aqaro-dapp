@@ -130,6 +130,9 @@ async function provideLiquidity() {
                     </div>
                 </div>
             </div>
+            <div v-else class="mx-auto px-6 text-white py-24 max-w-7xl">
+                Connect Wallet to become a Mortgage Provider
+            </div>
             <div class="bg-gray-900">
                 <div class="text-white px-6 py-24 lg:px-8">
                     <div class="mx-auto max-w-3xl text-base leading-7 text-gray-400">

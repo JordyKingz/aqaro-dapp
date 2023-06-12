@@ -1,6 +1,8 @@
 <script setup lang="ts">
-
 import Subscribe from "@/components/form/Subscribe.vue";
+import {walletConnectionStore} from "@/stores/wallet.store";
+
+const store = walletConnectionStore();
 
 enum subscribeType {
     Launch = 'Launch',
@@ -8,9 +10,13 @@ enum subscribeType {
 }
 
 const navigation = {
-    solutions: [
-        // { name: 'Getting Started', href: '#' },
-        // { name: 'Earn', href: '#' },
+    pages: [
+        { name: 'Home', href: 'home' },
+        { name: 'About', href: 'about' },
+        { name: 'Invest', href: 'early.investor' },
+        { name: 'Earn', href: 'mortgage.liquidity.provider' },
+        { name: 'List', href: 'property.create' },
+
         // { name: 'DAO', href: '#' },
         // { name: 'Mortgages', href: '#' },
         // { name: 'AQRO Token', href: '#' },
@@ -49,12 +55,12 @@ const navigation = {
                 <div class="mt-16 grid grid-cols-1 gap-8 xl:col-span-2 xl:mt-0">
                     <div class="md:grid md:grid-cols-3 md:gap-8">
                         <div>
-<!--                            <h3 class="text-sm font-semibold leading-6 text-white">Aqaro</h3>-->
-<!--                            <ul role="list" class="mt-6 space-y-4">-->
-<!--                                <li v-for="item in navigation.solutions" :key="item.name">-->
-<!--                                    <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{ item.name }}</a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
+                            <h3 class="text-sm font-semibold leading-6 text-white">Aqaro</h3>
+                            <ul role="list" class="mt-6 space-y-4">
+                                <li v-for="item in navigation.pages" :key="item.name">
+                                    <RouterLink :to="{name: item.href}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ item.name }}</RouterLink>
+                                </li>
+                            </ul>
                         </div>
                         <div>
 <!--                            <h3 class="text-sm font-semibold leading-6 text-white">Company</h3>-->
