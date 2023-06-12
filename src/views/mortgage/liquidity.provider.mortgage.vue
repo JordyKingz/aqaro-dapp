@@ -56,6 +56,13 @@ async function provideLiquidity() {
                 <div class="grid grid-cols-8 gap-6">
                     <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Mortgage Providers</h2>
+                        <p class="mt-6 text-blue-500">
+                            Text below is a placeholder for the content that will be added to this page.
+                            <br>
+                            <i>
+                                Text "How Mortgages Work" is better written than below. Change/shorten text?
+                            </i>
+                        </p>
                         <p class="mt-6">
                             Are you looking for a way to earn passive income on your ETH holdings? Look no further than Aqaro!
                             Our platform offers liquidity providers the opportunity to earn a generous return on investment by staking their ETH in our mortgage pool.
@@ -136,8 +143,8 @@ async function provideLiquidity() {
             <div class="bg-gray-900">
                 <div class="text-white px-6 py-24 lg:px-8">
                     <div class="mx-auto max-w-3xl text-base leading-7 text-gray-400">
-                        <p class="text-base font-semibold leading-7 text-indigo-600">Decentralized Housing</p>
-                        <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">How Aqaro Works</h1>
+                        <p class="text-base font-semibold leading-7 text-indigo-600">Mortgage Liquidity</p>
+                        <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">How Mortgages Work</h1>
                         <p class="mt-6 text-xl leading-8">
                             Aqaro is a decentralized housing market that leverages blockchain technology and decentralized finance (DeFi) to create a more transparent and accessible way of buying and selling real estate.
                             By removing intermediaries and utilizing a decentralized autonomous organization (DAO) to handle mortgage requests, Aqaro is able to offer a more secure and equitable platform for users.
@@ -149,7 +156,7 @@ async function provideLiquidity() {
                         </p>
                         <p class="mt-6">
                             To list their properties on Aqaro, users simply need to create a smart contract that includes all relevant details such as the property's location, price, and documentation.
-                            Potential buyers can then browse the listings and make offers directly to the seller. Aqaro also offers users the option to apply for mortgages, which are handled by the Aqaro DAO.
+                            Potential buyers can then browse the listings and make offers directly to the seller. Aqaro offers users the option to apply for mortgages, which are handled by the Aqaro DAO.
                             The DAO assesses the borrower's creditworthiness and offers them a mortgage, which is also recorded on the blockchain.
                         </p>
                         <p class="mt-6">
