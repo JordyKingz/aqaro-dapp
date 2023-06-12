@@ -16,6 +16,8 @@
     "@headlessui/vue": "^1.7.12",
     "@heroicons/vue": "^2.0.18",
     "@metamask/sdk": "^0.3.2",
+    "@splitbee/node": "^0.3.1",
+    "@splitbee/web": "^0.3.0",
     "@vercel/analytics": "^1.0.1",
     "axios": "^1.4.0",
     "ethers": "^5.7.0",
