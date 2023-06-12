@@ -56,8 +56,10 @@ async function disconnect() {
                 </RouterLink>
                 <div class="hidden lg:flex lg:gap-x-12">
                     <RouterLink :to="{name: 'home'}" class="text-sm font-semibold leading-6 text-white">Home</RouterLink>
-                    <RouterLink v-if="store.isConnected" :to="{name: 'presale.token'}" class="text-sm font-semibold leading-6 text-white">Presale</RouterLink>
-                    <RouterLink v-if="store.isConnected" :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Earn</RouterLink>
+                    <RouterLink :to="{name: 'about'}" class="text-sm font-semibold leading-6 text-white">About</RouterLink>
+
+                    <RouterLink :to="{name: 'early.investor'}" class="text-sm font-semibold leading-6 text-white">Invest</RouterLink>
+                    <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Earn</RouterLink>
                     <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="text-sm font-semibold leading-6 text-white">List Property</RouterLink>
                 </div>
             </div>
@@ -96,8 +98,8 @@ async function disconnect() {
                     <div class="-my-6 divide-y divide-gray-500/10">
                         <div class="space-y-2 py-6">
                             <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
-                            <RouterLink v-if="store.isConnected" :to="{name: 'presale.token'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Presale</RouterLink>
-                            <RouterLink v-if="store.isConnected" :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
+                            <RouterLink :to="{name: 'early.investor'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</RouterLink>
+                            <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
                             <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="-mx-3 block rounded-md border-2 border-gray-800 py-2.5 px-3 text-base font-semibold leading-7 text-gray-800">List Property</RouterLink>
                         </div>
                         <div class="py-6">

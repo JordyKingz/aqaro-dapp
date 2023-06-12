@@ -31,8 +31,8 @@ import { ChevronRightIcon } from '@heroicons/vue/20/solid'
                 <h1 class="mt-10 text-3xl font-bold tracking-tight text-white sm:text-5xl">Decentralized housing is almost there</h1>
                 <p class="mt-6 text-lg leading-8 text-gray-300">Aqaro is the decentralized housing market that uses blockchain to create a transparent and secure platform for buyers, sellers, and investors. Join us and be a part of the future of housing.</p>
                 <div class="mt-10 flex items-center gap-x-6">
-                    <a href="#" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">Get started</a>
-                    <a href="#" class="text-sm font-semibold leading-6 text-white">Learn more <span aria-hidden="true">→</span></a>
+                    <RouterLink :to="{name: 'early.investor'}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">Invest</RouterLink>
+                    <RouterLink :to="{name: 'about'}" class="text-sm font-semibold leading-6 text-white">Learn more <span aria-hidden="true">→</span></RouterLink>
                 </div>
             </div>
             <div class="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
