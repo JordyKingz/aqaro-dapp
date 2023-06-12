@@ -14,7 +14,7 @@
                     </defs>
                 </svg>
                 <div class="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
-                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Earn up to 20% APY</h2>
+                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Earn up to 10% APY</h2>
                     <p class="mt-6 text-lg leading-8 text-gray-300">
                         Be a part of the Aqaro revolution and earn ETH and Aqaro tokens by providing ETH liquidity.
                         Join our decentralized housing market today and help us grow while benefiting from a secure and transparent investment opportunity.

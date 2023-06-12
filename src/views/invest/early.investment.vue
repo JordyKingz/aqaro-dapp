@@ -122,6 +122,9 @@ async function getPresaleEndTime() {
                             </div>
                             <div>
                                 <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
+                                    {{tokenPrice}}ETH per Token | {{(1 / tokenPrice).toFixed(5)}} Tokens per ETHa
+                                </div>
+                                <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
                                     {{tokenBalance}} Tokens Left For Sale
                                 </div>
                                 <div class="bg-gray-900 text-gray-400 shadow rounded-lg">

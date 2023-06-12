@@ -59,7 +59,7 @@ async function provideLiquidity() {
                         <p class="mt-6">
                             Are you looking for a way to earn passive income on your ETH holdings? Look no further than Aqaro!
                             Our platform offers liquidity providers the opportunity to earn a generous return on investment by staking their ETH in our mortgage pool.
-                            With a competitive 20% APY, staking your ETH on Aqaro is a smart and lucrative investment.
+                            With a competitive 10% APY, staking your ETH on Aqaro is a smart and lucrative investment.
                         </p>
                         <p class="mt-8">
                             Our platform uses the ETH provided by liquidity providers to offer mortgages to potential buyers.
@@ -73,7 +73,7 @@ async function provideLiquidity() {
                         </p>
                         <p class="mt-8">
                             Join the Aqaro community today and start earning passive income on your ETH holdings.
-                            With our innovative platform and competitive 20% APY, we are creating a more accessible, transparent, and equitable housing market for everyone.
+                            With our innovative platform and competitive 10% APY, we are creating a more accessible, transparent, and equitable housing market for everyone.
                         </p>
                         <div class="mt-5">
                             <a href="#" class="text-base font-semibold leading-7 text-indigo-500">Show Contract On Etherscan <span aria-hidden="true">&rarr;</span></a>
@@ -144,7 +144,7 @@ async function provideLiquidity() {
                         </p>
                         <p class="mt-6">
                             One of the unique features of Aqaro is its DeFi model, which relies on the pooling of liquidity from multiple investors to provide mortgages for potential buyers.
-                            Users who provide Ether liquidity for the mortgage pool can earn a generous return on their investment, with a competitive 20% APY.
+                            Users who provide Ether liquidity for the mortgage pool can earn a generous return on their investment, with a competitive 10% APY.
                             As the mortgages are paid off with interest, the returns go directly back to the liquidity providers, allowing you to earn a significant return on your investment without lifting a finger.
                         </p>
                         <p class="mt-6">
