@@ -2,11 +2,12 @@
 import {ref } from 'vue'
 import { Dialog, DialogPanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
-import {connectMetaMask, formatAddress, setChainSettings} from "@/utils/helpers";
+import {connectMetaMask, formatAddress, getSigner, setChainSettings} from "@/utils/helpers";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {propertyStore} from "@/stores/property.store";
 import {useRouter} from "vue-router";
+import {ethers} from "ethers";
 
 const router = useRouter();
 const store = walletConnectionStore();
@@ -17,16 +18,45 @@ const mobileMenuOpen = ref(false);
 let wallet = ref('');
 let connected = ref(false);
 
+type WalletAuthDto = {
+    signature: string;
+    address: string;
+}
+
 async function connect() {
   await connectMetaMask();
   await setChainSettings();
 
-  wallet.value = formatAddress(store.getConnectedWallet);
+  if (store.getConnectedWallet !== "") {
+      const message = await store.getNonce();
 
-  if (wallet.value) {
-    connected.value = true;
+      const signer = await getSigner();
+      const signature = await signer.signMessage(message.data);
 
-    await setListeners();
+      try {
+          const dto = {
+              address: store.getConnectedWallet,
+              signature: signature
+          }
+
+          const authResult = await store.authenticate(dto);
+          if (authResult.status !== 200) {
+              store.disconnect();
+              return;
+          }
+
+          store.setBearerToken(authResult.data.access_token);
+
+          wallet.value = formatAddress(store.getConnectedWallet);
+
+          if (wallet.value) {
+              connected.value = true;
+              store.setConnected(true);
+              await setListeners();
+          }
+      } catch(e) {
+          console.log(e);
+      }
   }
 }
 
@@ -71,13 +101,13 @@ async function disconnect() {
             </div>
             <div class="hidden lg:flex">
                 <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
-                <button v-if="connected" v-on:click="disconnect" class="text-white font-medium bg-indigo-500 py-3.5 px-3.5 rounded-3xl">
-                    <span class="flex">
-<!--                        <span class="bg-gray-800 w-8 h-8 rounded-3xl"></span>-->
-                        <span>
-                          {{ wallet }}
-                        </span>
-                    </span>
+                <button v-if="connected" v-on:click="disconnect" class="border-2 border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
+                    <span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
+                        <svg class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
+                          <circle cx="3" cy="3" r="3" />
+                        </svg>
+                        {{ wallet }}
+                      </span>
                 </button>
             </div>
         </nav>

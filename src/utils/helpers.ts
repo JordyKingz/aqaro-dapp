@@ -12,7 +12,6 @@ export async function connectMetaMask() {
         (window as any).ethereum.request({method: "eth_requestAccounts"})
             .then(async (accounts: string[]) => {
                 store.setConnectedWallet(accounts[0]);
-                store.setConnected(true);
             })
             .catch((err: any) => console.log(err))
 
@@ -21,7 +20,6 @@ export async function connectMetaMask() {
             (window as any).ethereum.request({method: "eth_requestAccounts"})
                 .then(async (accounts: string[]) => {
                     store.setConnectedWallet(accounts[0]);
-                    store.setConnected(true);
                 })
                 .catch((err: any) => console.log(err))
         });
@@ -41,17 +39,15 @@ export function formatAddress(address: string) {
 }
 
 export async function setChainSettings() {
-    // @ts-ignore
-    // const provider = new ethers.BrowserProvider(window.ethereum);
-    // const network = await provider.getNetwork();
-    // const store = walletConnectionStore();
-    // store.setChainId(Number(network.chainId.toString()));
-
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum);
     const signer = provider.getSigner();
     const chainId = await signer.getChainId();
     const store = walletConnectionStore();
     store.setChainId(Number(chainId.toString()));
+}
+
+export async function getSigner() {
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+    return provider.getSigner();
 }
 
