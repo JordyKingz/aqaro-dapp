@@ -31,7 +31,7 @@ import { HomeModernIcon, GlobeEuropeAfricaIcon, ShieldCheckIcon, BanknotesIcon, 
                         <figcaption class="mt-8 flex gap-x-4">
                             <img src="@/assets/jdk_italy.png" alt="Jordy de Koning" class="mt-1 h-10 w-10 flex-none rounded-full bg-gray-50" />
                             <div class="text-sm leading-6">
-                                <div class="font-semibold text-white">Jordy de Koning, CEO</div>
+                                <div class="font-semibold text-white">Jordy de Koning, CTO</div>
                                 <a href="https://twitter.com/developerjordy" target="_blank" class="text-gray-600 hover:text-indigo-600">@developerjordy</a>
                             </div>
                         </figcaption>
