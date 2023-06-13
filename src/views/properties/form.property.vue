@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {propertyStore} from "@/stores/property.store";
+import CoingeckoApi from "@/lib/api/coingecko.api";
+import {formatDollars} from "../../utils/helpers";
+import DragDrop from "@/components/form/DragDrop.vue";
 
 type Address = {
   street: string;
@@ -26,7 +29,6 @@ type Property = {
 }
 
 const store = walletConnectionStore();
-
 const propertiesStore = propertyStore();
 
 const lastName = ref('');
@@ -51,10 +53,33 @@ let property = ref<Property>(
   }
 );
 
+let selectedFiles = ref([]);
+let fileArray = ref([]);
+
+const ETH_PRICE = ref(0);
+const CURRENCY = ref('usd');
+
+onBeforeMount(async () => {
+    await getEthPrice();
+});
+
+async function getEthPrice() {
+    const api = new CoingeckoApi();
+    await api.getTokenPrice('ethereum', CURRENCY.value)
+        .then((result: any) => {
+            ETH_PRICE.value = result.data.ethereum.usd;
+        });
+
+    await api.getCoins('ethereum')
+        .then((result: any) => {
+            console.log(result);
+        });
+}
+
 async function listProperty() {
   const contract = new PropertyFactory(store.getChainId);
   property.value.seller.wallet = store.connectedWallet;
-  const priceInDollars = Number(property.value.askingPrice) * 1900; // hard coded for now
+  const priceInDollars = Number(property.value.askingPrice) * ETH_PRICE.value; // hard coded for now
   property.value.price = priceInDollars.toString();
   property.value.seller.name = `${property.value.seller.name} ${lastName.value}`;
 
@@ -64,6 +89,36 @@ async function listProperty() {
           console.log(result);
       });
 }
+
+function uploadFiles(files: any) {
+    for(let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+            // @ts-ignore
+            fileArray.value.push({
+                // @ts-ignore
+                name: file.name,
+                // @ts-ignore
+                type: file.type,
+                // @ts-ignore
+                size: file.size,
+                // @ts-ignore
+                data: fileReader.result
+            });
+        }
+        // @ts-ignore
+        selectedFiles.value.push(files[i]);
+    }
+}
+
+function clearFiles() {
+    selectedFiles.value = [];
+    fileArray.value = [];
+}
+
+
 </script>
 <template>
     <div v-if="store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
@@ -77,8 +132,9 @@ async function listProperty() {
                     <div class="sm:col-span-4">
                         <label for="username" class="block text-sm font-medium leading-6 text-white">
                             Asking Price
+                            <span class="pl-2">{{property.askingPrice}}ETH</span>
                             <span class="pl-2">|</span>
-                            <span class="pl-2">${{Number(property.askingPrice) * 1900}}</span>
+                            <span class="pl-2">{{formatDollars(`${Number(property.askingPrice) * ETH_PRICE}`)}}</span>
                         </label>
                         <div class="mt-2">
                             <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
@@ -130,6 +186,13 @@ async function listProperty() {
                         </div>
                         <p class="mt-3 text-sm leading-6 text-gray-400">Write a few sentences about the property you sell.</p>
                     </div>
+
+                    <DragDrop
+                      class="col-span-full"
+                      :fileArray="fileArray"
+                      @upload:clear="clearFiles"
+                      @upload:drop="uploadFiles"
+                    />
 
 <!--                    <div class="col-span-full">-->
 <!--                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-white">Property Photos</label>-->

@@ -51,3 +51,13 @@ export async function getSigner() {
     return provider.getSigner();
 }
 
+export function formatDollars(value: string) {
+    let formatter;
+    formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
+    // @ts-ignore
+    return formatter.format(Number(value));
+}

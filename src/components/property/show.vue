@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { EnvelopeIcon} from '@heroicons/vue/20/solid'
+import {formatDollars} from "@/utils/helpers";
 type Seller = {
     wallet: string,
     name: string,
@@ -80,14 +81,7 @@ const product = {
 }
 
 function propertyInDollars(value: string) {
-    let formatter;
-    formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-    });
-
-    return formatter.format(Number(value));
+    return formatDollars(value);
 }
 </script>
 <template>
@@ -120,7 +114,7 @@ function propertyInDollars(value: string) {
 
                 <div class="mt-8 lg:row-span-3">
                     <h2 class="sr-only">Property information</h2>
-                    <p class="text-2xl tracking-tight text-white">{{ propertyInDollars(property.price) }}</p>
+                    <p class="text-2xl tracking-tight text-white">{{ formatDollars(property.price) }}</p>
                     <p class="text-xl tracking-tight text-white">{{ property.askingPrice }}ETH</p>
 
                     <p class="text-gray-400 mt-8">

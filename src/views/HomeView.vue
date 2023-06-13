@@ -3,11 +3,11 @@
 import {onBeforeMount, ref, watch} from "vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyFactory from "@/chain/PropertyFactory";
-import {propertyStore} from "@/stores/property.store";
 import Property from "@/chain/Property";
 import Hero from "@/components/Hero.vue";
 import LaunchNotify from "@/components/LaunchNotify.vue";
 import EarnAPY from "@/components/EarnAPY.vue";
+import {formatDollars} from "@/utils/helpers";
 
 const store = walletConnectionStore();
 
@@ -92,17 +92,6 @@ async function getPropertyByAddress(address: string) {
         .catch((error: any) => {
             console.log(error);
         });
-}
-
-function formatDollars(value: string) {
-    let formatter;
-    formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-    });
-    // @ts-ignore
-    return formatter.format(value);
 }
 
 watch(store, async () => {
