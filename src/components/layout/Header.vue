@@ -44,7 +44,7 @@ async function connect() {
               store.disconnect();
               return;
           }
-
+          console.log(authResult.data.access_token)
           store.setBearerToken(authResult.data.access_token);
 
           wallet.value = formatAddress(store.getConnectedWallet);

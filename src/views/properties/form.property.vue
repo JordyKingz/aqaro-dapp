@@ -76,7 +76,17 @@ async function getEthPrice() {
         });
 }
 
-async function listProperty() {
+async function listPropertyService() {
+    const dto = {
+        property: property.value,
+        files: fileArray.value,
+        name: `${property.value.seller.name}`,
+        last_name: lastName.value,
+        email: property.value.seller.email,
+    }
+}
+
+async function listPropertyChain() {
   const contract = new PropertyFactory(store.getChainId);
   property.value.seller.wallet = store.connectedWallet;
   const priceInDollars = Number(property.value.askingPrice) * ETH_PRICE.value; // hard coded for now
@@ -241,7 +251,7 @@ function clearFiles() {
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
             <button class="text-sm font-semibold leading-6 text-white">Cancel</button>
-            <button v-on:click="listProperty" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
+            <button v-on:click="listPropertyService" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
         </div>
     </div>
 </template>
