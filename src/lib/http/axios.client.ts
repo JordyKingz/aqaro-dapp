@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
-import {useAuthStore} from "@/stores/auth.store";
+import {walletConnectionStore} from "@/stores/wallet.store";
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_SERVICE_URL,
@@ -17,8 +17,8 @@ const axiosAuthInstance: AxiosInstance = axios.create({
 
 axiosAuthInstance.interceptors.request.use(
     (config) => {
-        const store = useAuthStore();
-        const token = store.getToken;
+        const store = walletConnectionStore();
+        const token = store.getBearerToken;
 
         const bearerToken = localStorage.getItem("aqaro.auth.token");
 
