@@ -35,22 +35,22 @@ async function subscribe() {
         type: sType
     }
 
-    await store.subscribe(dto).then((result: any) => {
-        success.value = true;
-        error.value = {
-            status: false,
-            msg: ''
-        }
-    }).catch((e: any) => {
-        success.value = false;
+    await store.subscribe(dto)
+        .then((result: any) => {
+            success.value = true;
+            error.value = {
+                status: false,
+                msg: ''
+            }
+        }).catch((e: any) => {
+            success.value = false;
 
-        error.value = {
-            status: true,
-            msg: e.response.data.message
-        }
-    });
+            error.value = {
+                status: true,
+                msg: e.response.data.message
+            }
+        });
 }
-
 function closeNotification() {
     email.value = '';
     success.value = false;
