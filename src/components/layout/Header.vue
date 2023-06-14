@@ -4,24 +4,15 @@ import { Dialog, DialogPanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import {connectMetaMask, formatAddress, getSigner, setChainSettings} from "@/utils/helpers";
 import {walletConnectionStore} from "@/stores/wallet.store";
-import PropertyFactory from "@/chain/PropertyFactory";
-import {propertyStore} from "@/stores/property.store";
 import {useRouter} from "vue-router";
-import {ethers} from "ethers";
 
 const router = useRouter();
 const store = walletConnectionStore();
-const propertiesStore = propertyStore();
 
 const mobileMenuOpen = ref(false);
 
 let wallet = ref('');
 let connected = ref(false);
-
-type WalletAuthDto = {
-    signature: string;
-    address: string;
-}
 
 async function connect() {
   await connectMetaMask();
@@ -44,7 +35,6 @@ async function connect() {
               store.disconnect();
               return;
           }
-          console.log(authResult.data.access_token)
           store.setBearerToken(authResult.data.access_token);
 
           wallet.value = formatAddress(store.getConnectedWallet);
@@ -57,6 +47,11 @@ async function connect() {
           console.log(e);
       }
   }
+}
+
+async function routerTo(route: string) {
+    mobileMenuOpen.value = false;
+    await router.push({name: route});
 }
 
 async function disconnect() {
@@ -103,9 +98,9 @@ async function disconnect() {
             <div class="fixed inset-0 z-40" />
             <DialogPanel class="fixed inset-y-0 right-0 z-40 w-full overflow-y-auto bg-gray-900 text-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                 <div class="flex items-center justify-between">
-                    <RouterLink :to="{name: 'home'}" class="-m-1.5 p-1.5">
+                    <span v-on:click="routerTo('home')" class="-m-1.5 p-1.5">
                         <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
-                    </RouterLink>
+                    </span>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
                         <span class="sr-only">Close menu</span>
                         <XMarkIcon class="h-6 w-6" aria-hidden="true" />
@@ -114,10 +109,12 @@ async function disconnect() {
                 <div class="mt-6 flow-root">
                     <div class="-my-6 divide-y divide-gray-500/10">
                         <div class="space-y-2 py-6">
-                            <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
-                            <RouterLink :to="{name: 'early.investor'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</RouterLink>
-                            <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
-                            <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</RouterLink>
+                            <span v-on:click="routerTo('home')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Home</span>
+                            <span v-on:click="routerTo('about')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">About</span>
+
+                            <span v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</span>
+                            <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</span>
+                            <span v-if="store.isConnected" v-on:click="routerTo('property.create')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
                         </div>
                         <div class="py-6">
                             <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
