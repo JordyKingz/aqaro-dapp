@@ -24,7 +24,7 @@ type Property = {
   id: string,
   service_id: string,
   seller: Seller,
-    description: string,
+  description: string,
   created: string
 }
 type Address = {
