@@ -99,14 +99,13 @@ async function disconnect() {
                 </button>
             </div>
         </nav>
-        <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
-            <div class="fixed inset-0 z-10" />
-            <DialogPanel class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog as="div" class="lg:hidden bg-gray-900 text-white" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
+            <div class="fixed inset-0 z-40" />
+            <DialogPanel class="fixed inset-y-0 right-0 z-40 w-full overflow-y-auto bg-gray-900 text-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                 <div class="flex items-center justify-between">
-                    <a href="#" class="-m-1.5 p-1.5">
-                        <span class="sr-only">Your Company</span>
-                        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-                    </a>
+                    <RouterLink :to="{name: 'home'}" class="-m-1.5 p-1.5">
+                        <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
+                    </RouterLink>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
                         <span class="sr-only">Close menu</span>
                         <XMarkIcon class="h-6 w-6" aria-hidden="true" />
@@ -115,15 +114,20 @@ async function disconnect() {
                 <div class="mt-6 flow-root">
                     <div class="-my-6 divide-y divide-gray-500/10">
                         <div class="space-y-2 py-6">
-                            <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
-                            <RouterLink :to="{name: 'early.investor'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</RouterLink>
-                            <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-700 hover:text-yellow-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
-                            <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="-mx-3 block rounded-md border-2 border-gray-800 py-2.5 px-3 text-base font-semibold leading-7 text-gray-800">List Property</RouterLink>
+                            <RouterLink :to="{name: 'home'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Home</RouterLink>
+                            <RouterLink :to="{name: 'early.investor'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</RouterLink>
+                            <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</RouterLink>
+                            <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</RouterLink>
                         </div>
                         <div class="py-6">
-                            <span v-if="!connected" v-on:click="connect" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Connect</span>
-                            <button v-if="connected" v-on:click="disconnect" class="block rounded-md bg-yellow-500 py-2.5 px-3 text-base font-semibold leading-7 text-white hover:bg-yellow-600">
-                                {{ wallet }}
+                            <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
+                            <button v-if="connected" v-on:click="disconnect" class="border-2 border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
+                                <span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
+                                    <svg class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
+                                      <circle cx="3" cy="3" r="3" />
+                                    </svg>
+                                    {{ wallet }}
+                                </span>
                             </button>
                         </div>
                     </div>
