@@ -4,7 +4,7 @@ import PropertyFactory from "@/chain/PropertyFactory";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {propertyStore} from "@/stores/property.store";
 import CoingeckoApi from "@/lib/api/coingecko.api";
-import {formatDollars} from "../../utils/helpers";
+import {formatDollars, getEthPrice} from "../../utils/helpers";
 import DragDrop from "@/components/form/DragDrop.vue";
 import {useRouter} from "vue-router";
 
@@ -62,10 +62,9 @@ let selectedFiles = ref([]);
 let fileArray = ref([]);
 
 const ETH_PRICE = ref(0);
-const CURRENCY = ref('usd');
 
 onBeforeMount(async () => {
-    await getEthPrice();
+    ETH_PRICE.value = await getEthPrice();
 });
 
 async function setListeners() {
@@ -95,18 +94,6 @@ async function updateProperty(createdProp: any, sc_id: number, propertyAddress: 
         });
 }
 
-async function getEthPrice() {
-    const api = new CoingeckoApi();
-    await api.getTokenPrice('ethereum', CURRENCY.value)
-        .then((result: any) => {
-            ETH_PRICE.value = result.data.ethereum.usd;
-        });
-
-    await api.getCoins('ethereum')
-        .then((result: any) => {
-            console.log(result);
-        });
-}
 
 async function listPropertyService() {
     const formData = new FormData();

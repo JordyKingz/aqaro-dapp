@@ -6,7 +6,7 @@ import Property from "@/chain/Property";
 import MortgageFactory from "@/chain/MortgageFactory";
 import {ethers} from "ethers";
 import PropertyFactory from "@/chain/PropertyFactory";
-import {formatDollars} from "../../utils/helpers";
+import {formatDollars, getEthPrice} from "../../utils/helpers";
 
 const store = walletConnectionStore();
 const router = useRouter();
@@ -27,7 +27,7 @@ type Address = {
     zip: string;
 }
 
-const ETH_PRICE = 1900;
+const ETH_PRICE = ref(0);
 
 const property = ref<Property>({} as Property);
 const bidOpen = ref(false);
@@ -54,6 +54,7 @@ const totalInterestPaid = ref(0);
 const totalMortgageYears = ref(0);
 
 onBeforeMount(async () => {
+    ETH_PRICE.value = await getEthPrice();
     if (route.params.address) {
         propertyContractAddress.value = `${route.params.address}`;
         await getProperty(`${route.params.address}`);
@@ -104,7 +105,7 @@ async function requestMortgage() {
     const mortgageETHAmount = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
     const mortgagePayment = {
         amountETH: mortgageETHAmount,
-        amountUSD: mortgageETHAmount * ETH_PRICE,
+        amountUSD: mortgageETHAmount * ETH_PRICE.value,
         totalPayments: totalMonthlyPayments.value, // in months
         endDate: mortgageEndDate.value.getTime(),
         interestRate: interestRate.value * 1000,
@@ -255,7 +256,7 @@ let totalAmount = ref(0);
 function calcMortgage() {
     const ETHPrice = ETH_PRICE;
     const mortgageNeeded = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney)
-    calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice);
+    calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice.value);
 
     // if (minMonthlyAmount.value / 0.35 >= Number(mortgageRequest.value.income)) {
     //     provideMortgageLiquidity();

@@ -1,6 +1,8 @@
 import {ethers} from "ethers";
 
 import {walletConnectionStore} from "@/stores/wallet.store";
+import CoingeckoApi from "@/lib/api/coingecko.api";
+import {ref} from "vue";
 
 export async function connectMetaMask() {
     if ((window as any).ethereum) {
@@ -60,4 +62,18 @@ export function formatDollars(value: string) {
     });
     // @ts-ignore
     return formatter.format(Number(value));
+}
+
+export async function getEthPrice() {
+    const CURRENCY = 'usd';
+    const api = new CoingeckoApi();
+
+    // await api.getCoins('ethereum')
+    //     .then((result: any) => {
+    //         console.log(result);
+    //     });
+
+
+    const result = await api.getTokenPrice('ethereum', CURRENCY);
+    return result.data.ethereum.usd;
 }

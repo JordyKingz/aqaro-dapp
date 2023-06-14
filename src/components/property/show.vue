@@ -96,7 +96,7 @@ function propertyInDollars(value: string) {
             <div class="mx-auto mt-6 text-white max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                 <div v-for="(file, key) in files" :key="key">
                     <div class="col-span-1 gap-4 mb-4 rounded-xl">
-                        <img :src="`${storage}${file}`" class="h-full w-full object-cover object-center rounded-xl" />
+                        <img :src="file" class="h-full w-full object-cover object-center rounded-xl" />
                     </div>
                 </div>
             </div>
