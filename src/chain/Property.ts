@@ -1,6 +1,7 @@
 import {ethers} from "ethers";
 // @ts-ignore
 import contractAbi from "@/chain/config/abis/Property.json";
+import {AqaroEarlyInvestAddress} from "@/chain/config/smartContracts";
 export default class Property {
     private provider: any;
     private signer: any;
@@ -16,6 +17,8 @@ export default class Property {
         if (chain === 1) {
             this.contractAddress = propertyAddress;
         } else if (chain === 31337) {
+            this.contractAddress = propertyAddress;
+        } else if (chain === 11155111) {
             this.contractAddress = propertyAddress;
         } else {
             this.contractAddress = propertyAddress;
