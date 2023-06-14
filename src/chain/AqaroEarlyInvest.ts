@@ -3,7 +3,7 @@ import {
     AqaroEarlyInvestAddress,
 } from "@/chain/config/smartContracts";
 // @ts-ignore
-import contractAbi from "@/chain/config/abis/AqaroPresale.json";
+import contractAbi from "@/chain/config/abis/AqaroEarlySale.json";
 export default class AqaroEarlyInvest {
     private provider: any;
     private signer: any;

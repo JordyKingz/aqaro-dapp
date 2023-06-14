@@ -11,9 +11,13 @@ const contractBalance = ref('0');
 const stakedBalance = ref('0');
 
 onBeforeMount(async() => {
+    await pageInit();
+});
+
+async function pageInit() {
     await getMortgagePoolBalance();
     await getStakedBalance();
-});
+}
 
 async function getMortgagePoolBalance() {
     const contract = new MortgagePool(store.chainId);
@@ -41,7 +45,7 @@ async function provideLiquidity() {
     await contract.provideMortgageLiquidity(Number(ethAmount.value))
         .then(async (response: any) => {
             await response.wait(1);
-            await getMortgagePoolBalance();
+            await pageInit();
             ethAmount.value = '';
         })
         .catch((error: any) => {
@@ -128,7 +132,7 @@ async function provideLiquidity() {
                                     </div>
                                     <div class="pl-6">
                                         <label class="text-gray-300 w-full text-xl">Earned</label>
-                                        <p class="text-gray-300 text-xl">(earned) ETH</p>
+                                        <p class="text-gray-300 text-xl">-- ETH</p>
                                     </div>
                                 </div>
                             </div>

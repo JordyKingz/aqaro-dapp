@@ -6,6 +6,7 @@ import Property from "@/chain/Property";
 import MortgageFactory from "@/chain/MortgageFactory";
 import {ethers} from "ethers";
 import PropertyFactory from "@/chain/PropertyFactory";
+import {formatDollars} from "../../utils/helpers";
 
 const store = walletConnectionStore();
 const router = useRouter();
@@ -250,10 +251,6 @@ let totalAmount = ref(0);
 //     }
 //
 // }
-
-function formatDollars(value: number) {
-    return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-}
 
 function calcMortgage() {
     const ETHPrice = ETH_PRICE;

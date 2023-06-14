@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { EnvelopeIcon} from '@heroicons/vue/20/solid'
+import {formatDollars} from "@/utils/helpers";
 type Seller = {
     wallet: string,
     name: string,
@@ -23,10 +24,15 @@ type Address = {
     zip: string;
 }
 
+const storage = import.meta.env.VITE_STORAGE_URL;
 
 defineProps({
     property: {
         type: Object,
+        required: true,
+    },
+    files: {
+        type: Array,
         required: true,
     },
     contractOpenDate: {
@@ -80,34 +86,18 @@ const product = {
 }
 
 function propertyInDollars(value: string) {
-    let formatter;
-    formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-    });
-
-    return formatter.format(Number(value));
+    return formatDollars(value);
 }
 </script>
 <template>
     <div class="bg-gray-900">
         <div class="pt-6">
             <!-- Image gallery -->
-            <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-                    <img :src="product.images[0].src" :alt="product.images[0].alt" class="h-full w-full object-cover object-center" />
-                </div>
-                <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                    <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                        <img :src="product.images[1].src" :alt="product.images[1].alt" class="h-full w-full object-cover object-center" />
+            <div class="mx-auto mt-6 text-white max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+                <div v-for="(file, key) in files" :key="key">
+                    <div class="col-span-1 gap-4 mb-4 rounded-xl">
+                        <img :src="`${storage}${file}`" class="h-full w-full object-cover object-center rounded-xl" />
                     </div>
-                    <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                        <img :src="product.images[2].src" :alt="product.images[2].alt" class="h-full w-full object-cover object-center" />
-                    </div>
-                </div>
-                <div class="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                    <img :src="product.images[3].src" :alt="product.images[3].alt" class="h-full w-full object-cover object-center" />
                 </div>
             </div>
 
@@ -120,7 +110,7 @@ function propertyInDollars(value: string) {
 
                 <div class="mt-8 lg:row-span-3">
                     <h2 class="sr-only">Property information</h2>
-                    <p class="text-2xl tracking-tight text-white">{{ propertyInDollars(property.price) }}</p>
+                    <p class="text-2xl tracking-tight text-white">{{ formatDollars(property.price) }}</p>
                     <p class="text-xl tracking-tight text-white">{{ property.askingPrice }}ETH</p>
 
                     <p class="text-gray-400 mt-8">
