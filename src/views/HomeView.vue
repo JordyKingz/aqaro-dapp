@@ -137,8 +137,7 @@ watch(store, async () => {
                             <p class="text-lg font-bold text-gray-500">{{ property.askingPrice }}ETH</p>
                         </div>
 <!--                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>-->
-                        <p class="mt-1 text-sm text-gray-500">{{formatDollars(property.price)}}</p>
-
+                        <p class="mt-1 text-sm text-gray-500">{{formatDollars(`${Number(property.price.toString()) / 1e6}`)}}</p>
                     </div>
                 </div>
             </div>
