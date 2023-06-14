@@ -5,8 +5,10 @@ import {useRoute} from "vue-router";
 import Property from "@/chain/Property";
 import {ethers} from "ethers";
 import Show from "@/components/property/show.vue";
+import {propertyStore} from "@/stores/property.store";
 
 const store = walletConnectionStore();
+const propStore = propertyStore();
 const route = useRoute();
 
 type Seller = {
@@ -20,6 +22,7 @@ type Property = {
   askingPrice: string,
   price: string,
   id: string,
+  service_id: string,
   seller: Seller,
     description: string,
   created: string
@@ -33,6 +36,7 @@ type Address = {
 }
 
 const property = ref({} as Property);
+const propFiles = ref([]);
 const highestBid = ref('0');
 const bidOpen = ref(false);
 const contractOpenDate = ref(new Date());
@@ -41,23 +45,24 @@ const propertyContractAddress = ref('');
 onBeforeMount(async () => {
     if (route.params.address) {
         propertyContractAddress.value = `${route.params.address}`;
-        await getProperty(`${route.params.address}`);
+        await getPropertyChain(`${route.params.address}`);
+        await getPropertyService(property.value.service_id);
         await getBidOpen(`${route.params.address}`);
 
         await getHighestBid(`${route.params.address}`);
     }
 });
 
-async function getProperty(address: string) {
+async function getPropertyChain(address: string) {
     const contract = new Property(store.getChainId, address);
 
     await contract.getPropertyInfo()
         .then(async (result: Property) => {
-            console.log(result);
             property.value = {
                 id: result.id.toString(),
+                service_id: result.service_id.toString(),
                 askingPrice: result.askingPrice.toString(),
-                price: result.price.toString(),
+                price: `${Number(result.price.toString()) / 1e6}`,
                 description: result.description,
                 addr: {
                     street: result.addr.street,
@@ -79,6 +84,15 @@ async function getProperty(address: string) {
         .catch((error: any) => {
             console.log(error);
         });
+}
+
+async function getPropertyService(id: string) {
+    await propStore.getProperty(id)
+        .then(response => {
+            console.log(response.data)
+            propFiles.value = response.data.files;
+        });
+
 }
 
 async function getBidOpen(address: string) {
@@ -113,6 +127,7 @@ async function getHighestBid(address: string) {
 <template>
   <Show v-if="store.isConnected"
     :property="property"
+    :files="propFiles"
     :contractOpenDate="contractOpenDate"
     :propertyContractAddress="propertyContractAddress"
     :bidOpen="bidOpen"

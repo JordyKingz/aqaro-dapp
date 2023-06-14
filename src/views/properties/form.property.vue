@@ -6,6 +6,9 @@ import {propertyStore} from "@/stores/property.store";
 import CoingeckoApi from "@/lib/api/coingecko.api";
 import {formatDollars} from "../../utils/helpers";
 import DragDrop from "@/components/form/DragDrop.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 type Address = {
   street: string;
@@ -26,28 +29,30 @@ type Property = {
   description: string,
   askingPrice: string,
   price: string,
+  service_id: string
 }
 
 const store = walletConnectionStore();
 const propertiesStore = propertyStore();
 
-const lastName = ref('');
+const lastName = ref('doe');
 let property = ref<Property>(
   {
     addr: {
-      street: "",
-      city: "",
-      state: "",
-      country: "",
-      zip: ""
+      street: "Muntinglaan",
+      city: "Groningen",
+      state: "Groningen",
+      country: "Netherlands",
+      zip: "9727"
     },
-    description: "",
-    askingPrice: "",
+    description: "lorem ipsum",
+    askingPrice: "130",
     price: "",
+    service_id: "",
     seller: {
       wallet: "",
-      name: "",
-      email: "",
+      name: "john",
+      email: "info@nefkon.com",
       status: 0
     }
   }
@@ -63,6 +68,33 @@ onBeforeMount(async () => {
     await getEthPrice();
 });
 
+async function setListeners() {
+    const signer = new PropertyFactory(store.getChainId);
+    const contract = await signer.getContract();
+
+    await contract.on('PropertyCreated', (propertyAddress: string, owner: string, propertyId: any) => {
+        if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
+            const createdProperty = propertiesStore.getCreatedProperty;
+            console.log(createdProperty, propertyId, propertyAddress);
+            updateProperty(createdProperty, propertyId, propertyAddress);
+        }
+    });
+}
+
+async function updateProperty(createdProp: any, sc_id: number, propertyAddress: string) {
+    const dto = {
+        id: createdProp.id,
+        sc_id: Number(sc_id),
+    }
+    await propertiesStore.updatePropertyService(dto)
+        .then((response: any) => {
+            if (response.status === 200) {
+                propertiesStore.addProperty(createdProp);
+                router.push({name: 'property.detail', params: {address: propertyAddress}});
+            }
+        });
+}
+
 async function getEthPrice() {
     const api = new CoingeckoApi();
     await api.getTokenPrice('ethereum', CURRENCY.value)
@@ -77,26 +109,53 @@ async function getEthPrice() {
 }
 
 async function listPropertyService() {
-    const dto = {
-        property: property.value,
-        files: fileArray.value,
-        name: `${property.value.seller.name}`,
-        last_name: lastName.value,
-        email: property.value.seller.email,
-    }
+    const formData = new FormData();
+    formData.append('property[description]', property.value.description);
+    formData.append('property[price]', `${Number(property.value.askingPrice) * ETH_PRICE.value}`);
+
+    // address
+    formData.append('address[address]', property.value.addr.street);
+    formData.append('address[city]', property.value.addr.city);
+    formData.append('address[state]', property.value.addr.state);
+    formData.append('address[country]', property.value.addr.country);
+    formData.append('address[zip]', property.value.addr.zip);
+
+    formData.append('user[first_name]', property.value.seller.name);
+    formData.append('user[last_name]', lastName.value);
+    formData.append('user[email]', property.value.seller.email);
+
+    selectedFiles.value.forEach((file: any) => {
+        formData.append('files[]', file);
+    });
+
+    await propertiesStore.listPropertyService(formData)
+        .then(async (response: any) => {
+            if (response.status === 201) {
+                await propertiesStore.setCreatedProperty(response.data.property);
+
+                await setListeners();
+                await listPropertyChain(response.data.property)
+            }
+        }).catch((error: any) => {
+            console.log(error);
+        });
 }
 
-async function listPropertyChain() {
+async function listPropertyChain(createdProperty: any) {
   const contract = new PropertyFactory(store.getChainId);
   property.value.seller.wallet = store.connectedWallet;
-  const priceInDollars = Number(property.value.askingPrice) * ETH_PRICE.value; // hard coded for now
+  let priceInDollars = Number(property.value.askingPrice) * ETH_PRICE.value;
+  priceInDollars = priceInDollars*1e6;
   property.value.price = priceInDollars.toString();
   property.value.seller.name = `${property.value.seller.name} ${lastName.value}`;
+
+  property.value.service_id = createdProperty.id;
+
+  console.log(createdProperty);
 
   await contract.listProperty(property.value)
       .then(async (result: any) => {
           await result.wait(1);
-          console.log(result);
       });
 }
 

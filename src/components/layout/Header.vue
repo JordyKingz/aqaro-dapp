@@ -52,7 +52,6 @@ async function connect() {
           if (wallet.value) {
               connected.value = true;
               store.setConnected(true);
-              await setListeners();
           }
       } catch(e) {
           console.log(e);
@@ -60,17 +59,6 @@ async function connect() {
   }
 }
 
-async function setListeners() {
-    const signer = new PropertyFactory(store.getChainId);
-    const contract = await signer.getContract();
-
-    await contract.on('PropertyCreated', (propertyAddress: string, owner: string, propertyId: any) => {
-        if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
-            propertiesStore.addProperty(propertyAddress);
-            router.push({name: 'property.detail', params: {address: propertyAddress}});
-        }
-    });
-}
 async function disconnect() {
   await store.disconnect();
   connected.value = false;
