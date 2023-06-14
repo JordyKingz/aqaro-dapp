@@ -1,5 +1,6 @@
 import {ethers} from "ethers";
 import {
+    AqaroEarlyInvestAddress,
     PropertyFactoryAddress,
 } from "@/chain/config/smartContracts";
 // @ts-ignore
@@ -19,6 +20,8 @@ export default class PropertyFactory {
         if (chain === 1) {
             this.contractAddress = PropertyFactoryAddress;
         } else if (chain === 31337) {
+            this.contractAddress = PropertyFactoryAddress;
+        } else if (chain === 11155111) {
             this.contractAddress = PropertyFactoryAddress;
         } else {
             this.contractAddress = PropertyFactoryAddress;

@@ -7,7 +7,7 @@ import Property from "@/chain/Property";
 import Hero from "@/components/Hero.vue";
 import LaunchNotify from "@/components/LaunchNotify.vue";
 import EarnAPY from "@/components/EarnAPY.vue";
-import {formatDollars} from "@/utils/helpers";
+import {formatDollars, getEthPrice} from "@/utils/helpers";
 
 const store = walletConnectionStore();
 
@@ -31,9 +31,10 @@ type PropertyType = {
 
 const propertyContracts = ref([]);
 const properties = ref<PropertyType[]>([]);
-
+const ETH_PRICE = ref(0);
 
 onBeforeMount(async() => {
+  ETH_PRICE.value = await getEthPrice();
   if (store.isConnected) {
     await fetchData();
   }
@@ -76,7 +77,7 @@ async function getPropertyByAddress(address: string) {
                 address: address,
                 id: result.id.toString(),
                 askingPrice: result.askingPrice.toString(),
-                price: result.price.toString(),
+                price: `${Number(result.price.toString()) / 1e6}`,
                 addr: {
                     street: result.addr.street,
                     city: result.addr.city,
@@ -126,7 +127,7 @@ watch(store, async () => {
                         </div>
                     </div>
                     <div class="p-5 block">
-                        <div class="flex items-center justify-between space-x-8 text-base font-medium text-gray-500">
+                        <div class="flex items-center justify-between space-x-3 text-base font-medium text-gray-500">
                             <h3>
                                 <RouterLink :to="{name: 'property.detail', params: {address: property.address}}">
                                     <span aria-hidden="true" class="absolute inset-0" />
@@ -134,10 +135,10 @@ watch(store, async () => {
                                     <p>{{ property.addr.zip }} {{ property.addr.city }}</p>
                                 </RouterLink>
                             </h3>
-                            <p class="text-lg font-bold text-gray-500">{{ property.askingPrice }}ETH</p>
+                            <p class="text-xs font-bold text-indigo-500">{{ Number(property.price / ETH_PRICE).toFixed(6) }}ETH</p>
                         </div>
 <!--                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>-->
-                        <p class="mt-1 text-sm text-gray-500">{{formatDollars(`${Number(property.price.toString()) / 1e6}`)}}</p>
+                        <p class="mt-1 text-sm text-gray-500">{{formatDollars(property.price)}}</p>
                     </div>
                 </div>
             </div>

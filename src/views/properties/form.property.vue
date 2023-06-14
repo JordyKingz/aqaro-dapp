@@ -74,7 +74,6 @@ async function setListeners() {
     await contract.on('PropertyCreated', (propertyAddress: string, owner: string, propertyId: any) => {
         if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
             const createdProperty = propertiesStore.getCreatedProperty;
-            console.log(createdProperty, propertyId, propertyAddress);
             updateProperty(createdProperty, propertyId, propertyAddress);
         }
     });
@@ -94,11 +93,10 @@ async function updateProperty(createdProp: any, sc_id: number, propertyAddress: 
         });
 }
 
-
 async function listPropertyService() {
     const formData = new FormData();
     formData.append('property[description]', property.value.description);
-    formData.append('property[price]', `${Number(property.value.askingPrice) * ETH_PRICE.value}`);
+    formData.append('property[price]', `${Number(property.value.askingPrice)}`);
 
     // address
     formData.append('address[address]', property.value.addr.street);
@@ -131,14 +129,12 @@ async function listPropertyService() {
 async function listPropertyChain(createdProperty: any) {
   const contract = new PropertyFactory(store.getChainId);
   property.value.seller.wallet = store.connectedWallet;
-  let priceInDollars = Number(property.value.askingPrice) * ETH_PRICE.value;
+  let priceInDollars = Number(property.value.askingPrice);
   priceInDollars = priceInDollars*1e6;
   property.value.price = priceInDollars.toString();
   property.value.seller.name = `${property.value.seller.name} ${lastName.value}`;
 
   property.value.service_id = createdProperty.id;
-
-  console.log(createdProperty);
 
   await contract.listProperty(property.value)
       .then(async (result: any) => {
@@ -173,8 +169,6 @@ function clearFiles() {
     selectedFiles.value = [];
     fileArray.value = [];
 }
-
-
 </script>
 <template>
     <div v-if="store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
@@ -188,13 +182,13 @@ function clearFiles() {
                     <div class="sm:col-span-4">
                         <label for="username" class="block text-sm font-medium leading-6 text-white">
                             Asking Price
-                            <span class="pl-2">{{property.askingPrice}}ETH</span>
+                            <span class="pl-2">{{formatDollars(`${Number(property.askingPrice).toFixed(6)}`)}}</span>
                             <span class="pl-2">|</span>
-                            <span class="pl-2">{{formatDollars(`${Number(property.askingPrice) * ETH_PRICE}`)}}</span>
+                            <span class="pl-2">{{`${Number(property.askingPrice) / ETH_PRICE}`}}ETH</span>
                         </label>
                         <div class="mt-2">
                             <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <input type="text" v-model="property.askingPrice" class="flex-1 border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in ETH" />
+                                <input type="text" v-model="property.askingPrice" class="flex-1 border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in USD" />
                             </div>
                         </div>
                     </div>

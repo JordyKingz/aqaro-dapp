@@ -102,10 +102,10 @@ async function requestMortgage() {
         KYCVerified: false
     }
 
-    const mortgageETHAmount = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
+    const mortgageETHAmount = (Number((property.value.price / 1e6) / ETH_PRICE.value) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
     const mortgagePayment = {
-        amountETH: mortgageETHAmount,
-        amountUSD: mortgageETHAmount * ETH_PRICE.value,
+        amountETH: ethers.utils.parseEther(mortgageETHAmount.toString()),
+        amountUSD: (mortgageETHAmount * ETH_PRICE.value * 1e6),
         totalPayments: totalMonthlyPayments.value, // in months
         endDate: mortgageEndDate.value.getTime(),
         interestRate: interestRate.value * 1000,
@@ -113,6 +113,8 @@ async function requestMortgage() {
     propertyContractAddress.value;
 
     const contract = new MortgageFactory(store.getChainId);
+
+    console.log({mortgageRequester, mortgagePayment, propertyContractAddress: propertyContractAddress.value})
 
     // Set Listener for PropertyCreated event
     const contractInstance = await contract.getContract();
@@ -292,13 +294,13 @@ watch(monthlyMortgageAmount, () => {
                           <label for="username" class="block text-sm font-medium leading-6 text-white">
                               Property Asking Price
                               <span class="pl-2">|</span>
-                              <span class="pl-2">{{ property.askingPrice.toString() }}ETH</span>
+                              <span class="pl-2">{{ Number((property.price / 1e6) / ETH_PRICE).toFixed(6) }}ETH</span>
                               <span class="pl-2">|</span>
-                              <span class="pl-2">${{Number(property.askingPrice) * ETH_PRICE}}</span>
+                              <span class="pl-2">{{formatDollars(`${Number(property.price / 1e6)}`)}}</span>
                           </label>
                           <div class="mt-2">
                               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                  <input type="text" disabled :value="`${property.askingPrice.toString()} ETH`" class="flex-1 cursor-not-allowed border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in ETH" />
+                                  <input type="text" disabled :value="`${Number((property.price / 1e6) / ETH_PRICE).toFixed(6)} ETH`" class="flex-1 cursor-not-allowed border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in ETH" />
                               </div>
                           </div>
                       </div>
@@ -307,13 +309,13 @@ watch(monthlyMortgageAmount, () => {
                           <label for="username" class="block text-sm font-medium leading-6 text-white">
                               Extra funds needed (max 15% of asking price)
                               <span class="text-xs text-gray-400 block">
-                                  Max: {{(Number(property.askingPrice.toString()) * 0.15)}}ETH
+                                  Max: {{(Number((property.price / 1e6) / ETH_PRICE) * 0.15)}}ETH
                               </span>
                           </label>
                           <div class="mt-2">
                               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                                   <input type="number"
-                                         :max="(Number(property.askingPrice.toString()) * 0.15)"
+                                         :max="(Number((property.price / 1e6) / ETH_PRICE) * 0.15)"
                                          v-model="mortgageRequest.extraMortgageAmount"
                                          class="flex-1 border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in ETH" />
                               </div>
@@ -343,7 +345,7 @@ watch(monthlyMortgageAmount, () => {
                               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                                   <input type="text"
                                          disabled
-                                         :value="(Number(property.askingPrice.toString()) + Number(mortgageRequest.extraMortgageAmount)) - Number(mortgageRequest.ownMoney)"
+                                         :value="(Number((property.price / 1e6) / ETH_PRICE) + Number(mortgageRequest.extraMortgageAmount)) - Number(mortgageRequest.ownMoney)"
                                          class="flex-1 cursor-not-allowed border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in ETH" />
                               </div>
                           </div>
@@ -405,8 +407,6 @@ watch(monthlyMortgageAmount, () => {
                               Total Payments: {{totalMonthlyPayments}} <br>
                               Total Years: {{totalMortgageYears}} <br>
                               Mortgage End Date : {{mortgageEndDate.toLocaleDateString()}} <br>
-                              Mortgage End Date : {{mortgageEndDate.getTime() / 1000}} <br>
-
                               Total Mortgage amount: {{formatDollars(totalMortgage)}} <br>
                               Total Interest paid: {{formatDollars(totalInterestPaid)}} <br>
                               Total amount paid: {{formatDollars(totalAmountPaidOff)}} <br>

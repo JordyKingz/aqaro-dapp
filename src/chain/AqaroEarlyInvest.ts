@@ -22,6 +22,8 @@ export default class AqaroEarlyInvest {
             this.contractAddress = AqaroEarlyInvestAddress;
         } else if (chain === 31337) {
             this.contractAddress = AqaroEarlyInvestAddress;
+        } else if (chain === 11155111) {
+            this.contractAddress = AqaroEarlyInvestAddress;
         } else {
             this.contractAddress = AqaroEarlyInvestAddress;
         }
