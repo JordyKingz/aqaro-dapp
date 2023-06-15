@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import DaoIndex from '../views/dao/index.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -44,10 +46,50 @@ const router = createRouter({
       component: () => import('../views/mortgage/request.property.mortgage.vue'),
     },
     {
-      path: '/dao/mortgage/:address',
-      name: 'dao.mortgage.detail',
-      component: () => import('../views/dao/mortgage.detail.vue'),
-    }
+      path: '/dao',
+      component: DaoIndex,
+      meta: {
+        isAuthenticated: true,
+      },
+      children: [
+        {
+          path: '/dashboard',
+          name: 'dao.dashboard',
+          component: () => import('../views/dao/dashboard.vue'),
+          meta: {
+            isAuthenticated: true,
+          },
+        },
+        {
+          path: '/mortgage',
+          name: 'dao.mortgage',
+          children: [
+            {
+              path: '',
+              name: 'dao.mortgage.overview',
+              component: () => import('../views/dao/mortgages/overview.mortgage.vue'),
+            },
+            {
+              path: '/request/:address',
+              name: 'dao.mortgage.request.detail',
+              component: () => import('../views/dao/mortgages/show.mortgage.vue'),
+            }
+          ]
+        },
+        {
+          path: '/proposal',
+          name: 'dao.proposal',
+          children: [
+            {
+              path: '',
+              name: 'dao.proposal.overview',
+              component: () => import('../views/dao/proposals/overview.proposal.vue'),
+            }
+          ]
+        }
+      ],
+    },
+
   ]
 })
 

@@ -73,6 +73,8 @@ async function disconnect() {
 
                     <RouterLink :to="{name: 'early.investor'}" class="text-sm font-semibold leading-6 text-white">Invest</RouterLink>
                     <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Earn</RouterLink>
+
+                    <RouterLink v-if="store.isConnected" :to="{name: 'dao.dashboard'}" class="text-sm font-semibold leading-6 text-white">DAO</RouterLink>
                     <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="text-sm font-semibold leading-6 text-white">List Property</RouterLink>
                 </div>
             </div>
@@ -114,6 +116,8 @@ async function disconnect() {
 
                             <span v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</span>
                             <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</span>
+
+                            <span v-if="store.isConnected" v-on:click="routerTo('dao.dashboard')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
                             <span v-if="store.isConnected" v-on:click="routerTo('property.create')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
                         </div>
                         <div class="py-6">
