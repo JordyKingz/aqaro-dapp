@@ -148,7 +148,7 @@ async function participateInPresale() {
                 </div>
             </div>
             <div v-else class="mx-auto px-6 text-white py-24 max-w-7xl">
-                Connect Wallet to participate in the presale
+                Connect Wallet to participate in seed round
             </div>
             <div class="bg-gray-900">
                 <div class="text-white px-6 py-24 lg:px-8">
