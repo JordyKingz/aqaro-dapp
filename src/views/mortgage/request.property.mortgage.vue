@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {onBeforeMount, ref, watch} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import Property from "@/chain/Property";
 import MortgageFactory from "@/chain/MortgageFactory";
@@ -63,6 +63,16 @@ onBeforeMount(async () => {
         propertyContractAddress.value = `${route.params.address}`;
         await getProperty(`${route.params.address}`);
         await getBidOpen(`${route.params.address}`);
+    }
+});
+
+onMounted(async () => {
+    const anchor = route.query.link;
+    if (anchor) {
+        const element = document.getElementById(`${anchor}`);
+        if (element) {
+            element.scrollIntoView();
+        }
     }
 });
 
@@ -324,7 +334,7 @@ watch(monthlyMortgageAmount, () => {
 </script>
 <template>
 <div>
-      <div v-if="store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
+      <div v-if="store.isConnected" id="request-top" class="mx-auto max-w-7xl px-8 py-12">
           <div class="space-y-12">
               <div class="border-b border-white/10 pb-12 text-gray-300">
                   <h2 class="text-base font-semibold leading-7 text-white">Mortgage Request Information</h2>

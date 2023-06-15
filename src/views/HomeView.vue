@@ -142,7 +142,7 @@ watch(store, async () => {
                             <h2 class="text-2xl font-bold text-white">{{ property.addr.street }}</h2>
                             <div class="flex items-center justify-between space-x-3 text-base font-medium text-gray-500">
                                 <span class="text-base">
-                                    <RouterLink :to="{name: 'property.detail', params: {address: property.address}}">
+                                    <RouterLink :to="{name: 'property.detail', params: {address: property.address}, query: {link: 'property-top'}}">
                                         <span aria-hidden="true" class="absolute inset-0" />
                                         <p>{{ property.addr.city }}</p>
                                         <p>{{ property.addr.state }}</p>

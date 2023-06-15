@@ -150,7 +150,7 @@ const product = {
                     <button v-if="bidOpen" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         Make Offer
                     </button>
-                    <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}, query: {link: 'request-top'}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         Request mortgage
                     </RouterLink>
                 </div>

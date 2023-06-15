@@ -87,7 +87,7 @@ watch(ethAmount, () => {
         <div id="invest" class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-6">
-                    <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
+                    <div class="col-span-8 md:col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-xl font-semibold leading-7 text-indigo-500">
                             Aqaro Mortgage System: Liquidity Providers Fuel Real Estate Financing
                         </h2>
@@ -113,7 +113,7 @@ watch(ethAmount, () => {
                             </a>
                         </div>
                     </div>
-                    <div class="col-span-3 text-gray-400">
+                    <div class="col-span-8 md:col-span-3 text-gray-400">
                         <div class="bg-gray-900 shadow rounded-lg py-6 px-5">
                             <div>
                                 <h2 class="text-2xl font-bold tracking-tight text-gray-300 ">Total ETH Staked</h2>

@@ -99,7 +99,7 @@ watch(tokenAmount, () => {
         <div id="invest-top" class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
-                    <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
+                    <div class="col-span-8 md:col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-xl font-semibold leading-7 text-indigo-500">Aqaro Early Investment Program: Empowering Real Estate Innovation!</h2>
                         <p class="mt-6">
                             Be a pioneer in the transformation of the real estate industry with Aqaro's Early Investment Program.
@@ -120,7 +120,7 @@ watch(tokenAmount, () => {
                             </a>
                         </div>
                     </div>
-                    <div class="col-span-3 text-gray-400">
+                    <div class="col-span-8 md:col-span-3 text-gray-400">
                         <div class="bg-gray-900 shadow rounded-lg py-6 px-5">
                             <div class="w-full">
                                 <label class="text-gray-300 w-full text-xl">Amount of Tokens to Purchase</label>

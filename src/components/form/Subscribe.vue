@@ -77,9 +77,11 @@ watch(email, (val: string) => {
 <template>
     <div class="block">
         <div class="flex w-full">
-            <label for="email-address" class="sr-only">Email address</label>
-            <input type="email" v-model="email" id="email-address" autocomplete="email" class="w-full min-w-0 appearance-none rounded-md border-0 bg-white/5 px-3 py-1.5 text-base text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:w-56 sm:text-sm sm:leading-6" placeholder="Enter your email" />
-            <div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
+            <div class="flex-1">
+                <label for="email-address" class="sr-only">Email address</label>
+                <input type="email" v-model="email" id="email-address" autocomplete="email" class="w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-1.5 text-base text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:w-56 sm:text-sm sm:leading-6" placeholder="Enter your email" />
+            </div>
+            <div class="pl-4">
                 <Button
                   :text="`${buttonText}`"
                   :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-gray-400 group-hover:text-gray-200'"
