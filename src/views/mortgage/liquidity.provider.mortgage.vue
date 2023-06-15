@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import MortgagePool from "@/chain/MortgagePool";
 import {ethers} from "ethers";
+import {useRoute} from "vue-router";
 
+const route = useRoute();
 const store = walletConnectionStore();
 const ethAmount = ref('');
 
@@ -11,10 +13,22 @@ const contractBalance = ref('0');
 const stakedBalance = ref('0');
 
 onBeforeMount(async() => {
-    await initPage();
-    setInterval(async () => {
+    if (store.isConnected) {
         await initPage();
-    }, 10000);
+        setInterval(async () => {
+            await initPage();
+        }, 10000);
+    }
+});
+
+onMounted(async () => {
+    const anchor = route.query.link;
+    if (anchor) {
+        const element = document.getElementById(`${anchor}`);
+        if (element) {
+            element.scrollIntoView();
+        }
+    }
 });
 
 async function initPage() {
@@ -57,8 +71,8 @@ async function provideLiquidity() {
 }
 </script>
 <template>
-    <div class="bg-gray-900">
-        <div class="bg-gray-800">
+    <div id="earn-top" class="bg-gray-900">
+        <div id="invest" class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-6">
                     <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
@@ -141,7 +155,7 @@ async function provideLiquidity() {
             <div v-else class="mx-auto px-6 text-white py-24 max-w-7xl">
                 Connect Wallet to become a Mortgage Provider
             </div>
-            <div class="bg-gray-900">
+            <div id="mortgage-liquidity" class="bg-gray-900">
                 <div class="text-white px-6 py-24 lg:px-8">
                     <div class="mx-auto max-w-3xl text-base leading-7 text-gray-400">
                         <p class="text-base font-semibold leading-7 text-indigo-600">Mortgage Liquidity</p>

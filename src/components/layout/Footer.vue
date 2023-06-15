@@ -11,11 +11,10 @@ enum subscribeType {
 
 const navigation = {
     pages: [
-        { name: 'Home', href: 'home' },
-        { name: 'About', href: 'about' },
-        { name: 'Invest', href: 'early.investor' },
-        { name: 'Earn', href: 'mortgage.liquidity.provider' },
-        { name: 'List', href: 'property.create' },
+        { name: 'Home', href: 'home', id: 'home-top' },
+        { name: 'About', href: 'about', id: 'about-top' },
+        { name: 'Invest', href: 'early.investor', id: 'invest-top' },
+        { name: 'Earn', href: 'mortgage.liquidity.provider', id: 'earn-top' },
 
         // { name: 'DAO', href: '#' },
         // { name: 'Mortgages', href: '#' },
@@ -58,7 +57,7 @@ const navigation = {
                             <h3 class="text-sm font-semibold leading-6 text-white">Aqaro</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li v-for="item in navigation.pages" :key="item.name">
-                                    <RouterLink :to="{name: item.href}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ item.name }}</RouterLink>
+                                    <RouterLink :to="{name: item.href, query: {link: item.id}}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ item.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
