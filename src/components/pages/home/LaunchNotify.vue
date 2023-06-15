@@ -15,7 +15,7 @@ enum subscribeType {
                 <p class="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
                     Be the first to experience the future of housing - sign up for our launch notifications and get ready to join the decentralized housing revolution.
                 </p>
-                <div class="flex max-w-md gap-x-4 mx-auto mt-10 ">
+                <div class="md:flex md:max-w-md gap-x-4 mx-auto mt-10 ">
                     <div class="block">
                         <Subscribe :subType="subscribeType.Launch" :buttonText="'Notify me'" />
                     </div>
