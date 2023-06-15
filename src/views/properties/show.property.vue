@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRoute} from "vue-router";
 import Property from "@/chain/Property";
 import {ethers} from "ethers";
-import Show from "@/components/property/show.vue";
+import Show from "@/components/pages/property/show.vue";
 import {propertyStore} from "@/stores/property.store";
 
 const store = walletConnectionStore();
@@ -50,6 +50,16 @@ onBeforeMount(async () => {
         await getBidOpen(`${route.params.address}`);
 
         await getHighestBid(`${route.params.address}`);
+    }
+});
+
+onMounted(async () => {
+    const anchor = route.query.link;
+    if (anchor) {
+        const element = document.getElementById(`${anchor}`);
+        if (element) {
+            element.scrollIntoView();
+        }
     }
 });
 
@@ -125,7 +135,7 @@ async function getHighestBid(address: string) {
 }
 </script>
 <template>
-  <Show v-if="store.isConnected"
+  <Show id="property-top" v-if="store.isConnected"
     :property="property"
     :files="propFiles"
     :contractOpenDate="contractOpenDate"

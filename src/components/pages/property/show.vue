@@ -95,7 +95,6 @@ const product = {
 <template>
     <div class="bg-gray-900">
         <div class="pt-6">
-            <!-- Image gallery -->
             <div class="mx-auto mt-6 text-white max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                 <div v-for="(file, key) in files" :key="key">
                     <div class="col-span-1 gap-4 mb-4 rounded-xl">
@@ -104,11 +103,11 @@ const product = {
                 </div>
             </div>
 
-            <!-- Product info -->
             <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                 <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                     <h1 class="text-2xl font-bold tracking-tight text-gray-200 sm:text-3xl">{{ property.addr.street }}</h1>
-                    <h2 class="text-xl font-bold tracking-tight text-gray-400">{{ property.addr.zip }} {{ property.addr.city }}</h2>
+                    <h2 class="text-xl font-bold tracking-tight text-gray-400">{{ property.addr.city }} | {{ property.addr.state }}</h2>
+                    <h2 class="text-xl font-bold tracking-tight text-gray-400">{{ property.addr.zip }}</h2>
                 </div>
 
                 <div class="mt-8 lg:row-span-3">
@@ -151,7 +150,7 @@ const product = {
                     <button v-if="bidOpen" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         Make Offer
                     </button>
-                    <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <RouterLink :to="{name: 'mortgage.property.request', params: {address: propertyContractAddress}, query: {link: 'request-top'}}" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         Request mortgage
                     </RouterLink>
                 </div>

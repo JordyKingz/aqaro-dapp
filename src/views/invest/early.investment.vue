@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {onBeforeMount, onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import AqaroToken from "@/chain/AqaroToken";
 import {AqaroEarlyInvestAddress} from "@/chain/config/smartContracts";
 import {ethers} from "ethers";
 import AqaroEarlyInvest from "@/chain/AqaroEarlyInvest";
 import {useRoute} from "vue-router";
+import Button from "@/components/form/button/Button.vue";
 
 const store = walletConnectionStore();
 const route = useRoute();
@@ -13,6 +14,9 @@ const route = useRoute();
 const tokenAmount = ref('');
 const contractBalance = ref('');
 const tokensSold = ref();
+
+const isValid = ref(false);
+const isSubmitted = ref(false);
 
 const tokenPrice = 0.000125;
 
@@ -69,26 +73,33 @@ async function getTokensSold() {
 }
 
 async function participateInPresale() {
+    isSubmitted.value = true;
     const contract = new AqaroEarlyInvest(store.getChainId);
 
     await contract.buyTokens(Number(tokenAmount.value))
         .then(async (response: any) => {
             await response.wait(1);
+            isSubmitted.value = false;
             tokenAmount.value = '';
             await initPage();
         })
         .catch((error: any) => {
+            isSubmitted.value = false;
             console.log(error);
         });
 }
 
+watch(tokenAmount, () => {
+    // @ts-ignore
+    isValid.value = Number(tokenAmount.value) && Number(tokenAmount.value) > 0;
+});
 </script>
 <template>
     <div class="bg-gray-900">
         <div id="invest-top" class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
-                    <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
+                    <div class="col-span-8 md:col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-xl font-semibold leading-7 text-indigo-500">Aqaro Early Investment Program: Empowering Real Estate Innovation!</h2>
                         <p class="mt-6">
                             Be a pioneer in the transformation of the real estate industry with Aqaro's Early Investment Program.
@@ -109,7 +120,7 @@ async function participateInPresale() {
                             </a>
                         </div>
                     </div>
-                    <div class="col-span-3 text-gray-400">
+                    <div class="col-span-8 md:col-span-3 text-gray-400">
                         <div class="bg-gray-900 shadow rounded-lg py-6 px-5">
                             <div class="w-full">
                                 <label class="text-gray-300 w-full text-xl">Amount of Tokens to Purchase</label>
@@ -136,12 +147,16 @@ async function participateInPresale() {
                                 </div>
                             </div>
                             <div class="text-center w-full mt-4">
-                                <button v-if="Number(tokenAmount) && Number(tokenAmount) > 0" v-on:click="participateInPresale" class="px-2 py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white">
-                                    Invest
-                                </button>
-                                <button v-else class="px-2 cursor-not-allowed py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg">
-                                    Invest
-                                </button>
+                                <Button
+                                  :text="'Invest'"
+                                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :isSubmitted="isSubmitted"
+                                  :isValid="isValid"
+                                  @onClick="participateInPresale"
+                                />
                             </div>
                         </div>
                     </div>

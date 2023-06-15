@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {onBeforeMount, onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import MortgagePool from "@/chain/MortgagePool";
 import {ethers} from "ethers";
 import {useRoute} from "vue-router";
+import Button from "@/components/form/button/Button.vue";
 
 const route = useRoute();
 const store = walletConnectionStore();
@@ -11,6 +12,9 @@ const ethAmount = ref('');
 
 const contractBalance = ref('0');
 const stakedBalance = ref('0');
+
+const isValid = ref(false);
+const isSubmitted = ref(false);
 
 onBeforeMount(async() => {
     if (store.isConnected) {
@@ -58,24 +62,32 @@ async function getStakedBalance() {
 }
 
 async function provideLiquidity() {
+    isSubmitted.value = true;
     const contract = new MortgagePool(store.chainId);
     await contract.provideMortgageLiquidity(Number(ethAmount.value))
         .then(async (response: any) => {
             await response.wait(1);
+            isSubmitted.value = false;
             ethAmount.value = '';
             await initPage();
         })
         .catch((error: any) => {
+            isSubmitted.value = false;
             console.log(error);
         })
 }
+
+watch(ethAmount, () => {
+    // @ts-ignore
+    isValid.value = Number(ethAmount.value) && Number(ethAmount.value) > 0;
+});
 </script>
 <template>
     <div id="earn-top" class="bg-gray-900">
         <div id="invest" class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-6">
-                    <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
+                    <div class="col-span-8 md:col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-xl font-semibold leading-7 text-indigo-500">
                             Aqaro Mortgage System: Liquidity Providers Fuel Real Estate Financing
                         </h2>
@@ -101,7 +113,7 @@ async function provideLiquidity() {
                             </a>
                         </div>
                     </div>
-                    <div class="col-span-3 text-gray-400">
+                    <div class="col-span-8 md:col-span-3 text-gray-400">
                         <div class="bg-gray-900 shadow rounded-lg py-6 px-5">
                             <div>
                                 <h2 class="text-2xl font-bold tracking-tight text-gray-300 ">Total ETH Staked</h2>
@@ -118,12 +130,16 @@ async function provideLiquidity() {
                                         placeholder="Enter amount of ETH to stake">
                             </div>
                             <div class="text-center w-full mt-4">
-                                <button v-if="Number(ethAmount) && Number(ethAmount) > 0" v-on:click="provideLiquidity" class="px-2 py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white">
-                                    Provide ETH Liquidity
-                                </button>
-                                <button v-else class="px-2 cursor-not-allowed py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg">
-                                    Provide ETH Liquidity
-                                </button>
+                                <Button
+                                  :text="' Provide ETH Liquidity'"
+                                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :isSubmitted="isSubmitted"
+                                  :isValid="isValid"
+                                  @onClick="provideLiquidity"
+                                />
                             </div>
                         </div>
                         <div v-if="Number(contractBalance) && Number(contractBalance) > 0" class="bg-gray-900 shadow mt-6 rounded-lg py-6 px-5">
@@ -133,12 +149,23 @@ async function provideLiquidity() {
                                         <label class="text-gray-300 w-full text-xl">Provided Liquidity</label>
                                         <p class="text-gray-300 text-xl">{{ stakedBalance }} ETH</p>
                                         <div class="w-full mt-4">
-                                            <button v-if="Number(ethAmount) && Number(ethAmount) > 0" v-on:click="provideLiquidity" class="px-2 py-2 w-full border-2 border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white">
-                                                Claim Rewards
-                                            </button>
-                                            <button v-else class="px-2 w-full cursor-not-allowed py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg">
-                                                Claim Rewards
-                                            </button>
+<!--                                            <button v-if="Number(ethAmount) && Number(ethAmount) > 0" v-on:click="provideLiquidity" class="px-2 py-2 w-full border-2 border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white">-->
+<!--                                                Claim Rewards-->
+<!--                                            </button>-->
+<!--                                            <button v-else class="px-2 w-full cursor-not-allowed py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg">-->
+<!--                                                Claim Rewards-->
+<!--                                            </button>-->
+
+<!--                                            <Button-->
+<!--                                              :text="'Claim Rewards'"-->
+<!--                                              :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"-->
+<!--                                              :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"-->
+<!--                                              :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"-->
+<!--                                              :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"-->
+<!--                                              :isSubmitted="isSubmitted"-->
+<!--                                              :isValid="isValid"-->
+<!--                                              @onClick="provideLiquidity"-->
+<!--                                            />-->
                                         </div>
                                     </div>
                                     <div class="pl-6">

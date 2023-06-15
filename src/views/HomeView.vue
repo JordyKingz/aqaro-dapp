@@ -3,9 +3,9 @@ import {onBeforeMount, onMounted, ref, watch} from "vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyFactory from "@/chain/PropertyFactory";
 import Property from "@/chain/Property";
-import Hero from "@/components/Hero.vue";
-import LaunchNotify from "@/components/LaunchNotify.vue";
-import EarnAPY from "@/components/EarnAPY.vue";
+import Hero from "@/components/pages/home/Hero.vue";
+import LaunchNotify from "@/components/pages/home/LaunchNotify.vue";
+import EarnAPY from "@/components/pages/home/EarnAPY.vue";
 import {formatDollars, getEthPrice} from "@/utils/helpers";
 import {useRoute} from "vue-router";
 
@@ -139,18 +139,20 @@ watch(store, async () => {
                             </div>
                         </div>
                         <div class="p-5 block">
+                            <h2 class="text-2xl font-bold text-white">{{ property.addr.street }}</h2>
                             <div class="flex items-center justify-between space-x-3 text-base font-medium text-gray-500">
-                                <h3>
-                                    <RouterLink :to="{name: 'property.detail', params: {address: property.address}}">
+                                <span class="text-base">
+                                    <RouterLink :to="{name: 'property.detail', params: {address: property.address}, query: {link: 'property-top'}}">
                                         <span aria-hidden="true" class="absolute inset-0" />
-                                        <h2 class="text-2xl font-bold text-white">Poelestraat</h2>
-                                        <p>{{ property.addr.zip }} {{ property.addr.city }}</p>
+                                        <p>{{ property.addr.city }}</p>
+                                        <p>{{ property.addr.state }}</p>
+                                        <p>{{ property.addr.zip }} </p>
                                     </RouterLink>
-                                </h3>
-                                <p class="text-xs font-bold text-indigo-500">{{ Number(property.price / ETH_PRICE).toFixed(6) }}ETH</p>
+                                </span>
                             </div>
     <!--                        <p class="mt-1 text-sm text-gray-500"><span>m2</span> <span>x rooms</span></p>-->
-                            <p class="mt-1 text-sm text-gray-500">{{formatDollars(property.price)}}</p>
+                            <h3 class="mt-4 text-lg text-indigo-500">{{formatDollars(property.price)}}</h3>
+                            <h3 class="text-lg text-indigo-500">{{ Number(property.price / ETH_PRICE).toFixed(6) }}ETH</h3>
                         </div>
                     </div>
                 </div>
