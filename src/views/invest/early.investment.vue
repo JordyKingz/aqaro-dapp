@@ -2,7 +2,7 @@
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {onBeforeMount, ref} from "vue";
 import AqaroToken from "@/chain/AqaroToken";
-import {AqaroPresaleAddress} from "@/chain/config/smartContracts";
+import {AqaroEarlyInvestAddress} from "@/chain/config/smartContracts";
 import {ethers} from "ethers";
 import AqaroEarlyInvest from "@/chain/AqaroEarlyInvest";
 
@@ -19,15 +19,18 @@ const tokenBalance = ref();
 
 onBeforeMount(async () => {
     await initPage();
+    setInterval(async () => {
+        await initPage();
+    }, 10000);
 });
 
 async function initPage() {
     await getContractEthBalance();
     await getTokensSold();
-    await getPresaleEndTime();
 }
 
 async function getContractEthBalance() {
+
   const contract = new AqaroEarlyInvest(store.getChainId);
   await contract.getEthBalance()
       .then(async (response: any) => {
@@ -40,10 +43,8 @@ async function getContractEthBalance() {
 
 async function getTokensSold() {
     const contract = new AqaroToken(store.getChainId);
-    await contract.balanceOf(AqaroPresaleAddress)
+    await contract.balanceOf(AqaroEarlyInvestAddress)
         .then(async (response: any) => {
-            console.log(response.toString());
-
             const amountOfTokensFormatted = ethers.utils.formatEther(response.toString());
             tokensSold.value = presaleContractBalance - Number(amountOfTokensFormatted);
             tokenBalance.value = Number(amountOfTokensFormatted);
@@ -58,22 +59,9 @@ async function participateInPresale() {
 
     await contract.buyTokens(Number(tokenAmount.value))
         .then(async (response: any) => {
-            const transactionReceipt = await response.wait(1);
-            console.log(transactionReceipt);
-
+            await response.wait(1);
+            tokenAmount.value = '';
             await initPage();
-        })
-        .catch((error: any) => {
-            console.log(error);
-        });
-}
-
-async function getPresaleEndTime() {
-    const contract = new AqaroEarlyInvest(store.getChainId);
-    await contract.getPresaleEndDate()
-        .then(async (response: any) => {
-            console.log(response.toString());
-            console.log(new Date(response.toString() * 1000).toLocaleString());
         })
         .catch((error: any) => {
             console.log(error);
@@ -87,24 +75,24 @@ async function getPresaleEndTime() {
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
                     <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
-                        <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Become an Early Investor</h2>
+                        <h2 class="text-xl font-semibold leading-7 text-indigo-500">Aqaro Early Investment Program: Empowering Real Estate Innovation!</h2>
                         <p class="mt-6">
-                            Are you ready to be part of a groundbreaking movement that is revolutionizing the real estate industry?
-                            Aqaro invites you to become an early investor and participate in our exclusive seed round.
-                            This is your opportunity to join us on this exciting journey, shape the future of real estate, and make a significant impact.
+                            Be a pioneer in the transformation of the real estate industry with Aqaro's Early Investment Program.
+                            We're revolutionizing the way properties are bought, sold, and financed by leveraging blockchain technology and a community-driven approach.
                         </p>
                         <p class="mt-8">
-                            At Aqaro, we are committed to creating a decentralized housing market that empowers individuals and transforms the way properties are bought, sold, and financed.
-                            By leveraging the power of blockchain technology and a community-driven approach, we're building a platform that eliminates barriers,
-                            increases accessibility, and fosters transparency.
+                            By investing in Aqaro, you become an integral part of our mission to create a decentralized housing market that breaks down barriers and fosters transparency.
+                            Your support during this crucial stage will drive our progress, accelerate development, and bring us closer to launching the platform.
                         </p>
                         <p class="mt-8">
-                            As an early investor, your support will be instrumental in driving the growth and development of Aqaro.
-                            The funds raised during this seed round will be used to accelerate our progress, hire additional developers, and push towards the beta release faster.
-                            By investing in Aqaro, you become an integral part of our journey towards disrupting the real estate industry.
+                            As an added incentive, once you purchase Aqaro tokens, you'll have the option to stake your tokens and earn an attractive extra interest yield.
+                            We are proud to offer a competitive yield of 5%, which rewards you for your early commitment to Aqaro while providing a benefit to the platform as well.
+                            By staking your tokens, you not only have the potential to grow your investment but also contribute to the liquidity and stability of the Aqaro ecosystem.
                         </p>
                         <div class="mt-5">
-                            <a href="#" class="text-base font-semibold leading-7 text-indigo-500">Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span></a>
+                            <a href="https://sepolia.etherscan.io/address/0x9605c8E762ecFa5d38b20f79131bE0580E92292b" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                                Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-span-3 text-gray-400">
@@ -117,17 +105,19 @@ async function getPresaleEndTime() {
                                         v-model="tokenAmount"
                                         placeholder="Enter amount of Tokens to buy">
                             </div>
-                            <div class="my-4">
+                            <div class="mt-2 text-xs">
                                 ETH to pay: {{ (Number(tokenAmount) * tokenPrice).toFixed(5) }}ETH
                             </div>
-                            <div>
+                            <div class="mt-4">
                                 <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
-                                    {{tokenPrice}}ETH per Token | {{(1 / tokenPrice).toFixed(5)}} Tokens per ETHa
+                                    {{tokenPrice}}ETH per Token | {{(1 / tokenPrice).toFixed(5)}} Tokens per ETH
                                 </div>
-                                <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
+                            </div>
+                            <div class="text-xs mt-4">
+                                <div class="bg-gray-900 text-indigo-400 shadow rounded-lg">
                                     {{tokenBalance}} Tokens Left For Sale
                                 </div>
-                                <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
+                                <div class="bg-gray-900 text-indigo-400 shadow rounded-lg">
                                     {{tokensSold}} Tokens Sold
                                 </div>
                             </div>

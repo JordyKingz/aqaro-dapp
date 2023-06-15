@@ -38,10 +38,6 @@ export default class AqaroEarlyInvest {
     async buyTokens(amount: number) {
         const ethToPay = (amount * this.ETHTokenPrice).toFixed(5);
         const amountInWei = ethers.utils.parseEther(amount.toString());
-        return await this.contractInterface.buyAqaroToken(amountInWei, {value: ethers.utils.parseEther(ethToPay.toString())});
-    }
-
-    async getPresaleEndDate() {
-        return await this.contractInterface.presaleEndDate();
+        return await this.contractInterface.investInAqaro(amountInWei, {value: ethers.utils.parseEther(ethToPay.toString())});
     }
 }

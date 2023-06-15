@@ -11,10 +11,13 @@ const contractBalance = ref('0');
 const stakedBalance = ref('0');
 
 onBeforeMount(async() => {
-    await pageInit();
+    await initPage();
+    setInterval(async () => {
+        await initPage();
+    }, 10000);
 });
 
-async function pageInit() {
+async function initPage() {
     await getMortgagePoolBalance();
     await getStakedBalance();
 }
@@ -45,8 +48,8 @@ async function provideLiquidity() {
     await contract.provideMortgageLiquidity(Number(ethAmount.value))
         .then(async (response: any) => {
             await response.wait(1);
-            await pageInit();
             ethAmount.value = '';
+            await initPage();
         })
         .catch((error: any) => {
             console.log(error);
@@ -59,35 +62,29 @@ async function provideLiquidity() {
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-6">
                     <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
-                        <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Mortgage Providers</h2>
-                        <p class="mt-6 text-blue-500">
-                            Text below is a placeholder for the content that will be added to this page.
-                            <br>
-                            <i>
-                                Text "How Mortgages Work" is better written than below. Change/shorten text?
-                            </i>
-                        </p>
+                        <h2 class="text-xl font-semibold leading-7 text-indigo-500">
+                            Aqaro Mortgage System: Liquidity Providers Fuel Real Estate Financing
+                        </h2>
                         <p class="mt-6">
-                            Are you looking for a way to earn passive income on your ETH holdings? Look no further than Aqaro!
-                            Our platform offers liquidity providers the opportunity to earn a generous return on investment by staking their ETH in our mortgage pool.
-                            With a competitive 10% APY, staking your ETH on Aqaro is a smart and lucrative investment.
+                            Liquidity providers are at the heart of Aqaro's success, playing a pivotal role in driving the lending capabilities of our platform.
+                            By providing liquidity to our mortgage pool, you become a vital contributor to the real estate financing ecosystem.
+                            Join us as a liquidity provider and fuel the Aqaro mortgage system while earning a significant passive income on your ETH holdings.
                         </p>
                         <p class="mt-8">
-                            Our platform uses the ETH provided by liquidity providers to offer mortgages to potential buyers.
-                            As the mortgages are paid off with interest, the returns go directly back to the liquidity providers, allowing you to earn a significant return on your investment without lifting a finger.
+                            At Aqaro, we leverage the ETH liquidity provided by our valued stakeholders to offer mortgages to potential buyers.
+                            As borrowers repay their mortgages with interest, the returns goes directly back to our liquidity providers, ensuring a steady and lucrative passive income stream.
+                            By participating as a liquidity provider, you help facilitate real estate transactions and support the growth of the Aqaro decentralized housing market.
                         </p>
                         <p class="mt-8">
-                            Staking your ETH on Aqaro is easy and straightforward.
-                            Simply provide your ETH to the liquidity pool, and you will begin earning rewards immediately.
-                            The more ETH you stake, the higher your rewards will be.
-                            And with our transparent and secure platform, you can rest assured that your investment is safe and protected.
-                        </p>
-                        <p class="mt-8">
-                            Join the Aqaro community today and start earning passive income on your ETH holdings.
-                            With our innovative platform and competitive 10% APY, we are creating a more accessible, transparent, and equitable housing market for everyone.
+                            Becoming a liquidity provider on Aqaro is a seamless and rewarding experience.
+                            Simply stake your ETH in our platform, and your assets will be utilized to fund mortgages for homebuyers.
+                            The more liquidity you provide, the greater your potential earnings will be.
+                            We prioritize transparency and security, ensuring that your investment is protected throughout the process.
                         </p>
                         <div class="mt-5">
-                            <a href="#" class="text-base font-semibold leading-7 text-indigo-500">Show Contract On Etherscan <span aria-hidden="true">&rarr;</span></a>
+                            <a href="https://sepolia.etherscan.io/address/0x8938E8B37e71482A461D9E5596eA78B1B3eB197a" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                                Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-span-3 text-gray-400">

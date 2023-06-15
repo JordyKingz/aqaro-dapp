@@ -35,24 +35,24 @@ type Property = {
 const store = walletConnectionStore();
 const propertiesStore = propertyStore();
 
-const lastName = ref('doe');
+const lastName = ref('');
 let property = ref<Property>(
   {
     addr: {
-      street: "Muntinglaan",
-      city: "Groningen",
-      state: "Groningen",
-      country: "Netherlands",
-      zip: "9727"
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      zip: ""
     },
-    description: "lorem ipsum",
-    askingPrice: "130",
+    description: "",
+    askingPrice: "",
     price: "",
     service_id: "",
     seller: {
       wallet: "",
-      name: "john",
-      email: "info@nefkon.com",
+      name: "",
+      email: "",
       status: 0
     }
   }
