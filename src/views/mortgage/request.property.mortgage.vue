@@ -7,6 +7,7 @@ import MortgageFactory from "@/chain/MortgageFactory";
 import {ethers} from "ethers";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {formatDollars, getEthPrice} from "../../utils/helpers";
+import Button from "@/components/form/button/Button.vue";
 
 const store = walletConnectionStore();
 const router = useRouter();
@@ -26,6 +27,9 @@ type Address = {
     country: string;
     zip: string;
 }
+
+const isValid = ref(false);
+const isSubmitted = ref(false);
 
 const ETH_PRICE = ref(0);
 
@@ -93,6 +97,7 @@ async function getBidOpen(address: string) {
 }
 
 async function requestMortgage() {
+    isSubmitted.value = true;
     const yearlyIncome = (Number(mortgageRequest.value.income) * 12) * 1e6;
     const monthlyIncome = Number(mortgageRequest.value.income) * 1e6;
     const mortgageRequester = {
@@ -128,9 +133,11 @@ async function requestMortgage() {
     await contract.requestMortgage(propertyContractAddress.value, mortgageRequester, mortgagePayment)
         .then(async (result: any) => {
             await result.wait(1);
+
             console.log(result);
         })
         .catch((error: any) => {
+            isSubmitted.value = false;
             console.log(error);
         });
 }
@@ -140,7 +147,9 @@ function calculateMortgageTotalAmount(income: number, propertyCost: number) {
     const monthlyInterestRate = (interestRate.value / 100) / 12; // monthly interest rate
     const loanAmount = propertyCost; // assume full property cost as loan amount
 
-    console.log({totalMortgage, monthlyInterestRate, loanAmount, monthlyMortgageAmount})
+    // let numerator = Math.log(1 + (loanAmount / monthlyMortgageAmount.value - 1) * monthlyInterestRate);
+    // let denominator = Math.log(1 + monthlyInterestRate);
+    // let n = Math.ceil(numerator / denominator);
 
     let n = -Math.log(1 - monthlyInterestRate * loanAmount / monthlyMortgageAmount.value) /
       Math.log(1 + monthlyInterestRate); // number of months to pay off loan
@@ -182,13 +191,18 @@ function calculateMortgageTotalAmount(income: number, propertyCost: number) {
     totalMonthlyPayments.value = totalPayments;
 
     console.log(`Total number of mortgage payments: ${totalPayments}`);
-
     totalMortgageYears.value = n/12;
+    // totalMortgageYears.value = n*12;
     // totalMortgageYears.value = totalPayments/12;
+    // const totalPaid = monthlyMortgageAmount.value * totalPayments; // total amount paid over the loan term
+    // totalInterestPaid.value = Number((loanAmount - totalPaid).toFixed(2));
+    // totalAmountPaidOff.value = loanAmount + totalInterestPaid.value
+
     const totalPaid = monthlyMortgageAmount.value * totalPayments; // total amount paid over the loan term
     totalAmountPaidOff.value = Number(totalPaid.toFixed(2));
     totalInterestPaid.value = Number((totalPaid - loanAmount).toFixed(2));
-    return totalPaid.toFixed(2); // round to 2 decimal places
+
+    return totalPaid.toFixed(2);
 }
 
 function addMonths(date: Date, months:number) {
@@ -256,13 +270,32 @@ let totalAmount = ref(0);
 // }
 
 function calcMortgage() {
-    const ETHPrice = ETH_PRICE;
     const mortgageNeeded = (Number(property.value.askingPrice.toString()) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney)
-    calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded) * ETHPrice.value);
+    calculateMortgageTotalAmount(Number(mortgageRequest.value.income), Number(mortgageNeeded));
 
     // if (minMonthlyAmount.value / 0.35 >= Number(mortgageRequest.value.income)) {
     //     provideMortgageLiquidity();
     // }
+}
+
+function clearForm() {
+    mortgageRequest.value = {
+        name: '',
+        income: '',
+        ownMoney: '',
+        extraMortgageAmount: '',
+    }
+    monthlyMortgageAmount.value = 0;
+    monthlyMortgageAmountSet.value = 0;
+    totalMortgageYears.value = 0;
+    totalMonthlyPayments.value = 0;
+    totalAmountPaidOff.value = 0;
+    totalInterestPaid.value = 0;
+    mortgageEndDate.value = new Date();
+    minMonthlyAmount.value = 0;
+    totalStake.value = 0;
+    providerStakeResults.value = [];
+    totalAmount.value = 0;
 }
 
 watch(mortgageRequest, () => {
@@ -271,6 +304,12 @@ watch(mortgageRequest, () => {
         monthlyMortgageAmountSet.value = monthlyMortgageAmount.value;
         calcMortgage();
     }
+
+    if (Number(mortgageRequest.value.ownMoney) < 0) {
+        mortgageRequest.value.ownMoney = '0';
+    }
+
+    isValid.value = mortgageRequest.value.income !== '' && mortgageRequest.value.ownMoney !== '' && mortgageRequest.value.extraMortgageAmount !== '';
 }, {deep: true});
 
 watch(monthlyMortgageAmount, () => {
@@ -345,7 +384,7 @@ watch(monthlyMortgageAmount, () => {
                               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                                   <input type="text"
                                          disabled
-                                         :value="(Number((property.price / 1e6) / ETH_PRICE) + Number(mortgageRequest.extraMortgageAmount)) - Number(mortgageRequest.ownMoney)"
+                                         :value="((Number((property.price / 1e6) / ETH_PRICE) + Number(mortgageRequest.extraMortgageAmount)) - Number(mortgageRequest.ownMoney)).toFixed(6)"
                                          class="flex-1 cursor-not-allowed border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in ETH" />
                               </div>
                           </div>
@@ -415,10 +454,19 @@ watch(monthlyMortgageAmount, () => {
                   </div>
                   <div class="sm:col-span-4">
                       <div class="mt-6 flex items-center justify-end gap-x-6">
-                          <button class="text-sm font-semibold leading-6 text-white">Cancel</button>
-                          <button v-on:click="requestMortgage" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                              Request Mortgage
-                          </button>
+                          <button v-on:click="clearForm" class="text-sm font-semibold leading-6 text-white">Cancel</button>
+
+
+                          <Button
+                            :text="'Request Mortgage'"
+                            :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
+                            :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                            :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                            :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                            :isSubmitted="isSubmitted"
+                            :isValid="isValid"
+                            @onClick="requestMortgage"
+                          />
                       </div>
                   </div>
               </div>

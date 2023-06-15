@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, ref, watch} from "vue";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {propertyStore} from "@/stores/property.store";
@@ -7,6 +7,7 @@ import CoingeckoApi from "@/lib/api/coingecko.api";
 import {formatDollars, getEthPrice} from "../../utils/helpers";
 import DragDrop from "@/components/form/DragDrop.vue";
 import {useRouter} from "vue-router";
+import Button from "@/components/form/button/Button.vue";
 
 const router = useRouter();
 
@@ -63,6 +64,9 @@ let fileArray = ref([]);
 
 const ETH_PRICE = ref(0);
 
+const isValid = ref(false);
+const isSubmitted = ref(false);
+
 onBeforeMount(async () => {
     ETH_PRICE.value = await getEthPrice();
 });
@@ -90,10 +94,14 @@ async function updateProperty(createdProp: any, sc_id: number, propertyAddress: 
                 propertiesStore.addProperty(createdProp);
                 router.push({name: 'property.detail', params: {address: propertyAddress}});
             }
+        }).catch((error: any) => {
+          isSubmitted.value = false;
+            console.log(error);
         });
 }
 
 async function listPropertyService() {
+    isSubmitted.value = true;
     const formData = new FormData();
     formData.append('property[description]', property.value.description);
     formData.append('property[price]', `${Number(property.value.askingPrice)}`);
@@ -122,6 +130,7 @@ async function listPropertyService() {
                 await listPropertyChain(response.data.property)
             }
         }).catch((error: any) => {
+            isSubmitted.value = false;
             console.log(error);
         });
 }
@@ -139,6 +148,9 @@ async function listPropertyChain(createdProperty: any) {
   await contract.listProperty(property.value)
       .then(async (result: any) => {
           await result.wait(1);
+      }).catch((error: any) => {
+          isSubmitted.value = false;
+          console.log(error);
       });
 }
 
@@ -165,10 +177,42 @@ function uploadFiles(files: any) {
     }
 }
 
+function clearForm() {
+    property.value = {
+        addr: {
+            street: "",
+            city: "",
+            state: "",
+            country: "",
+            zip: ""
+        },
+        description: "",
+        askingPrice: "",
+        price: "",
+        service_id: "",
+        seller: {
+            wallet: "",
+            name: "",
+            email: "",
+            status: 0
+        }
+    };
+
+    clearFiles();
+}
+
 function clearFiles() {
     selectedFiles.value = [];
     fileArray.value = [];
 }
+
+watch(property, () => {
+    const re = /\S+@\S+\.\S+/;
+
+    isValid.value = property.value.addr.street !== "" && property.value.addr.city !== "" && property.value.addr.state !== "" &&
+      property.value.addr.country !== "" && property.value.addr.zip !== "" && property.value.description !== "" &&
+      property.value.askingPrice !== "" && property.value.seller.name !== "" && property.value.seller.email !== "" && re.test(property.value.seller.email) && lastName.value !== "";
+}, {deep: true});
 </script>
 <template>
     <div v-if="store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
@@ -243,23 +287,6 @@ function clearFiles() {
                       @upload:clear="clearFiles"
                       @upload:drop="uploadFiles"
                     />
-
-<!--                    <div class="col-span-full">-->
-<!--                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-white">Property Photos</label>-->
-<!--                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-white/25 px-6 py-10">-->
-<!--                            <div class="text-center">-->
-<!--                                <PhotoIcon class="mx-auto h-12 w-12 text-gray-500" aria-hidden="true" />-->
-<!--                                <div class="mt-4 flex text-sm leading-6 text-gray-400">-->
-<!--                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-gray-900 font-semibold text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-indigo-500">-->
-<!--                                        <span>Upload a file</span>-->
-<!--                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" />-->
-<!--                                    </label>-->
-<!--                                    <p class="pl-1">or drag and drop</p>-->
-<!--                                </div>-->
-<!--                                <p class="text-xs leading-5 text-gray-400">PNG, JPG up to 10MB</p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
             </div>
 
@@ -290,8 +317,18 @@ function clearFiles() {
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button class="text-sm font-semibold leading-6 text-white">Cancel</button>
-            <button v-on:click="listPropertyService" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
+            <button v-on:click="clearForm" class="text-sm font-semibold leading-6 text-white">Cancel</button>
+
+            <Button
+              :text="'List Property'"
+              :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
+              :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+              :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+              :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+              :isSubmitted="isSubmitted"
+              :isValid="isValid"
+              @onClick="listPropertyService"
+            />
         </div>
     </div>
 </template>
