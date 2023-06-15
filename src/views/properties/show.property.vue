@@ -135,11 +135,13 @@ async function getHighestBid(address: string) {
 }
 </script>
 <template>
-  <Show id="property-top" v-if="store.isConnected"
-    :property="property"
-    :files="propFiles"
-    :contractOpenDate="contractOpenDate"
-    :propertyContractAddress="propertyContractAddress"
-    :bidOpen="bidOpen"
-  />
+    <div class="bg-gray-900">
+      <Show id="property-top" v-if="store.isConnected"
+        :property="property"
+        :files="propFiles"
+        :contractOpenDate="contractOpenDate"
+        :propertyContractAddress="propertyContractAddress"
+        :bidOpen="bidOpen"
+      />
+    </div>
 </template>

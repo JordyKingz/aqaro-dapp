@@ -215,6 +215,7 @@ watch(property, () => {
 }, {deep: true});
 </script>
 <template>
+    <div class="bg-gray-900">
     <div v-if="store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
         <div class="space-y-12">
             <div class="border-b border-white/10 pb-12 text-gray-300">
@@ -330,5 +331,6 @@ watch(property, () => {
               @onClick="listPropertyService"
             />
         </div>
+    </div>
     </div>
 </template>

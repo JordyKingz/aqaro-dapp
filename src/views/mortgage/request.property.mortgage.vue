@@ -136,7 +136,7 @@ async function requestMortgage() {
     await contractInstance.on('MortgageRequested', (mortgageContract: string, propertyContract: string, owner: any) => {
         if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
             console.log({mortgageContract, propertyContract, owner});
-            router.push({name: 'dao.mortgage.detail', params: {address: mortgageContract}});
+            router.push({name: 'dao.mortgage.request.detail', params: {address: mortgageContract}});
         }
     });
 
