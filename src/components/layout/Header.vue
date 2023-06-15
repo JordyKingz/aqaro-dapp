@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import {connectMetaMask, formatAddress, getSigner, setChainSettings} from "@/utils/helpers";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRouter} from "vue-router";
+import Button from "@/components/form/button/Button.vue";
 
 const router = useRouter();
 const store = walletConnectionStore();
@@ -14,7 +15,10 @@ const mobileMenuOpen = ref(false);
 let wallet = ref('');
 let connected = ref(false);
 
+const isSubmitted = ref(false);
+
 async function connect() {
+    isSubmitted.value = true;
   await connectMetaMask();
   await setChainSettings();
 
@@ -47,6 +51,7 @@ async function connect() {
           console.log(e);
       }
   }
+  isSubmitted.value = false;
 }
 
 async function routerTo(route: string) {
@@ -74,7 +79,6 @@ async function disconnect() {
                     <RouterLink :to="{name: 'early.investor'}" class="text-sm font-semibold leading-6 text-white">Invest</RouterLink>
                     <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Earn</RouterLink>
 
-                    <RouterLink v-if="store.isConnected" :to="{name: 'dao.dashboard'}" class="text-sm font-semibold leading-6 text-white">DAO</RouterLink>
                     <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="text-sm font-semibold leading-6 text-white">List Property</RouterLink>
                 </div>
             </div>
@@ -85,7 +89,18 @@ async function disconnect() {
                 </button>
             </div>
             <div class="hidden lg:flex">
-                <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
+                <Button
+                  v-if="!connected"
+                  :text="'connect'"
+                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-gray-900 group-hover:text-gray-800'"
+                  :btnDisabled="'opacity-50 cursor-not-allowed text-sm px-4 py-1.5 bg-white rounded-2xl font-semibold hover:cursor-pointer leading-6 text-gray-900'"
+                  :btnValid="'flex-none rounded-md text-sm px-4 py-1.5 bg-white rounded-2xl font-semibold hover:cursor-pointer leading-6 text-gray-900'"
+                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-white px-4 py-1.5 text-sm font-semibold text-gray-900 items-center justify-center rounded-md'"
+                  :isSubmitted="isSubmitted"
+                  :isValid="true"
+                  @onClick="connect"
+                />
+
                 <button v-if="connected" v-on:click="disconnect" class="border-2 border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
                     <span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
                         <svg class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
@@ -94,6 +109,8 @@ async function disconnect() {
                         {{ wallet }}
                       </span>
                 </button>
+
+                <RouterLink v-if="store.isConnected" :to="{name: 'dao.dashboard'}" class="text-sm pl-4 pt-1 font-semibold leading-6 text-white">DAO <span aria-hidden="true">&rarr;</span></RouterLink>
             </div>
         </nav>
         <Dialog as="div" class="lg:hidden bg-gray-900 text-white" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
@@ -117,8 +134,9 @@ async function disconnect() {
                             <span v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</span>
                             <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</span>
 
-                            <span v-if="store.isConnected" v-on:click="routerTo('dao.dashboard')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
                             <span v-if="store.isConnected" v-on:click="routerTo('property.create')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
+
+                            <span v-if="store.isConnected" v-on:click="routerTo('dao.dashboard')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">DAO</span>
                         </div>
                         <div class="py-6">
                             <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
