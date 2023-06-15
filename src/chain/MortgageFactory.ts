@@ -38,4 +38,8 @@ export default class MortgageFactory {
     public async requestMortgage(propContract: string, sender: any, mortgagePayment: any): Promise<any> {
         return await this.contractInterface.requestMortgage(propContract, sender, mortgagePayment);
     }
+
+    public async getMortgageContracts(): Promise<any> {
+        return await this.contractInterface.getMortgageContracts();
+    }
 }

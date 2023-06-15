@@ -53,7 +53,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: 'dashboard',
+          path: '/dashboard',
           name: 'dao.dashboard',
           component: () => import('../views/dao/dashboard.vue'),
           meta: {
@@ -61,7 +61,7 @@ const router = createRouter({
           },
         },
         {
-          path: 'mortgage/',
+          path: '/mortgage',
           name: 'dao.mortgage',
           children: [
             {
@@ -70,14 +70,14 @@ const router = createRouter({
               component: () => import('../views/dao/mortgages/overview.mortgage.vue'),
             },
             {
-              path: 'request/:address',
+              path: '/request/:address',
               name: 'dao.mortgage.request.detail',
               component: () => import('../views/dao/mortgages/show.mortgage.vue'),
             }
           ]
         },
         {
-          path: 'proposal/',
+          path: '/proposal',
           name: 'dao.proposal',
           children: [
             {

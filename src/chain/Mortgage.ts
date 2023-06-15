@@ -26,4 +26,18 @@ export default class Mortgage {
 
         this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
     }
+
+    async getPropertyAddress() {
+        return await this.contractInterface.propertyContract();
+    }
+
+    async getMortgageAmount() {
+        return await this.contractInterface.mortgageAmount();
+    }
+
+    async getBuyer() {
+        return await this.contractInterface.buyer();
+    }
+
+
 }

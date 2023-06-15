@@ -334,6 +334,7 @@ watch(monthlyMortgageAmount, () => {
 </script>
 <template>
 <div>
+    <div class="bg-gray-900">
       <div v-if="store.isConnected" id="request-top" class="mx-auto max-w-7xl px-8 py-12">
           <div class="space-y-12">
               <div class="border-b border-white/10 pb-12 text-gray-300">
@@ -480,7 +481,6 @@ watch(monthlyMortgageAmount, () => {
                       </div>
                   </div>
               </div>
-
 <!--                      <div v-if="providerStakeResults.length > 0" class="mt-4 col-span-full">-->
 <!--                          <div class="bg-yellow-100 p-2 mt-2 rounded-lg border border-yellow-500 text-yellow-500">-->
 <!--                              <h3 class="text-lg font-bold">Provider Stake Results: {{totalStake}}ETH Staked</h3>-->
@@ -491,8 +491,8 @@ watch(monthlyMortgageAmount, () => {
 <!--                          </div>-->
 <!--                      </div>-->
 <!--                  </div>-->
-
           </div>
       </div>
+    </div>
 </div>
 </template>

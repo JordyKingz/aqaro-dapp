@@ -17,19 +17,24 @@ onBeforeMount(() => {
     <Banner />
     <Header
             v-if="
-            router.currentRoute.value.name !== 'dao.dashboard' &&
-            router.currentRoute.value.name !== 'dao.mortgage.overview' &&
-            router.currentRoute.value.name !== 'dao.mortgage.show' &&
-            router.currentRoute.value.name !== 'dao.proposal' &&
-            router.currentRoute.value.name !== 'dao.proposal.overview'"/>
+            router.currentRoute.value.name === 'home' ||
+            router.currentRoute.value.name === 'about' ||
+            router.currentRoute.value.name === 'early.investor' ||
+            router.currentRoute.value.name === 'property.create' ||
+            router.currentRoute.value.name === 'property.detail' ||
+            router.currentRoute.value.name === 'mortgage.liquidity.provider' ||
+            router.currentRoute.value.name === 'mortgage.property.request'"
+    />
     <RouterView />
     <Footer
             v-if="
-            router.currentRoute.value.name !== 'dao.dashboard' &&
-            router.currentRoute.value.name !== 'dao.mortgage.overview' &&
-            router.currentRoute.value.name !== 'dao.mortgage.show' &&
-            router.currentRoute.value.name !== 'dao.proposal' &&
-            router.currentRoute.value.name !== 'dao.proposal.overview'"/>
+            router.currentRoute.value.name === 'home' ||
+            router.currentRoute.value.name === 'about' ||
+            router.currentRoute.value.name === 'early.investor' ||
+            router.currentRoute.value.name === 'property.create' ||
+            router.currentRoute.value.name === 'property.detail' ||
+            router.currentRoute.value.name === 'mortgage.liquidity.provider' ||
+            router.currentRoute.value.name === 'mortgage.property.request'"
     />
   </div>
 </template>

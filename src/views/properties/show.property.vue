@@ -3,6 +3,7 @@ import {onBeforeMount, onMounted, ref} from "vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRoute} from "vue-router";
 import Property from "@/chain/Property";
+import {Property as PropertyType} from "@/types/Property";
 import {ethers} from "ethers";
 import Show from "@/components/pages/property/show.vue";
 import {propertyStore} from "@/stores/property.store";
@@ -11,31 +12,7 @@ const store = walletConnectionStore();
 const propStore = propertyStore();
 const route = useRoute();
 
-type Seller = {
-    wallet: string,
-    name: string,
-    email: string,
-    status: number
-}
-type Property = {
-  addr: Address,
-  askingPrice: string,
-  price: string,
-  id: string,
-  service_id: string,
-  seller: Seller,
-  description: string,
-  created: string
-}
-type Address = {
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  zip: string;
-}
-
-const property = ref({} as Property);
+const property = ref({} as PropertyType);
 const propFiles = ref([]);
 const highestBid = ref('0');
 const bidOpen = ref(false);
