@@ -15,8 +15,8 @@ const store = walletConnectionStore();
 
 const navigation = [
     { name: 'Dashboard', href: 'dao.dashboard', icon: HomeIcon, current: true },
-    // { name: 'Mortgages', href: 'dao.mortgage.overview', icon: HomeModernIcon, current: false },
-    // { name: 'Proposals', href: 'dao.proposal.overview', icon: PresentationChartLineIcon, current: false },
+    { name: 'Mortgages', href: 'dao.mortgage.overview', icon: HomeModernIcon, current: false },
+    { name: 'Proposals', href: 'dao.proposal.overview', icon: PresentationChartLineIcon, current: false },
     // { name: 'Liquidity Pool', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
     // { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
@@ -51,7 +51,7 @@ const sidebarOpen = ref(false);
                         <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
                             <div class="flex h-16 shrink-0 items-center">
                                 <RouterLink :to="{name: 'home'}" class="-m-1.5 p-1.5">
-                                    <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
+                                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
                                 </RouterLink>
                             </div>
                             <nav class="flex flex-1 flex-col">
