@@ -40,7 +40,6 @@ import { HomeModernIcon, GlobeEuropeAfricaIcon, ShieldCheckIcon, BanknotesIcon, 
                 <div class="max-w-xl text-base leading-7 text-gray-300 lg:col-span-7">
                     <p>
                         With Aqaro, our unique selling proposition lies in our decentralized housing market.
-                        By harnessing the power of blockchain technology, we eliminate unnecessary intermediaries, ensuring secure and efficient transactions.
                         Experience a transparent marketplace where you have control and peace of mind.
                     </p>
                     <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-300">
