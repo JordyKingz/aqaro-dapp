@@ -134,8 +134,9 @@ async function disconnect() {
                             <span v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</span>
                             <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</span>
 
-                            <span v-if="store.isConnected" v-on:click="routerTo('dao.dashboard')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
                             <span v-if="store.isConnected" v-on:click="routerTo('property.create')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
+
+                            <span v-if="store.isConnected" v-on:click="routerTo('dao.dashboard')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">DAO</span>
                         </div>
                         <div class="py-6">
                             <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
