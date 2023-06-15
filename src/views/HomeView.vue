@@ -3,9 +3,9 @@ import {onBeforeMount, onMounted, ref, watch} from "vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyFactory from "@/chain/PropertyFactory";
 import Property from "@/chain/Property";
-import Hero from "@/components/Hero.vue";
-import LaunchNotify from "@/components/LaunchNotify.vue";
-import EarnAPY from "@/components/EarnAPY.vue";
+import Hero from "@/components/pages/home/Hero.vue";
+import LaunchNotify from "@/components/pages/home/LaunchNotify.vue";
+import EarnAPY from "@/components/pages/home/EarnAPY.vue";
 import {formatDollars, getEthPrice} from "@/utils/helpers";
 import {useRoute} from "vue-router";
 

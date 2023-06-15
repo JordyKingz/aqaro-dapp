@@ -4,7 +4,7 @@ import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRoute} from "vue-router";
 import Property from "@/chain/Property";
 import {ethers} from "ethers";
-import Show from "@/components/property/show.vue";
+import Show from "@/components/pages/property/show.vue";
 import {propertyStore} from "@/stores/property.store";
 
 const store = walletConnectionStore();
