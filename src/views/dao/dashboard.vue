@@ -115,7 +115,7 @@ const setTimeline = async () => {
                 <div>
                     <div>
                         <h1 class="sr-only">Recent Requests</h1>
-                        <ul role="list" class="space-y-4">
+                        <ul v-if="dashboardFeed.length > 0" role="list" class="space-y-4">
                             <li v-for="(req, key) in dashboardFeed" :key="key" class="bg-white px-4 py-6 shadow sm:rounded-lg sm:p-6">
                                 <article :aria-labelledby="'question-title-' + key">
                                     <div>
@@ -186,6 +186,9 @@ const setTimeline = async () => {
                                 </article>
                             </li>
                         </ul>
+                        <div v-else class="bg-white px-4 py-6 shadow sm:rounded-lg sm:p-6">
+                            No Recent Requests
+                        </div>
                     </div>
                 </div>
             </div>
