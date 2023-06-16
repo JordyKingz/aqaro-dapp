@@ -13,7 +13,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="wrapper min-h-screen">
+  <div class="wrapper min-h-screen bg-gray-800">
     <Banner />
     <Header
             v-if="
