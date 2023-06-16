@@ -96,7 +96,9 @@ async function getPresaleEndTime() {
                             Together, we will revolutionize the real estate industry and create a future where buying, selling, and financing properties are seamless and empowering.
                         </p>
                         <div class="mt-5">
-                            <a href="#" class="text-base font-semibold leading-7 text-indigo-500">Show Contract On Etherscan <span aria-hidden="true">&rarr;</span></a>
+                            <a href="https://sepolia.etherscan.io/address/0x9605c8E762ecFa5d38b20f79131bE0580E92292b" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                                Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
+                            </a>
                         </div>
                     </div>
                     <div class="col-span-3 text-gray-400">
