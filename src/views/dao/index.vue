@@ -3,8 +3,8 @@ import Sidebar from "@/components/layout/dao/Sidebar.vue";
 
 </script>
 <template>
-<div id="dao">
+<div id="dao" class="bg-gray-800">
     <Sidebar />
-    <RouterView />
+    <RouterView class="bg-gray-800" />
 </div>
 </template>

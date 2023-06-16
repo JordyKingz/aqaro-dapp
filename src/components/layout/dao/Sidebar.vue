@@ -30,7 +30,7 @@ const tokenInfo = [
 const sidebarOpen = ref(false);
 </script>
 <template>
-    <TransitionRoot as="template" :show="sidebarOpen">
+    <TransitionRoot as="template" class="bg-gray-900" :show="sidebarOpen">
         <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
             <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
                 <div class="fixed inset-0 bg-gray-900/80" />
@@ -89,10 +89,10 @@ const sidebarOpen = ref(false);
   <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gray-900 px-6">
             <div class="flex h-16 shrink-0 items-center">
                 <RouterLink :to="{name: 'home'}" class="-m-1.5 p-1.5">
-                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
+                    <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Aqaro</h2>
                 </RouterLink>
             </div>
             <nav class="flex flex-1 flex-col">
@@ -100,7 +100,7 @@ const sidebarOpen = ref(false);
                     <li>
                         <ul role="list" class="-mx-2 space-y-1">
                             <li v-for="item in navigation" :key="item.name">
-                                <RouterLink :to="{name: item.href}" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                                <RouterLink :to="{name: item.href}" :class="[item.current ? 'bg-gray-800 text-indigo-600' : 'text-gray-400 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                     <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                                     {{ item.name }}
                                 </RouterLink>
@@ -119,7 +119,7 @@ const sidebarOpen = ref(false);
                     <!--                        </ul>-->
                     <!--                    </li>-->
                     <li class="-mx-6 mt-auto">
-                        <span v-if="store.isConnected" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50">
+                        <span v-if="store.isConnected" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
 <!--                            <img class="h-8 w-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />-->
                             <span class="sr-only">Your profile</span>
                             <span aria-hidden="true">
@@ -136,7 +136,7 @@ const sidebarOpen = ref(false);
             </nav>
         </div>
     </div>
-    <div class="sticky top- z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+    <div class="sticky top-0 bg-gray-900 z-40 flex items-center gap-x-6 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
         <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
             <span class="sr-only">Open sidebar</span>
             <Bars3Icon class="h-6 w-6" aria-hidden="true" />

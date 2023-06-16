@@ -109,19 +109,19 @@ const setTimeline = async () => {
 }
 </script>
 <template>
-    <main class="lg:pl-72 bg-gray-100 min-h-screen">
+    <main class="lg:pl-72 bg-gray-800 min-h-screen">
         <div class="grid grid-cols-12 gap-4 px-4 pt-4">
             <div class="col-span-12 md:col-span-9">
                 <div>
                     <div>
                         <h1 class="sr-only">Recent Requests</h1>
                         <ul v-if="dashboardFeed.length > 0" role="list" class="space-y-4">
-                            <li v-for="(req, key) in dashboardFeed" :key="key" class="bg-white px-4 py-6 shadow sm:rounded-lg sm:p-6">
+                            <li v-for="(req, key) in dashboardFeed" :key="key" class="bg-gray-900 px-4 py-6 shadow sm:rounded-lg sm:p-6">
                                 <article :aria-labelledby="'question-title-' + key">
                                     <div>
                                         <div class="flex space-x-3">
                                             <div class="min-w-0 flex-1">
-                                                <p class="text-xs font-medium text-gray-900">
+                                                <p class="text-xs font-medium text-gray-500">
                                                     Mortgage Requested by:
                                                     {{ req.mortgage.buyer }}
                                                 </p>
@@ -135,18 +135,18 @@ const setTimeline = async () => {
                                         <div :id="'question-title-' + key" >
                                             <RouterLink :to="{name: 'property.detail', params: {address: propertyAddress}}" class="group">
                                                 <div>
-                                                    <h2 class="mt-4 text-base font-medium text-gray-900 group-hover:text-indigo-600">
+                                                    <h2 class="mt-4 text-base font-medium text-gray-500 group-hover:text-indigo-600">
                                                         {{ req.property.addr.street }}
                                                     </h2>
-                                                    <h2 class="text-base font-medium text-gray-900 group-hover:text-indigo-600">
+                                                    <h2 class="text-base font-medium text-gray-500 group-hover:text-indigo-600">
                                                         {{ req.property.addr.city }}, {{ req.property.addr.state }}
                                                     </h2>
-                                                    <h2 class="text-base font-medium text-gray-900 group-hover:text-indigo-600">
+                                                    <h2 class="text-base font-medium text-gray-500 group-hover:text-indigo-600">
                                                         {{ req.property.addr.zip }}
                                                     </h2>
-                                                    <div class="text-xs">
+                                                    <div class="text-xs text-indigo-500">
                                                         Sold by: {{ req.property.seller.name }} <br>
-                                                        <a :href="`https://sepolia.etherscan.io/address/${req.property.seller.wallet}`" target="_blank" class="text-blue-500">
+                                                        <a :href="`https://sepolia.etherscan.io/address/${req.property.seller.wallet}`" target="_blank" class="text-indigo-500">
                                                             {{ req.property.seller.wallet }}
                                                         </a>
                                                     </div>
@@ -154,8 +154,8 @@ const setTimeline = async () => {
                                             </RouterLink>
                                         </div>
                                     </div>
-                                    <div class="mt-2 space-y-4 text-sm text-gray-700" v-html="req.property.description" />
-                                    <div class="mt-2 space-y-4 text-sm text-gray-700">
+                                    <div class="mt-2 space-y-4 text-sm text-gray-500" v-html="req.property.description" />
+                                    <div class="mt-2 space-y-4 text-sm text-gray-500">
                                         {{req.mortgage.amount.toString()}}
                                     </div>
                                     <div class="mt-6 flex justify-between space-x-8">
@@ -186,14 +186,14 @@ const setTimeline = async () => {
                                 </article>
                             </li>
                         </ul>
-                        <div v-else class="bg-white px-4 py-6 shadow sm:rounded-lg sm:p-6">
+                        <div v-else class="bg-gray-900 px-4 py-6 text-white shadow sm:rounded-lg sm:p-6">
                             No Recent Requests
                         </div>
                     </div>
                 </div>
             </div>
             <aside class="hidden md:block md:col-span-3">
-                <div class="bg-white px-4 py-6 shadow sm:rounded-lg sm:p-6">
+                <div class="bg-gray-900 px-4 py-6 shadow sm:rounded-lg sm:p-6">
                     <Feed />
                 </div>
             </aside>
