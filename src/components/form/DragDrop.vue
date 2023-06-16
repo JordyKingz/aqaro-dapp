@@ -68,7 +68,7 @@ function clearFiles() {
                                         <input v-on:change="selectFile" id="file-upload" name="file-upload" multiple type="file" class="sr-only" />
                                     </label>
                                 </div>
-                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 150MB</p>
+                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 2MB</p>
                             </div>
                         </div>
                     </div>

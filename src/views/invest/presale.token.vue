@@ -87,7 +87,9 @@ async function getPresaleEndTime() {
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
                     <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
-                        <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Aqaro Presale</h2>
+                        <h2 class="text-xl font-semibold leading-7 text-indigo-500">
+                            Aqaro Presale
+                        </h2>
                         <p class="mt-6">
                             Aqaro is a decentralized housing market that is committed to creating a more transparent, accessible, and equitable way of buying, selling, and investing in real estate.
                             To achieve our mission, we are launching an initial coin offering (ICO) to raise funds for the development and growth of our platform.
@@ -173,7 +175,7 @@ async function getPresaleEndTime() {
                             </p>
                         </div>
                         <figure class="mt-16">
-                            <img class="aspect-video rounded-xl bg-gray-50 object-cover" src="/looks-allocation.png" alt="" />
+                            <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
                             <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
                                 <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />
                                 Allocations Aqaro

@@ -87,20 +87,13 @@ async function getPresaleEndTime() {
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
                     <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
-                        <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Aqaro Presale</h2>
-                        <p class="mt-6">
-                            Aqaro is a decentralized housing market that is committed to creating a more transparent, accessible, and equitable way of buying, selling, and investing in real estate.
-                            To achieve our mission, we are launching an initial coin offering (ICO) to raise funds for the development and growth of our platform.
-                            We are selling 10 million AQR tokens at a price of $0.50 per token, with a softcap of 1000 ETH and a hardcap of 3000 ETH.
-                            The proceeds from the ICO will be used to expand our team, accelerate the development of new features, and establish partnerships with key players in the real estate industry.
-                        </p>
+                        <h2 class="text-xl font-semibold leading-7 text-indigo-500">
+                            Aqaro Staking
+                        </h2>
                         <p class="mt-8">
-                            In the event that we do not reach our softcap, users will have the option to claim back their ETH.
-                            This ensures that your investment is protected and that we only move forward with the ICO if we are able to achieve our minimum funding goal.
-                            By participating in our ICO, you have the opportunity to join the Aqaro community and be a part of the future of housing.
-                            With the AQR token, you can contribute to the growth and development of the platform, earn rewards for staking, and have a say in the governance of the ecosystem.
-                            Our ICO is not just an investment in a token, it is an investment in a more transparent, secure, and equitable housing market.
-                            Join us today and help us to create a decentralized housing market that benefits everyone.
+                            Your decision to stake the tokens demonstrates your trust in us, and we deeply appreciate it.
+                            It fuels our determination to continue building and refining the Aqaro platform in the coming months.
+                            Together, we will revolutionize the real estate industry and create a future where buying, selling, and financing properties are seamless and empowering.
                         </p>
                         <div class="mt-5">
                             <a href="#" class="text-base font-semibold leading-7 text-indigo-500">Show Contract On Etherscan <span aria-hidden="true">&rarr;</span></a>
@@ -142,38 +135,28 @@ async function getPresaleEndTime() {
             <div class="bg-gray-900">
                 <div class="text-white px-6 py-24 lg:px-8">
                     <div class="mx-auto max-w-3xl text-base leading-7 text-gray-400">
-                        <p class="text-base font-semibold leading-7 text-indigo-600">Tokenomics</p>
-                        <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">AQR Token</h1>
+                        <p class="text-base font-semibold leading-7 text-indigo-600">Staking</p>
+                        <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">Earn rewards by staking your Aqaro tokens</h1>
                         <p class="mt-6 text-xl leading-8">
-                            At Aqaro, we believe that a well-designed tokenomics plan is critical to the success of our decentralized housing market. Our token, the AQR, plays a key role in incentivizing user participation and contributing to the growth of the ecosystem.
-                            With 69% of the tokens dedicated to the ecosystem, we ensure that users have a vested interest in the success of the platform.
-                            The allocation of tokens to stake rewards, airdrops, legal expenses, and mortgages creates a balanced and sustainable ecosystem that benefits all stakeholders.
-                            By utilizing a transparent and fair tokenomics plan, we can create a decentralized housing market that is equitable, accessible, and valuable for all participants.
+                            In the world of blockchain investments, the ability to earn passive income has become a sought-after feature.
+                            At Aqaro, we understand the importance of rewarding our early investors. That's why we're excited to introduce our token staking program, where you can earn attractive rewards by staking your Aqaro tokens.
+                            In this blog post, we'll explore how our commitment to your early investment is reflected in the allocation of 2% of the total token supply as stake rewards, distributed over a period of 60 days.
                         </p>
                         <div class="mt-16 text-gray-400 max-w-2xl">
-                            <h2 class="text-2xl font-bold tracking-tight text-gray-300">Governance</h2>
+                            <h2 class="text-2xl font-bold tracking-tight text-gray-300">Stake and Earn</h2>
                             <p class="mt-6">
-                                Aqaro is committed to creating a decentralized housing market that is transparent, secure, and community-driven.
-                                To achieve this, we are incorporating a DAO (Decentralized Autonomous Organization) into our platform.
-                                The DAO will be responsible for managing the mortgage pool, deciding on proposals and voting on changes to the platform, and ensuring that the platform operates in the best interest of its users.
-                                The DAO will be powered by the Aqaro token, with users who hold AQR having the ability to propose and vote on changes within the ecosystem.
-                                By utilizing a decentralized governance structure, we can create a more democratic and equitable housing market that benefits all participants.
+                                By staking your Aqaro tokens, you unlock the potential to earn an extra interest yield on top of your initial investment.
+                                We're thrilled to offer this unique opportunity to our valued investors,
+                                as it aligns with our dedication to providing additional benefits to those who show trust and commitment in our project.
                             </p>
                             <p class="mt-8">
-                                Governance is a critical component of any decentralized platform, and Aqaro is no exception. With the ability to propose and vote on changes within the ecosystem, users have a say in how the platform is developed and operated.
-                                This not only creates a more democratic and transparent ecosystem but also ensures that the platform is responsive to the needs of its users.
-                                The governance structure of Aqaro will be transparent, fair, and efficient, with proposals and votes being recorded on the blockchain for all to see.
-                                By utilizing a DAO and empowering users with the ability to govern the platform, we can create a truly decentralized housing market that operates in the best interest of its participants.
-                            </p>
-                            <p class="mt-8">
-                                In addition to managing the mortgage pool and governance of the platform, the DAO will also play a critical role in handling mortgage requests.
-                                Users who wish to obtain a mortgage for a property listed on the Aqaro platform will submit a request to the DAO, which will then review and decide on the request.
-                                By utilizing a decentralized system for handling mortgage requests, we can eliminate the need for traditional banks and create a more accessible and transparent process for obtaining a mortgage.
-                                This not only benefits buyers but also benefits investors who can earn interest by providing liquidity for the mortgage pool.
+                                To demonstrate our appreciation for your early commitment to Aqaro, we have set aside 2% of the total token supply specifically for stake rewards.
+                                These rewards will be distributed over a 60-day period, allowing you to enjoy the benefits of staking for an extended period.
+                                It's a win-win situation where your investment works for you while contributing to the overall stability and growth of the Aqaro ecosystem.
                             </p>
                         </div>
                         <figure class="mt-16">
-                            <img class="aspect-video rounded-xl bg-gray-50 object-cover" src="/looks-allocation.png" alt="" />
+                            <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
                             <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
                                 <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />
                                 Allocations Aqaro

@@ -26,6 +26,11 @@ const router = createRouter({
     //   component: () => import('../views/invest/presale.token.vue'),
     // },
     {
+      path: '/stake',
+      name: 'stake',
+      component: () => import('../views/invest/stake.token.vue'),
+    },
+    {
       path: '/properties/create',
       name: 'property.create',
       component: () => import('../views/properties/form.property.vue'),
