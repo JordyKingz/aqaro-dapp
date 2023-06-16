@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {ref } from 'vue'
+import {onBeforeMount, ref} from 'vue'
 import { Dialog, DialogPanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import {connectMetaMask, formatAddress, getSigner, setChainSettings} from "@/utils/helpers";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRouter} from "vue-router";
 import Button from "@/components/form/button/Button.vue";
+import AqaroToken from "@/chain/AqaroToken";
 
 const router = useRouter();
 const store = walletConnectionStore();
@@ -15,10 +16,30 @@ const mobileMenuOpen = ref(false);
 let wallet = ref('');
 let connected = ref(false);
 
+const userBalance = ref('0');
+
 const isSubmitted = ref(false);
 
+onBeforeMount(async() => {
+    let token = store.getBearerToken;
+
+    if (!token)
+        token = localStorage.getItem('aqaro.auth.token');
+
+    if (token) {
+        store.setBearerToken(token);
+        const signer = await getSigner();
+        const address = await signer.getAddress();
+        connected.value = true;
+        store.setConnected(true);
+        store.setConnectedWallet(address);
+        wallet.value = formatAddress(address);
+        await getAqaroBalance();
+    }
+});
+
 async function connect() {
-    isSubmitted.value = true;
+  isSubmitted.value = true;
   await connectMetaMask();
   await setChainSettings();
 
@@ -46,12 +67,24 @@ async function connect() {
           if (wallet.value) {
               connected.value = true;
               store.setConnected(true);
+
+              await getAqaroBalance();
           }
       } catch(e) {
           console.log(e);
       }
   }
   isSubmitted.value = false;
+}
+
+async function getAqaroBalance() {
+    const contract = new AqaroToken(store.getChainId);
+    await contract.balanceOf(store.getConnectedWallet)
+      .then(async res => {
+          userBalance.value = res.toString();
+      }).catch((err) => {
+          console.log(err);
+      });
 }
 
 async function routerTo(route: string) {
@@ -77,7 +110,9 @@ async function disconnect() {
                     <RouterLink :to="{name: 'about'}" class="text-sm font-semibold leading-6 text-white">About</RouterLink>
 
                     <RouterLink :to="{name: 'early.investor'}" class="text-sm font-semibold leading-6 text-white">Invest</RouterLink>
-                    <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Earn</RouterLink>
+<!--                    <RouterLink v-if="Number(userBalance) > 0" :to="{name: 'early.investor'}" class="text-sm font-semibold leading-6 text-white">Stake</RouterLink>-->
+
+                    <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Mortgage Provider</RouterLink>
 
                     <RouterLink v-if="store.isConnected" :to="{name: 'property.create'}" class="text-sm font-semibold leading-6 text-white">List Property</RouterLink>
                 </div>
@@ -132,7 +167,9 @@ async function disconnect() {
                             <span v-on:click="routerTo('about')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">About</span>
 
                             <span v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</span>
-                            <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Earn</span>
+<!--                            <span v-if="Number(userBalance) > 0" v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Stake</span>-->
+
+                            <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Mortgage Provider</span>
 
                             <span v-if="store.isConnected" v-on:click="routerTo('property.create')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">List Property</span>
 

@@ -30,6 +30,7 @@ export const walletConnectionStore = defineStore('walletConnection', {
         this.connected = false
     },
     setBearerToken(token: string) {
+        localStorage.setItem('aqaro.auth.token', token);
         this.bearerToken = token
     },
     async getNonce() {
