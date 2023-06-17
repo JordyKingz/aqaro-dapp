@@ -170,7 +170,7 @@ watch(tokenAmount, async (value) => {
                             Together, we will revolutionize the real estate industry and create a future where buying, selling, and financing properties are seamless and empowering.
                         </p>
                         <div class="mt-5">
-                            <a href="https://sepolia.etherscan.io/address/0x9605c8E762ecFa5d38b20f79131bE0580E92292b" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                            <a :href="`https://sepolia.etherscan.io/address/${StakeVaultAddress}`" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
                                 Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
                             </a>
                         </div>

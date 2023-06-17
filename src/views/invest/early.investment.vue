@@ -2,7 +2,7 @@
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {onBeforeMount, onMounted, ref, watch} from "vue";
 import AqaroToken from "@/chain/AqaroToken";
-import {AqaroEarlyInvestAddress} from "@/chain/config/smartContracts";
+import {AqaroEarlyInvestAddress, StakeVaultAddress} from "@/chain/config/smartContracts";
 import {ethers} from "ethers";
 import AqaroEarlyInvest from "@/chain/AqaroEarlyInvest";
 import {useRoute} from "vue-router";
@@ -166,7 +166,7 @@ watch(tokenAmount, () => {
                             which will be distributed over a period of 60 days.
                         </p>
                         <div class="mt-5">
-                            <a href="https://sepolia.etherscan.io/address/0x9605c8E762ecFa5d38b20f79131bE0580E92292b" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                            <a :href="`https://sepolia.etherscan.io/address/${AqaroEarlyInvestAddress}`" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
                                 Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
                             </a>
                         </div>

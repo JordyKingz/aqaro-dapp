@@ -3,7 +3,7 @@ import {walletConnectionStore} from "@/stores/wallet.store";
 import {onBeforeMount, ref} from "vue";
 import AqaroPresale from "@/chain/AqaroPresale";
 import AqaroToken from "@/chain/AqaroToken";
-import {AqaroPresaleAddress} from "@/chain/config/smartContracts";
+import {AqaroPresaleAddress, StakeVaultAddress} from "@/chain/config/smartContracts";
 import {ethers} from "ethers";
 import Allocation from "@/components/pages/token/Allocation.vue";
 
@@ -106,7 +106,7 @@ async function getPresaleEndTime() {
                             Join us today and help us to create a decentralized housing market that benefits everyone.
                         </p>
                         <div class="mt-5">
-                            <a href="https://sepolia.etherscan.io/address/0x9605c8E762ecFa5d38b20f79131bE0580E92292b" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                            <a :href="`https://sepolia.etherscan.io/address/${AqaroPresaleAddress}`" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
                                 Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
                             </a>
                         </div>

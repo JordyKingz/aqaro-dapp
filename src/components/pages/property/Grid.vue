@@ -19,7 +19,7 @@ const props = defineProps({
             <div class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
                 <img v-if="property.thumbnail !== ''" :src="property.thumbnail" :alt="property.addr.street"  />
                 <img v-else src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" :alt="property.addr.street"  />
-                
+
                 <div class="flex items-end p-4" aria-hidden="true">
                     <div class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 px-4 py-2 text-center text-sm font-medium text-white backdrop-blur backdrop-filter">
                         View Product
