@@ -66,20 +66,14 @@ async function connect() {
 }
 
 async function changeNetwork(chain: number) {
-    try {
         // @ts-ignore
         await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: ethers.utils.hexValue(chain) }]
-        }).then(async () => {
-            store.setChainId(chain);
-            rightChain.value = true;
-
-            await initConnection();
         });
-    } catch (err: any) {
-        rightChain.value = false;
-    }
+
+        rightChain.value = true;
+        await initConnection();
 }
 
 async function initConnection() {

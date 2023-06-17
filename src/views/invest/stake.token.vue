@@ -8,7 +8,8 @@ import {ethers} from "ethers";
 import Button from "@/components/form/button/Button.vue";
 import {tokenStore} from "@/stores/token.store";
 import StakeVault from "@/chain/StakeVault";
-import {HARDHAT, Hardhat, SEPOLIA} from "@/chain/config/chains";
+import {ETH, HARDHAT, SEPOLIA} from "@/chain/config/chains";
+import Allocation from "@/components/pages/token/Allocation.vue";
 
 const store = walletConnectionStore();
 const aqaroStore = tokenStore();
@@ -255,13 +256,7 @@ watch(tokenAmount, async (value) => {
                                 It's a win-win situation where your investment works for you while contributing to the overall stability and growth of the Aqaro ecosystem.
                             </p>
                         </div>
-                        <figure class="mt-16 px-4 pt-4">
-                            <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
-                            <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
-                                <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />
-                                Allocations Aqaro
-                            </figcaption>
-                        </figure>
+                        <Allocation/>
                     </div>
                 </div>
             </div>
