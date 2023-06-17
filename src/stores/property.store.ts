@@ -21,6 +21,9 @@ export const propertyStore = defineStore('properties', {
         },
         async getProperty(id: string) {
             return await axiosInstance.get(`/property/get-by-id/${id}`);
+        },
+        async getPropertyThumbnail(sc_id: string) {
+            return await axiosInstance.get(`/property/get-thumbnail/${sc_id}`);
         }
     },
     getters: {
