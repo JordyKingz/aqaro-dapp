@@ -15,5 +15,5 @@ export const MortgageFactoryAddress = "0x6202fffA68aA7679c579cD154Df5719611FeFC6
 export const AqaroTokenAddress = "0x2ed0591f91eEdB2F8F68DD1543Bc60B12BD578Ef";
 export const AqaroEarlyInvestAddress = "0x9605c8E762ecFa5d38b20f79131bE0580E92292b";
 export const AqaroPresaleAddress = "";
-export const StakeVaultAddress = "";
-export const DistributorAddress = "";
+export const StakeVaultAddress = "0x04c10ad946009E23A236Bc613ed97e59223BeC37";
+export const DistributorAddress = "0x8E90669197b46277D80cd0432c00A8FB6E802381";
