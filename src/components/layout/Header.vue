@@ -224,16 +224,18 @@ async function disconnect() {
                         <div class="py-6">
                             <span v-if="!connected" v-on:click="connect" class="text-sm font-semibold hover:cursor-pointer leading-6 text-white">Connect <span aria-hidden="true">&rarr;</span></span>
                             <button v-if="connected" v-on:click="disconnect" class="border-2 border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
-                                <span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
+                                <span v-if="rightChain" class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
                                     <svg class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
                                       <circle cx="3" cy="3" r="3" />
                                     </svg>
                                     {{ wallet }}
                                 </span>
-                                <div class="block">
-                                    <span class="text-xs font-medium text-gray-600">Balance</span>
-                                    <span class="text-xs font-medium text-gray-600">{{ aqaroStore.getBalance }} AQARO</span>
-                                </div>
+                                <span v-if="!rightChain" class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
+                                    <svg class="h-1.5 w-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
+                                      <circle cx="3" cy="3" r="3" />
+                                    </svg>
+                                    Wrong Network
+                                </span>
                             </button>
                         </div>
                     </div>

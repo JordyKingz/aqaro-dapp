@@ -14,8 +14,9 @@ const navigation = {
     pages: [
         { name: 'Home', href: 'home', id: 'home-top' },
         { name: 'About', href: 'about', id: 'about-top' },
+        { name: 'Properties', href: 'property.overview', id: 'property-top' },
         { name: 'Invest', href: 'early.investor', id: 'invest-top' },
-        { name: 'Earn', href: 'mortgage.liquidity.provider', id: 'earn-top' },
+        { name: 'Mortgage Provider', href: 'mortgage.liquidity.provider', id: 'earn-top' },
 
         // { name: 'DAO', href: '#' },
         // { name: 'Mortgages', href: '#' },

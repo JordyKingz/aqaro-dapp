@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import {getEthPrice} from "@/utils/helpers";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyGrid from "@/components/pages/property/Grid.vue";
 import PropertyFactory from "@/chain/PropertyFactory";
 import Property from "@/chain/Property";
 import {propertyStore} from "@/stores/property.store";
+import {useRoute} from "vue-router";
 const store = walletConnectionStore();
 const propStore = propertyStore();
 type PropertyType = {
@@ -26,6 +27,8 @@ type Address = {
     zip: string;
 }
 
+const route = useRoute();
+
 const properties = ref<PropertyType[]>([]);
 const ETH_PRICE = ref(0);
 const propertyContracts = ref([]);
@@ -35,6 +38,16 @@ onBeforeMount(async() => {
 
     if (store.isConnected) {
         await fetchData();
+    }
+});
+
+onMounted(async () => {
+    const anchor = route.query.link;
+    if (anchor) {
+        const element = document.getElementById(`${anchor}`);
+        if (element) {
+            element.scrollIntoView();
+        }
     }
 });
 
@@ -99,7 +112,7 @@ async function getPropertyByAddress(address: string) {
 }
 </script>
 <template>
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div id="property-top" class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
      <PropertyGrid :properties="properties" :ETH_PRICE="ETH_PRICE" />
     </div>
 </template>
