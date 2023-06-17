@@ -53,7 +53,6 @@ onBeforeMount(async() => {
 async function connect() {
   isSubmitted.value = true;
   await connectMetaMask();
-  await changeNetwork(rightChainNr);
   await setChainSettings();
 
     if (store.getChainId !== rightChainNr) {

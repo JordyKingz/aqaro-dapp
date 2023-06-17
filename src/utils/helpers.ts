@@ -11,21 +11,23 @@ export async function connectMetaMask() {
         const provider = new ethers.providers.Web3Provider((window as any).ethereum);
         await provider.send("eth_requestAccounts", []);
 
-        (window as any).ethereum.request({method: "eth_requestAccounts"})
+        // @ts-ignore
+        window.ethereum.request({method: "eth_requestAccounts"})
             .then(async (accounts: string[]) => {
                 store.setConnectedWallet(accounts[0]);
             })
             .catch((err: any) => console.log(err))
 
-        (window as any).ethereum.on('accountsChanged', async () => {
+        // @ts-ignore
+        window.ethereum.on('accountsChanged', async () => {
             (window as any).ethereum.request({method: "eth_requestAccounts"})
                 .then(async (accounts: string[]) => {
                     store.setConnectedWallet(accounts[0]);
                 })
                 .catch((err: any) => console.log(err))
         });
-
-        (window as any).ethereum.on('chainChanged', (chainId: any) => {
+        // @ts-ignore
+        window.ethereum.on('chainChanged', (chainId: any) => {
             console.log('chainChanged');
             console.log(chainId);
             setChainSettings();
