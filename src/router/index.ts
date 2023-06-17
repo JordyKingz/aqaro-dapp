@@ -31,6 +31,11 @@ const router = createRouter({
       component: () => import('../views/invest/stake.token.vue'),
     },
     {
+      path: '/properties/all',
+      name: 'property.overview',
+      component: () => import('../views/properties/overview.property.vue'),
+    },
+    {
       path: '/properties/create',
       name: 'property.create',
       component: () => import('../views/properties/form.property.vue'),
