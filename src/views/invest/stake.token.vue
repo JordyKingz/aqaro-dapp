@@ -8,7 +8,7 @@ import {ethers} from "ethers";
 import Button from "@/components/form/button/Button.vue";
 import {tokenStore} from "@/stores/token.store";
 import StakeVault from "@/chain/StakeVault";
-import {HARDHAT, Hardhat, SEPOLIA} from "@/chain/config/chains";
+import {ETH, HARDHAT, SEPOLIA} from "@/chain/config/chains";
 import Allocation from "@/components/pages/token/Allocation.vue";
 
 const store = walletConnectionStore();
