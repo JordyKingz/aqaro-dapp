@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Subscribe from "@/components/form/Subscribe.vue";
 import {walletConnectionStore} from "@/stores/wallet.store";
+import {AqaroTokenAddress} from "@/chain/config/smartContracts";
 
 const store = walletConnectionStore();
 
@@ -44,6 +45,30 @@ const navigation = {
         },
     ],
 }
+
+async function addTokenToMetaMask() {
+    (window as any).ethereum
+        .request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: AqaroTokenAddress,
+                    symbol: 'AQR',
+                    decimals: 18,
+                    image: 'https://foo.io/token-image.svg',
+                },
+            },
+        })
+        .then((success: any) => {
+            if (success) {
+                console.log('FOO successfully added to wallet!');
+            } else {
+                throw new Error('Something went wrong.');
+            }
+        })
+        .catch(console.error);
+}
 </script>
 <template>
     <footer class="bg-gray-800" aria-labelledby="footer-heading">
@@ -80,7 +105,13 @@ const navigation = {
                     </div>
                 </div>
             </div>
-            <div class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between">
+            <div class="pt-8 md:flex md:items-center md:justify-end">
+                <span v-on:click="addTokenToMetaMask" class="flex hover:cursor-pointer">
+                    <img src="/icons/metamask.svg" alt="metamask" class="h-8 w-8">
+                    <!--                    <span class="text-orange-500 text-xs pt-2 pl-2">AQR Token</span>-->
+                </span>
+            </div>
+            <div class="mt-8 border-t border-white/10 pt-8 lg:flex lg:items-center lg:justify-between">
                 <div>
                     <h3 class="text-sm font-semibold leading-6 text-white">Subscribe to our newsletter</h3>
                     <p class="mt-2 text-sm leading-6 text-gray-300">The latest news, articles, and resources, sent to your inbox weekly.</p>

@@ -8,6 +8,8 @@ import {useRouter} from "vue-router";
 import Button from "@/components/form/button/Button.vue";
 import AqaroToken from "@/chain/AqaroToken";
 import {tokenStore} from "@/stores/token.store";
+import {ethers} from "ethers";
+import {HARDHAT, SEPOLIA} from "@/chain/config/chains";
 
 const router = useRouter();
 const store = walletConnectionStore();
@@ -18,9 +20,10 @@ const mobileMenuOpen = ref(false);
 let wallet = ref('');
 let connected = ref(false);
 
-const userBalance = ref('0');
-
 const isSubmitted = ref(false);
+
+const rightChain = ref(true);
+const rightChainNr = SEPOLIA;
 
 onBeforeMount(async() => {
     let token = store.getBearerToken;
@@ -36,6 +39,13 @@ onBeforeMount(async() => {
         store.setConnected(true);
         store.setConnectedWallet(address);
         wallet.value = formatAddress(address);
+        await setChainSettings();
+
+        if (store.getChainId !== rightChainNr) {
+            rightChain.value = false;
+            return;
+        }
+
         await getAqaroBalance();
     }
 });
@@ -43,47 +53,74 @@ onBeforeMount(async() => {
 async function connect() {
   isSubmitted.value = true;
   await connectMetaMask();
+  await changeNetwork(rightChainNr);
   await setChainSettings();
 
-  if (store.getConnectedWallet !== "") {
-      const message = await store.getNonce();
+    if (store.getChainId !== rightChainNr) {
+        rightChain.value = false;
+        return;
+    }
 
-      const signer = await getSigner();
-      const signature = await signer.signMessage(message.data);
-
-      try {
-          const dto = {
-              address: store.getConnectedWallet,
-              signature: signature
-          }
-
-          const authResult = await store.authenticate(dto);
-          if (authResult.status !== 200) {
-              store.disconnect();
-              return;
-          }
-          store.setBearerToken(authResult.data.access_token);
-
-          wallet.value = formatAddress(store.getConnectedWallet);
-
-          if (wallet.value) {
-              connected.value = true;
-              store.setConnected(true);
-
-              await getAqaroBalance();
-          }
-      } catch(e) {
-          console.log(e);
-      }
-  }
+  await initConnection();
   isSubmitted.value = false;
+}
+
+async function changeNetwork(chain: number) {
+    try {
+        // @ts-ignore
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: ethers.utils.hexValue(chain) }]
+        }).then(async () => {
+            store.setChainId(chain);
+            rightChain.value = true;
+
+            await initConnection();
+        });
+    } catch (err: any) {
+        rightChain.value = false;
+    }
+}
+
+async function initConnection() {
+    await setChainSettings();
+    if (store.getConnectedWallet !== "") {
+        const message = await store.getNonce();
+
+        const signer = await getSigner();
+        const signature = await signer.signMessage(message.data);
+
+        try {
+            const dto = {
+                address: store.getConnectedWallet,
+                signature: signature
+            }
+
+            const authResult = await store.authenticate(dto);
+            if (authResult.status !== 200) {
+                store.disconnect();
+                return;
+            }
+            store.setBearerToken(authResult.data.access_token);
+
+            wallet.value = formatAddress(store.getConnectedWallet);
+
+            if (wallet.value) {
+                connected.value = true;
+                store.setConnected(true);
+
+                await getAqaroBalance();
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    }
 }
 
 async function getAqaroBalance() {
     const contract = new AqaroToken(store.getChainId);
     await contract.balanceOf(store.getConnectedWallet)
       .then(async res => {
-          userBalance.value = res.toString();
           aqaroStore.setTokenBalance(res.toString());  // value in wei
       }).catch((err) => {
           console.log(err);
@@ -93,6 +130,14 @@ async function getAqaroBalance() {
 async function routerTo(route: string) {
     mobileMenuOpen.value = false;
     await router.push({name: route});
+}
+
+async function walletBtnClicked() {
+    if (rightChain.value) {
+        await disconnect();
+    } else {
+        await changeNetwork(rightChainNr);
+    }
 }
 
 async function disconnect() {
@@ -113,7 +158,7 @@ async function disconnect() {
                     <RouterLink :to="{name: 'about'}" class="text-sm font-semibold leading-6 text-white">About</RouterLink>
 
                     <RouterLink :to="{name: 'early.investor'}" class="text-sm font-semibold leading-6 text-white">Invest</RouterLink>
-                    <RouterLink v-if="Number(userBalance) > 0" :to="{name: 'stake'}" class="text-sm font-semibold leading-6 text-white">Stake</RouterLink>
+                    <RouterLink v-if="Number(aqaroStore.getBalance) > 0" :to="{name: 'stake'}" class="text-sm font-semibold leading-6 text-white">Stake</RouterLink>
 
                     <RouterLink :to="{name: 'mortgage.liquidity.provider'}" class="text-sm font-semibold leading-6 text-white">Mortgage Provider</RouterLink>
 
@@ -139,12 +184,16 @@ async function disconnect() {
                   @onClick="connect"
                 />
 
-                <button v-if="connected" v-on:click="disconnect" class="border-2 border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
+                <button v-if="connected" v-on:click="walletBtnClicked" class="border-2 relative border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
                     <span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
-                        <svg class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
+                        <svg v-if="rightChain" class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
                           <circle cx="3" cy="3" r="3" />
                         </svg>
-                        {{ wallet }}
+                        <span v-if="rightChain">{{ wallet }}</span>
+                        <svg v-if="!rightChain" class="h-1.5 w-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
+                          <circle cx="3" cy="3" r="3" />
+                        </svg>
+                        <span v-if="!rightChain">Wrong Network</span>
                       </span>
                 </button>
 
@@ -170,7 +219,7 @@ async function disconnect() {
                             <span v-on:click="routerTo('about')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">About</span>
 
                             <span v-on:click="routerTo('early.investor')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Invest</span>
-                            <span v-if="Number(userBalance) > 0" v-on:click="routerTo('stake')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Stake</span>
+                            <span v-if="Number(aqaroStore.getBalance) > 0" v-on:click="routerTo('stake')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Stake</span>
 
                             <span v-on:click="routerTo('mortgage.liquidity.provider')" class="-mx-3 block rounded-md text-gray-300 hover:text-indigo-500 py-2.5 px-3 text-base font-semibold leading-7">Mortgage Provider</span>
 
@@ -187,6 +236,10 @@ async function disconnect() {
                                     </svg>
                                     {{ wallet }}
                                 </span>
+                                <div class="block">
+                                    <span class="text-xs font-medium text-gray-600">Balance</span>
+                                    <span class="text-xs font-medium text-gray-600">{{ aqaroStore.getBalance }} AQARO</span>
+                                </div>
                             </button>
                         </div>
                     </div>
