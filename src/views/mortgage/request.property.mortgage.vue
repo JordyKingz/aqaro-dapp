@@ -28,6 +28,8 @@ type Address = {
     zip: string;
 }
 
+const loaded = ref(false);
+
 const isValid = ref(false);
 const isSubmitted = ref(false);
 
@@ -64,6 +66,8 @@ onBeforeMount(async () => {
         await getProperty(`${route.params.address}`);
         await getBidOpen(`${route.params.address}`);
     }
+
+    loaded.value = true;
 });
 
 onMounted(async () => {
@@ -334,8 +338,8 @@ watch(monthlyMortgageAmount, () => {
 </script>
 <template>
 <div>
-    <div class="bg-gray-900">
-      <div v-if="store.isConnected" id="request-top" class="mx-auto max-w-7xl px-8 py-12">
+    <div id="request-top"  class="bg-gray-900">
+      <div v-if="loaded && store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
           <div class="space-y-12">
               <div class="border-b border-white/10 pb-12 text-gray-300">
                   <h2 class="text-base font-semibold leading-7 text-white">Mortgage Request Information</h2>
