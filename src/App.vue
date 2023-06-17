@@ -21,8 +21,9 @@ onBeforeMount(() => {
             router.currentRoute.value.name === 'about' ||
             router.currentRoute.value.name === 'early.investor' ||
             router.currentRoute.value.name === 'property.create' ||
-            router.currentRoute.value.name === 'stake' ||
+            router.currentRoute.value.name === 'property.overview' ||
             router.currentRoute.value.name === 'property.detail' ||
+            router.currentRoute.value.name === 'stake' ||
             router.currentRoute.value.name === 'mortgage.liquidity.provider' ||
             router.currentRoute.value.name === 'mortgage.property.request'"
     />
@@ -33,8 +34,9 @@ onBeforeMount(() => {
             router.currentRoute.value.name === 'about' ||
             router.currentRoute.value.name === 'early.investor' ||
             router.currentRoute.value.name === 'property.create' ||
-            router.currentRoute.value.name === 'stake' ||
+            router.currentRoute.value.name === 'property.overview' ||
             router.currentRoute.value.name === 'property.detail' ||
+            router.currentRoute.value.name === 'stake' ||
             router.currentRoute.value.name === 'mortgage.liquidity.provider' ||
             router.currentRoute.value.name === 'mortgage.property.request'"
     />
