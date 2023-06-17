@@ -17,7 +17,9 @@ const props = defineProps({
     <div class="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
         <div v-for="property in properties" :key="property.id" class="group relative bg-gray-900 rounded-2xl">
             <div class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" :alt="property.addr.street"  />
+                <img v-if="property.thumbnail !== ''" :src="property.thumbnail" :alt="property.addr.street"  />
+                <img v-else src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" :alt="property.addr.street"  />
+                
                 <div class="flex items-end p-4" aria-hidden="true">
                     <div class="w-full rounded-md bg-indigo-600 hover:bg-indigo-700 px-4 py-2 text-center text-sm font-medium text-white backdrop-blur backdrop-filter">
                         View Product

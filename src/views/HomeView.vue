@@ -9,8 +9,10 @@ import EarnAPY from "@/components/pages/home/EarnAPY.vue";
 import {formatDollars, getEthPrice} from "@/utils/helpers";
 import {useRoute} from "vue-router";
 import PropertyGrid from "@/components/pages/property/Grid.vue";
+import {propertyStore} from "@/stores/property.store";
 
 const store = walletConnectionStore();
+const propStore = propertyStore();
 const route = useRoute();
 
 type Address = {
@@ -97,7 +99,10 @@ async function getPropertyByAddress(address: string) {
                     zip: result.addr.zip
                 },
                 seller: result.seller,
+                thumbnail: ''
             }
+            const serviceResult = await propStore.getPropertyThumbnail(property.id);
+            property.thumbnail = serviceResult.data.thumbnail;
             // @ts-ignore
             properties.value.push(property);
         })

@@ -5,14 +5,17 @@ import {walletConnectionStore} from "@/stores/wallet.store";
 import PropertyGrid from "@/components/pages/property/Grid.vue";
 import PropertyFactory from "@/chain/PropertyFactory";
 import Property from "@/chain/Property";
+import {propertyStore} from "@/stores/property.store";
 const store = walletConnectionStore();
+const propStore = propertyStore();
 type PropertyType = {
     id: string,
     askingPrice: string,
     price: string,
     addr: Address,
     seller: string,
-    address: string
+    address: string,
+    thumbnail: string
 }
 
 type Address = {
@@ -80,7 +83,12 @@ async function getPropertyByAddress(address: string) {
                     zip: result.addr.zip
                 },
                 seller: result.seller,
+                thumbnail: ''
             }
+
+            const serviceResult = await propStore.getPropertyThumbnail(property.id);
+            property.thumbnail = serviceResult.data.thumbnail;
+
             // @ts-ignore
             properties.value.push(property)
             
