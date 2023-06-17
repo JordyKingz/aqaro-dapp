@@ -84,7 +84,7 @@ async function getAqaroBalance() {
     await contract.balanceOf(store.getConnectedWallet)
       .then(async res => {
           userBalance.value = res.toString();
-          aqaroStore.setTokenBalance(res.toString());
+          aqaroStore.setTokenBalance(res.toString());  // value in wei
       }).catch((err) => {
           console.log(err);
       });

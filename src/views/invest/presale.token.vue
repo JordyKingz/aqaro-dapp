@@ -86,7 +86,7 @@ async function getPresaleEndTime() {
         <div class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
-                    <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
+                    <div class="col-span-8 md:col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-xl font-semibold leading-7 text-indigo-500">
                             Aqaro Presale
                         </h2>
@@ -110,7 +110,7 @@ async function getPresaleEndTime() {
                             </a>
                         </div>
                     </div>
-                    <div class="col-span-3 text-gray-400">
+                    <div class="col-span-8 md:col-span-3 text-gray-400">
                         <div class="bg-gray-900 shadow rounded-lg py-6 px-5">
                             <div class="w-full">
                                 <label class="text-gray-300 w-full text-xl">Amount of Tokens to Purchase</label>
@@ -176,7 +176,7 @@ async function getPresaleEndTime() {
                                 This not only benefits buyers but also benefits investors who can earn interest by providing liquidity for the mortgage pool.
                             </p>
                         </div>
-                        <figure class="mt-16">
+                        <figure class="mt-16 px-4 pt-4">
                             <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
                             <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
                                 <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />

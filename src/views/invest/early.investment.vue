@@ -179,10 +179,10 @@ watch(tokenAmount, () => {
                             <div class="text-center w-full mt-4">
                                 <Button
                                   :text="'Invest'"
-                                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
-                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-                                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :spinner="'animate-spin h-4 w-4 mr-2 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none block w-full rounded-md border-2 border-indigo-500 px-3 py-4 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 block w-full px-3 py-4 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative block w-full px-3 py-4 bg-indigo-500 text-sm font-semibold text-white items-center justify-center rounded-md'"
                                   :isSubmitted="isSubmitted"
                                   :isValid="isValid"
                                   @onClick="participateInPresale"
@@ -228,7 +228,7 @@ watch(tokenAmount, () => {
                                 This not only benefits buyers but also benefits investors who can earn interest by providing liquidity for the mortgage pool.
                             </p>
                         </div>
-                        <figure class="mt-16">
+                        <figure class="mt-16 px-4 pt-4">
                             <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
                             <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
                                 <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />

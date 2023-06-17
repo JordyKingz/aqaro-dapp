@@ -1,92 +1,136 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {onBeforeMount, ref} from "vue";
+import {onBeforeMount, ref, watch} from "vue";
 import AqaroPresale from "@/chain/AqaroPresale";
 import AqaroToken from "@/chain/AqaroToken";
-import {AqaroPresaleAddress} from "@/chain/config/smartContracts";
+import {AqaroPresaleAddress, StakeVaultAddress} from "@/chain/config/smartContracts";
 import {ethers} from "ethers";
+import Button from "@/components/form/button/Button.vue";
+import {tokenStore} from "@/stores/token.store";
+import StakeVault from "@/chain/StakeVault";
 
 const store = walletConnectionStore();
+const aqaroStore = tokenStore();
 
 const tokenAmount = ref('');
-const contractBalance = ref('');
-const tokensSold = ref();
 
-const tokenPrice = 0.0003;
+enum StakeState {
+    APPROVE,
+    APPROVED,
+    STAKE,
+    STAKED
+}
 
-const presaleContractBalance = 10_000_000;
-const tokenBalance = ref();
+const stakeState = ref(StakeState.APPROVE);
+const approvedAmount = ref('0');
+
+const isSubmitted = ref(false);
+const isValid = ref(false);
+
 
 onBeforeMount(async () => {
     await initPage();
 });
 
 async function initPage() {
-    await getContractEthBalance();
-    await getTokensSold();
-    await getPresaleEndTime();
+    tokenAmount.value = '';
+    await getTokenBalance();
+    await getAllowance();
+    await getStakedBalance();
 }
 
-async function getContractEthBalance() {
-  const contract = new AqaroPresale(store.getChainId);
-  await contract.getEthBalance()
-      .then(async (response: any) => {
-          contractBalance.value = ethers.utils.formatEther(response.toString());
-      })
-      .catch((error: any) => {
-          console.log(error);
-      });
-}
-
-async function getTokensSold() {
+async function getTokenBalance() {
     const contract = new AqaroToken(store.getChainId);
-    await contract.balanceOf(AqaroPresaleAddress)
+    await contract.balanceOf(store.getConnectedWallet)
         .then(async (response: any) => {
-            console.log(response.toString());
-
-            const amountOfTokensFormatted = ethers.utils.formatEther(response.toString());
-            tokensSold.value = presaleContractBalance - Number(amountOfTokensFormatted);
-            tokenBalance.value = Number(amountOfTokensFormatted);
+            aqaroStore.setTokenBalance(response.toString()); // value in wei
         })
         .catch((error: any) => {
             console.log(error);
         });
 }
 
-async function participateInPresale() {
-    const contract = new AqaroPresale(store.getChainId);
-
-    await contract.buyTokens(Number(tokenAmount.value))
+async function getAllowance() {
+    const contract = new AqaroToken(store.getChainId);
+    await contract.allowance(store.getConnectedWallet, StakeVaultAddress)
         .then(async (response: any) => {
-            const transactionReceipt = await response.wait(1);
-            console.log(transactionReceipt);
+            if (ethers.utils.formatUnits(response.toString(), 18) === "0" || ethers.utils.formatUnits(response.toString(), 18) === "0.0") {
+                stakeState.value = StakeState.APPROVE;
+            } else if (ethers.utils.formatUnits(response.toString(), 18) === ethers.utils.formatUnits(aqaroStore.stakedBalance, 18)) {
+                stakeState.value = StakeState.APPROVE;
+                approvedAmount.value = "0";
+            } else {
+                stakeState.value = StakeState.APPROVED;
+                approvedAmount.value = ethers.utils.formatUnits(response.toString(), 18);
+            }
+        })
+        .catch((error: any) => {
+            console.log(error);
+            isSubmitted.value = false;
+        });
+}
 
+async function getStakedBalance() {
+    const contract = new StakeVault(store.getChainId);
+    await contract.balanceOf(store.getConnectedWallet)
+        .then(async (response: any) => {
+            aqaroStore.setStakedBalance(response.toString());  // value in wei
+        })
+        .catch((error: any) => {
+            console.log(error);
+        });
+}
+
+async function approve() {
+    isSubmitted.value = true;
+    const contract = new AqaroToken(store.getChainId);
+    await contract.approve(StakeVaultAddress, ethers.utils.parseUnits(tokenAmount.value, 18))
+        .then(async (response: any) => {
+            await response.wait(1);
+            await getAllowance();
+            isSubmitted.value = false;
+        })
+        .catch((error: any) => {
+            isSubmitted.value = false;
+            console.log(error);
+        });
+}
+
+async function stake() {
+    isSubmitted.value = true;
+    const contract = new StakeVault(store.getChainId);
+    await contract.stake(ethers.utils.parseUnits(tokenAmount.value, 18))
+        .then(async (response: any) => {
+            await response.wait(1);
             await initPage();
+            isSubmitted.value = false;
         })
         .catch((error: any) => {
+            isSubmitted.value = false;
             console.log(error);
         });
 }
 
-async function getPresaleEndTime() {
-    const contract = new AqaroPresale(store.getChainId);
-    await contract.getPresaleEndDate()
-        .then(async (response: any) => {
-            console.log(response.toString());
-            console.log(new Date(response.toString() * 1000).toLocaleString());
-        })
-        .catch((error: any) => {
-            console.log(error);
-        });
-}
+watch(tokenAmount, async (value) => {
+    if (value === '' && parseFloat(value) <= 0) {
+        isValid.value = false;
+        return;
+    }
 
+    if (parseFloat(value) > parseFloat(ethers.utils.formatUnits(aqaroStore.getBalance, 18))) {
+        isValid.value = false;
+        return;
+    }
+
+    isValid.value = true;
+})
 </script>
 <template>
     <div class="bg-gray-900">
         <div class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">
-                    <div class="col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
+                    <div class="col-span-8 md:col-span-5 bg-gray-900 text-gray-400 shadow rounded-lg py-6 px-5">
                         <h2 class="text-xl font-semibold leading-7 text-indigo-500">
                             Aqaro Staking
                         </h2>
@@ -101,34 +145,59 @@ async function getPresaleEndTime() {
                             </a>
                         </div>
                     </div>
-                    <div class="col-span-3 text-gray-400">
+                    <div class="col-span-8 md:col-span-3 text-gray-400">
                         <div class="bg-gray-900 shadow rounded-lg py-6 px-5">
                             <div class="w-full">
-                                <label class="text-gray-300 w-full text-xl">Amount of Tokens to Purchase</label>
-                                <input
-                                        type="text"
-                                        class="bg-white/5 w-full px-4 py-3 mt-2 focus:ring-indigo-600 focus:ring-offset-gray-900 rounded-lg placeholder-gray-400 text-gray-300"
-                                        v-model="tokenAmount"
-                                        placeholder="Enter amount of Tokens to buy">
-                            </div>
-                            <div class="my-4">
-                                ETH to pay: {{ (Number(tokenAmount) * tokenPrice).toFixed(5) }}ETH
-                            </div>
-                            <div>
-                                <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
-                                    {{tokenBalance}} Tokens Left For Sale
+                                <label class="text-gray-300 w-full text-xl">Amount of Tokens to Stake</label>
+                                <div class="relative mt-2 flex items-center">
+                                    <input type="text" v-model="tokenAmount" placeholder="0" class="bg-white/5 w-full text-lg focus:ring-indigo-600 focus:ring-offset-gray-900 rounded-lg placeholder-gray-400 text-gray-300 py-6 pr-14 pl-3" />
+                                    <div class="absolute inset-y-0 right-0 flex py-1.5 pr-4">
+                                        <div class="block pt-1.5">
+                                            <div class="block w-full">
+                                                <kbd class="bg-gray-900 text-xs float-right rounded-xl px-5 py-1">AQR</kbd>
+                                            </div>
+                                            <div class="block float-right">
+                                                <span class="text-xs">
+                                                    Balance: {{ethers.utils.formatUnits(aqaroStore.getBalance, 18)}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div v-if="stakeState === StakeState.APPROVED" class="mt-4">
                                 <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
-                                    {{tokensSold}} Tokens Sold
+                                    Approved: {{ approvedAmount }} AQR
+                                </div>
+                            </div>
+                            <div v-if="ethers.utils.formatUnits(aqaroStore.getStakedBalance, 18) > 0" class="mt-4">
+                                <div class="bg-gray-900 text-gray-400 shadow rounded-lg">
+                                    Staked Amount: {{ ethers.utils.formatUnits(aqaroStore.getStakedBalance, 18) }} AQR
                                 </div>
                             </div>
                             <div class="text-center w-full mt-4">
-                                <button v-if="Number(tokenAmount) && Number(tokenAmount) > 0" v-on:click="participateInPresale" class="px-2 py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg hover:bg-indigo-500 hover:text-white">
-                                    Participate In Presale
-                                </button>
-                                <button v-else class="px-2 cursor-not-allowed py-2 border-2 border-indigo-500 text-indigo-500 rounded-lg">
-                                    Participate In Presale
-                                </button>
+                                <Button
+                                  v-if="stakeState === StakeState.APPROVE"
+                                  :text="'Approve'"
+                                  :spinner="'animate-spin h-4 w-4 mr-2 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none block w-full rounded-md border-2 border-indigo-500 px-3 py-4 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 block w-full px-3 py-4 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative block w-full px-3 py-4 bg-indigo-500 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :isSubmitted="isSubmitted"
+                                  :isValid="isValid"
+                                  @onClick="approve"
+                                />
+                                <Button
+                                  v-if="stakeState === StakeState.APPROVED"
+                                  :text="'Stake'"
+                                  :spinner="'animate-spin h-4 w-4 mr-2 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none block w-full rounded-md border-2 border-indigo-500 px-3 py-4 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 block w-full px-3 py-4 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative block w-full px-3 py-4 bg-indigo-500 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :isSubmitted="isSubmitted"
+                                  :isValid="isValid"
+                                  @onClick="stake"
+                                />
                             </div>
                         </div>
                     </div>
@@ -157,7 +226,7 @@ async function getPresaleEndTime() {
                                 It's a win-win situation where your investment works for you while contributing to the overall stability and growth of the Aqaro ecosystem.
                             </p>
                         </div>
-                        <figure class="mt-16">
+                        <figure class="mt-16 px-4 pt-4">
                             <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
                             <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
                                 <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />
