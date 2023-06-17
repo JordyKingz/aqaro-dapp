@@ -8,6 +8,7 @@ import AqaroEarlyInvest from "@/chain/AqaroEarlyInvest";
 import {useRoute} from "vue-router";
 import Button from "@/components/form/button/Button.vue";
 import {tokenStore} from "@/stores/token.store";
+import {ETH, HARDHAT, SEPOLIA} from "@/chain/config/chains";
 
 const store = walletConnectionStore();
 const aqaroStore = tokenStore();
@@ -27,8 +28,19 @@ const tokenBalance = ref();
 
 const showStakeNotification = ref(false);
 
+const env = import.meta.env.VITE_ENV;
+const rightChain = ref(true);
+const rightChainNr = SEPOLIA;
+
 onBeforeMount(async () => {
-    if (store.isConnected) {
+    if (env !== 'development') {
+        if (store.getChainId !== rightChainNr) {
+            rightChain.value = false;
+            await changeNetwork(rightChainNr);
+        }
+    }
+
+    if (store.isConnected && rightChain.value) {
         if (Number(aqaroStore.getBalance) > 0) {
             showStakeNotification.value = true;
         }
@@ -52,11 +64,28 @@ onMounted(async () => {
 
 async function initPage() {
     await getContractEthBalance();
+    await getTokenBalance();
     await getTokensSold();
 }
 
-async function getContractEthBalance() {
+async function changeNetwork(chain: number) {
+    try {
+        // @ts-ignore
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: ethers.utils.hexValue(chain) }]
+        }).then(async () => {
+            store.setChainId(rightChainNr);
+            rightChain.value = true;
+            await initPage();
+        });
+    } catch (err: any) {
+        rightChain.value = false;
+        console.log('Silent switch failed');
+    }
+}
 
+async function getContractEthBalance() {
   const contract = new AqaroEarlyInvest(store.getChainId);
   await contract.getEthBalance()
       .then(async (response: any) => {
@@ -65,6 +94,17 @@ async function getContractEthBalance() {
       .catch((error: any) => {
           console.log(error);
       });
+}
+
+async function getTokenBalance() {
+    const contract = new AqaroToken(store.getChainId);
+    await contract.balanceOf(store.getConnectedWallet)
+        .then(async (response: any) => {
+            aqaroStore.setTokenBalance(response.toString()); // amount in wei
+        })
+        .catch((error: any) => {
+            console.log(error);
+        });
 }
 
 async function getTokensSold() {
@@ -153,7 +193,7 @@ watch(tokenAmount, () => {
                                     {{tokenBalance}} Tokens Left For Sale
                                 </div>
                                 <div class="bg-gray-900 text-indigo-400 shadow rounded-lg">
-                                    {{tokensSold}} Tokens Sold
+                                    {{tokensSold}} Tokens Sold {{rightChain}}
                                 </div>
                             </div>
                             <div v-if="showStakeNotification" class="mt-4">
@@ -177,7 +217,22 @@ watch(tokenAmount, () => {
                                 </div>
                             </div>
                             <div class="text-center w-full mt-4">
+                                <div v-if="!rightChain" class="bg-red-100 border-2 rounded-md border-red-500 text-red-500">
+                                    <div class="px-2 py-4">
+                                        <h3 class="text-base font-medium leading-4 text-red-500">
+                                            Connected to the wrong network!
+                                        </h3>
+                                        <p class="text-xs mt-2">
+                                            Please connect to the Ethereum Mainnet to invest in Aqaro tokens.
+                                        </p>
+                                        <button class="mt-4 text-xs font-semibold text-blue-500 hover:text-blue-600" v-on:click="changeNetwork(rightChainNr)">
+                                            Change Network
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <Button
+                                  v-if="rightChain"
                                   :text="'Invest'"
                                   :spinner="'animate-spin h-4 w-4 mr-2 text-white group-hover:text-gray-200'"
                                   :btnDisabled="'opacity-50 cursor-not-allowed flex-none block w-full rounded-md border-2 border-indigo-500 px-3 py-4 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"

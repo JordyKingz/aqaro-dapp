@@ -8,6 +8,7 @@ import {ethers} from "ethers";
 import Button from "@/components/form/button/Button.vue";
 import {tokenStore} from "@/stores/token.store";
 import StakeVault from "@/chain/StakeVault";
+import {HARDHAT, Hardhat, SEPOLIA} from "@/chain/config/chains";
 
 const store = walletConnectionStore();
 const aqaroStore = tokenStore();
@@ -27,10 +28,38 @@ const approvedAmount = ref('0');
 const isSubmitted = ref(false);
 const isValid = ref(false);
 
+const env = import.meta.env.VITE_ENV;
+const rightChain = ref(true);
+const rightChainNr = SEPOLIA;
 
 onBeforeMount(async () => {
-    await initPage();
+    if (env !== 'development') {
+        if (store.getChainId !== rightChainNr) {
+            rightChain.value = false;
+            await changeNetwork(rightChainNr);
+        }
+    }
+    if (store.isConnected && rightChain.value) {
+        await initPage();
+    }
 });
+
+async function changeNetwork(chain: number) {
+    try {
+        // @ts-ignore
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: ethers.utils.hexValue(chain) }]
+        }).then(async () => {
+            store.setChainId(rightChainNr);
+            rightChain.value = true;
+            await initPage();
+        });
+    } catch (err: any) {
+        rightChain.value = false;
+        console.log('Silent switch failed');
+    }
+}
 
 async function initPage() {
     tokenAmount.value = '';

@@ -17,8 +17,7 @@ export async function connectMetaMask() {
             })
             .catch((err: any) => console.log(err))
 
-        // @ts-ignore
-        window.ethereum.on('accountsChanged', async () => {
+        (window as any).ethereum.on('accountsChanged', async () => {
             (window as any).ethereum.request({method: "eth_requestAccounts"})
                 .then(async (accounts: string[]) => {
                     store.setConnectedWallet(accounts[0]);
