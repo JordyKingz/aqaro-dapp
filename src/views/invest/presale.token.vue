@@ -5,6 +5,7 @@ import AqaroPresale from "@/chain/AqaroPresale";
 import AqaroToken from "@/chain/AqaroToken";
 import {AqaroPresaleAddress} from "@/chain/config/smartContracts";
 import {ethers} from "ethers";
+import Allocation from "@/components/pages/token/Allocation.vue";
 
 const store = walletConnectionStore();
 
@@ -176,13 +177,7 @@ async function getPresaleEndTime() {
                                 This not only benefits buyers but also benefits investors who can earn interest by providing liquidity for the mortgage pool.
                             </p>
                         </div>
-                        <figure class="mt-16 px-4 pt-4">
-                            <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
-                            <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
-                                <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />
-                                Allocations Aqaro
-                            </figcaption>
-                        </figure>
+                        <Allocation/>
                     </div>
                 </div>
             </div>
