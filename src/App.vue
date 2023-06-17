@@ -4,6 +4,7 @@ import Header from './components/layout/Header.vue'
 import Footer from "@/components/layout/Footer.vue";
 import Banner from "@/components/layout/Banner.vue";
 import {onBeforeMount} from "vue";
+import UrlChecker from "@/components/layout/UrlChecker.vue";
 
 const router = useRouter();
 
@@ -14,6 +15,8 @@ onBeforeMount(() => {
 
 <template>
   <div class="wrapper min-h-screen bg-gray-800">
+    <UrlChecker />
+
     <Banner />
     <Header
             v-if="
