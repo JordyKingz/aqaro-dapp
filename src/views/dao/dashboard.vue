@@ -196,6 +196,9 @@ const setTimeline = async () => {
                 <div class="bg-gray-900 px-4 py-6 shadow sm:rounded-lg sm:p-6">
                     <Feed />
                 </div>
+                <div class="bg-gray-900 mt-4 px-4 py-6 shadow sm:rounded-lg sm:p-6">
+                    <Feed />
+                </div>
             </aside>
         </div>
     </main>

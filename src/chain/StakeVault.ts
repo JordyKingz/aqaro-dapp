@@ -1,11 +1,10 @@
 import {BigNumber, ethers} from "ethers";
 import {
-    AqaroEarlyInvestAddress,
-    AqaroTokenAddress,
+    StakeVaultAddress,
 } from "@/chain/config/smartContracts";
 // @ts-ignore
-import contractAbi from "@/chain/config/abis/AqaroToken.json";
-export default class AqaroToken {
+import contractAbi from "@/chain/config/abis/StakeVault.json";
+export default class StakeVault {
     private provider: any;
     private signer: any;
     private contractInterface: any;
@@ -18,27 +17,23 @@ export default class AqaroToken {
         this.signer = this.provider.getSigner();
 
         if (chain === 1) {
-            this.contractAddress = AqaroTokenAddress;
+            this.contractAddress = StakeVaultAddress;
         } else if (chain === 31337) {
-            this.contractAddress = AqaroTokenAddress;
+            this.contractAddress = StakeVaultAddress;
         } else if (chain === 11155111) {
-            this.contractAddress = AqaroTokenAddress;
+            this.contractAddress = StakeVaultAddress;
         } else {
-            this.contractAddress = AqaroTokenAddress;
+            this.contractAddress = StakeVaultAddress;
         }
 
         this.contractInterface = new ethers.Contract(this.contractAddress, contractAbi.abi, this.signer);
     }
 
+    async stake(amount: BigNumber) {
+        return await this.contractInterface.stake(amount);
+    }
+
     async balanceOf(address: string) {
         return await this.contractInterface.balanceOf(address);
-    }
-
-    async approve(address: string, amount: BigNumber) {
-        return await this.contractInterface.approve(address, amount);
-    }
-
-    async allowance(owner: string, spender: string) {
-        return await this.contractInterface.allowance(owner, spender);
     }
 }

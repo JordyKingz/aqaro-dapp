@@ -132,10 +132,10 @@ watch(ethAmount, () => {
                             <div class="text-center w-full mt-4">
                                 <Button
                                   :text="' Provide ETH Liquidity'"
-                                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
-                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-                                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :spinner="'animate-spin h-4 w-4 mr-2 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none block w-full rounded-md border-2 border-indigo-500 px-3 py-4 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 block w-full px-3 py-4 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative block w-full px-3 py-4 bg-indigo-500 text-sm font-semibold text-white items-center justify-center rounded-md'"
                                   :isSubmitted="isSubmitted"
                                   :isValid="isValid"
                                   @onClick="provideLiquidity"

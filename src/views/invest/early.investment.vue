@@ -7,8 +7,10 @@ import {ethers} from "ethers";
 import AqaroEarlyInvest from "@/chain/AqaroEarlyInvest";
 import {useRoute} from "vue-router";
 import Button from "@/components/form/button/Button.vue";
+import {tokenStore} from "@/stores/token.store";
 
 const store = walletConnectionStore();
+const aqaroStore = tokenStore();
 const route = useRoute();
 
 const tokenAmount = ref('');
@@ -23,8 +25,14 @@ const tokenPrice = 0.000125;
 const presaleContractBalance = 3_000_000;
 const tokenBalance = ref();
 
+const showStakeNotification = ref(false);
+
 onBeforeMount(async () => {
     if (store.isConnected) {
+        if (Number(aqaroStore.getBalance) > 0) {
+            showStakeNotification.value = true;
+        }
+
         await initPage();
         setInterval(async () => {
             await initPage();
@@ -82,6 +90,8 @@ async function participateInPresale() {
             isSubmitted.value = false;
             tokenAmount.value = '';
             await initPage();
+
+            showStakeNotification.value = true;
         })
         .catch((error: any) => {
             isSubmitted.value = false;
@@ -110,9 +120,9 @@ watch(tokenAmount, () => {
                             Your support during this crucial stage will drive our progress, accelerate development, and bring us closer to launching the platform.
                         </p>
                         <p class="mt-8">
-                            As an added incentive, once you purchase Aqaro tokens, you'll have the option to stake your tokens and earn an attractive extra interest yield.
-                            We are proud to offer a competitive yield of 5%, which rewards you for your early commitment to Aqaro while providing a benefit to the platform as well.
-                            By staking your tokens, you not only have the potential to grow your investment but also contribute to the liquidity and stability of the Aqaro ecosystem.
+                            As an extra incentive for your investment in Aqaro tokens, we're delighted to offer you the opportunity to stake your tokens and earn an attractive extra interest yield.
+                            With our commitment to your early commitment to Aqaro, we are allocating 2% of the total token supply as stake rewards,
+                            which will be distributed over a period of 60 days.
                         </p>
                         <div class="mt-5">
                             <a href="https://sepolia.etherscan.io/address/0x9605c8E762ecFa5d38b20f79131bE0580E92292b" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
@@ -146,13 +156,33 @@ watch(tokenAmount, () => {
                                     {{tokensSold}} Tokens Sold
                                 </div>
                             </div>
+                            <div v-if="showStakeNotification" class="mt-4">
+                                <div class="bg-gray-800 text-gray-400 shadow rounded-lg">
+                                    <div class="px-4 py-5 sm:p-6">
+                                        <h3 class="text-base font-semibold leading-4 text-gray-400">
+                                            Earn an extra 2% interest yield by staking your tokens!
+                                        </h3>
+                                        <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                            <p>
+                                                Thank you for your investment in Aqaro tokens. You can now stake your tokens and earn an attractive extra interest yield.
+                                            </p>
+                                        </div>
+                                        <div class="mt-3 text-sm leading-6">
+                                            <RouterLink :to="{name: 'stake'}" class="font-semibold text-indigo-500 hover:text-indigo-600">
+                                                Stake your tokens now
+                                                <span aria-hidden="true"> &rarr;</span>
+                                            </RouterLink>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="text-center w-full mt-4">
                                 <Button
                                   :text="'Invest'"
-                                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
-                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-                                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                                  :spinner="'animate-spin h-4 w-4 mr-2 text-white group-hover:text-gray-200'"
+                                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none block w-full rounded-md border-2 border-indigo-500 px-3 py-4 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 block w-full px-3 py-4 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                                  :btnSubmitted="'relative block w-full px-3 py-4 bg-indigo-500 text-sm font-semibold text-white items-center justify-center rounded-md'"
                                   :isSubmitted="isSubmitted"
                                   :isValid="isValid"
                                   @onClick="participateInPresale"
@@ -198,7 +228,7 @@ watch(tokenAmount, () => {
                                 This not only benefits buyers but also benefits investors who can earn interest by providing liquidity for the mortgage pool.
                             </p>
                         </div>
-                        <figure class="mt-16">
+                        <figure class="mt-16 px-4 pt-4">
                             <img class="aspect-video rounded-xl bg-gray-900 object-cover" src="/aqaro_allocation.svg" alt="" />
                             <figcaption class="mt-4 flex gap-x-2 text-sm leading-6 text-gray-500">
                                 <InformationCircleIcon class="mt-0.5 h-5 w-5 flex-none text-gray-300" aria-hidden="true" />
