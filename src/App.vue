@@ -22,6 +22,7 @@ onBeforeMount(() => {
             v-if="
             router.currentRoute.value.name === 'home' ||
             router.currentRoute.value.name === 'about' ||
+            router.currentRoute.value.name === 'just.shipped' ||
             router.currentRoute.value.name === 'early.investor' ||
             router.currentRoute.value.name === 'property.create' ||
             router.currentRoute.value.name === 'property.overview' ||
@@ -35,6 +36,7 @@ onBeforeMount(() => {
             v-if="
             router.currentRoute.value.name === 'home' ||
             router.currentRoute.value.name === 'about' ||
+            router.currentRoute.value.name === 'just.shipped' ||
             router.currentRoute.value.name === 'early.investor' ||
             router.currentRoute.value.name === 'property.create' ||
             router.currentRoute.value.name === 'property.overview' ||

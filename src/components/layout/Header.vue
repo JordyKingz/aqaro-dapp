@@ -165,6 +165,8 @@ async function disconnect() {
                 </button>
             </div>
             <div class="hidden lg:flex">
+                <RouterLink v-if="store.isConnected" :to="{name: 'dao.dashboard'}" class="text-sm pt-2 pr-4 font-semibold leading-6 text-white">DAO <span aria-hidden="true">&rarr;</span></RouterLink>
+
                 <Button
                   v-if="!connected"
                   :text="'connect'"
@@ -177,7 +179,7 @@ async function disconnect() {
                   @onClick="connect"
                 />
 
-                <button v-if="connected" v-on:click="walletBtnClicked" class="border-2 relative border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
+                <button v-if="connected" v-on:click="walletBtnClicked" class="border-2 pl-4 relative border-gray-600 bg-gray-100 font-medium pb-2 pt-1 px-4 rounded-3xl">
                     <span class="inline-flex items-center gap-x-1.5 text-xs font-medium text-gray-600">
                         <svg v-if="rightChain" class="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
                           <circle cx="3" cy="3" r="3" />
@@ -190,7 +192,6 @@ async function disconnect() {
                       </span>
                 </button>
 
-                <RouterLink v-if="store.isConnected" :to="{name: 'dao.dashboard'}" class="text-sm pl-4 pt-1 font-semibold leading-6 text-white">DAO <span aria-hidden="true">&rarr;</span></RouterLink>
             </div>
         </nav>
         <Dialog as="div" class="lg:hidden bg-gray-900 text-white" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
