@@ -20,13 +20,13 @@ import { ChevronRightIcon } from '@heroicons/vue/20/solid'
         <div class="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
             <div class="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
                 <div class="">
-                    <a href="#" class="inline-flex space-x-6">
+                    <RouterLink :to="{name: 'just.shipped'}" class="inline-flex space-x-6 group hover:text-indigo-600">
 <!--                        <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">What's new</span>-->
-                        <span class="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300">
+                        <span class="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300 group-hover:text-indigo-600">
                           <span>Just shipped v0.0.1</span>
                           <ChevronRightIcon class="h-5 w-5 text-gray-500" aria-hidden="true" />
                         </span>
-                    </a>
+                    </RouterLink>
                 </div>
                 <h1 class="mt-10 text-3xl font-bold tracking-tight text-white sm:text-5xl">Decentralized housing is almost there</h1>
                 <p class="mt-6 text-lg leading-8 text-gray-300">Aqaro is the decentralized housing market that uses blockchain to create a transparent and secure platform for buyers, sellers, and investors. Join us and be a part of the future of housing.</p>
