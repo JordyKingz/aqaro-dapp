@@ -219,121 +219,121 @@ watch(property, () => {
 </script>
 <template>
     <div class="bg-gray-900">
-    <div v-if="loaded && store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
-        <div class="space-y-12">
-            <div class="border-b border-white/10 pb-12 text-gray-300">
-<!--                {{propertiesStore.properties}}-->
-                <h2 class="text-base font-semibold leading-7 text-white">Property Information</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-400">This information will be displayed publicly so be careful what you share.</p>
+        <div v-if="loaded && store.isConnected" class="mx-auto max-w-7xl px-8 py-12">
+            <div class="space-y-12">
+                <div class="border-b border-white/10 pb-12 text-gray-300">
+    <!--                {{propertiesStore.properties}}-->
+                    <h2 class="text-base font-semibold leading-7 text-white">Property Information</h2>
+                    <p class="mt-1 text-sm leading-6 text-gray-400">This information will be displayed publicly so be careful what you share.</p>
 
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-4">
-                        <label for="username" class="block text-sm font-medium leading-6 text-white">
-                            Asking Price
-                            <span class="pl-2">{{formatDollars(`${Number(property.askingPrice).toFixed(6)}`)}}</span>
-                            <span class="pl-2">|</span>
-                            <span class="pl-2">{{`${Number(property.askingPrice) / ETH_PRICE}`}}ETH</span>
-                        </label>
-                        <div class="mt-2">
-                            <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <input type="text" v-model="property.askingPrice" class="flex-1 border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in USD" />
+                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-4">
+                            <label for="username" class="block text-sm font-medium leading-6 text-white">
+                                Asking Price
+                                <span class="pl-2">{{formatDollars(`${Number(property.askingPrice).toFixed(6)}`)}}</span>
+                                <span class="pl-2">|</span>
+                                <span class="pl-2">{{`${Number(property.askingPrice) / ETH_PRICE}`}}ETH</span>
+                            </label>
+                            <div class="mt-2">
+                                <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                                    <input type="text" v-model="property.askingPrice" class="flex-1 border-0 bg-transparent py-1.5 text-white focus:ring-0 sm:text-sm sm:leading-6" placeholder="Price in USD" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-full">
+                            <label for="street-address" class="block text-sm font-medium leading-6 text-white">Street address</label>
+                            <div class="mt-2">
+                                <input type="text" v-model="property.addr.street" autocomplete="street-address" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2 sm:col-start-1">
+                            <label for="city" class="block text-sm font-medium leading-6 text-white">City</label>
+                            <div class="mt-2">
+                                <input type="text" v-model="property.addr.city" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="region" class="block text-sm font-medium leading-6 text-white">State / Province</label>
+                            <div class="mt-2">
+                                <input type="text" v-model="property.addr.state" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="postal-code" class="block text-sm font-medium leading-6 text-white">ZIP / Postal code</label>
+                            <div class="mt-2">
+                                <input type="text" v-model="property.addr.zip" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label for="country" class="block text-sm font-medium leading-6 text-white">Country</label>
+                            <div class="mt-2">
+                                <select v-model="property.addr.country" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black">
+                                    <option selected value="us">United States</option>
+                                    <option value="nl">Netherlands</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-span-full">
+                            <label for="about" class="block text-sm font-medium leading-6 text-white">Property Description</label>
+                            <div class="mt-2">
+                                <textarea v-model="property.description" rows="3" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">Write a few sentences about the property you sell.</p>
+                        </div>
+
+                        <DragDrop
+                          class="col-span-full"
+                          :fileArray="fileArray"
+                          @upload:clear="clearFiles"
+                          @upload:drop="uploadFiles"
+                        />
+                    </div>
+                </div>
+
+                <div class="border-b border-white/10 pb-12">
+                    <h2 class="text-base font-semibold leading-7 text-white">Personal Information</h2>
+                    <p class="mt-1 text-sm leading-6 text-gray-400">Use a permanent address where you can receive mail.</p>
+                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="first-name" class="block text-sm font-medium leading-6 text-white">First name</label>
+                            <div class="mt-2">
+                                <input type="text" v-model="property.seller.name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label for="last-name" class="block text-sm font-medium leading-6 text-white">Last name</label>
+                            <div class="mt-2">
+                                <input type="text" v-model="lastName" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
+                            </div>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <label for="email" class="block text-sm font-medium leading-6 text-white">Email address</label>
+                            <div class="mt-2">
+                                <input type="email" v-model="property.seller.email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-full">
-                        <label for="street-address" class="block text-sm font-medium leading-6 text-white">Street address</label>
-                        <div class="mt-2">
-                            <input type="text" v-model="property.addr.street" autocomplete="street-address" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-
-                    <div class="sm:col-span-2 sm:col-start-1">
-                        <label for="city" class="block text-sm font-medium leading-6 text-white">City</label>
-                        <div class="mt-2">
-                            <input type="text" v-model="property.addr.city" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <label for="region" class="block text-sm font-medium leading-6 text-white">State / Province</label>
-                        <div class="mt-2">
-                            <input type="text" v-model="property.addr.state" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <label for="postal-code" class="block text-sm font-medium leading-6 text-white">ZIP / Postal code</label>
-                        <div class="mt-2">
-                            <input type="text" v-model="property.addr.zip" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                    <div class="sm:col-span-3">
-                        <label for="country" class="block text-sm font-medium leading-6 text-white">Country</label>
-                        <div class="mt-2">
-                            <select v-model="property.addr.country" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black">
-                                <option selected value="us">United States</option>
-                                <option value="nl">Netherlands</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-span-full">
-                        <label for="about" class="block text-sm font-medium leading-6 text-white">Property Description</label>
-                        <div class="mt-2">
-                            <textarea v-model="property.description" rows="3" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                        <p class="mt-3 text-sm leading-6 text-gray-400">Write a few sentences about the property you sell.</p>
-                    </div>
-
-                    <DragDrop
-                      class="col-span-full"
-                      :fileArray="fileArray"
-                      @upload:clear="clearFiles"
-                      @upload:drop="uploadFiles"
-                    />
                 </div>
             </div>
 
-            <div class="border-b border-white/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-white">Personal Information</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-400">Use a permanent address where you can receive mail.</p>
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-3">
-                        <label for="first-name" class="block text-sm font-medium leading-6 text-white">First name</label>
-                        <div class="mt-2">
-                            <input type="text" v-model="property.seller.name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                    <div class="sm:col-span-3">
-                        <label for="last-name" class="block text-sm font-medium leading-6 text-white">Last name</label>
-                        <div class="mt-2">
-                            <input type="text" v-model="lastName" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                    <div class="sm:col-span-4">
-                        <label for="email" class="block text-sm font-medium leading-6 text-white">Email address</label>
-                        <div class="mt-2">
-                            <input type="email" v-model="property.seller.email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div>
-                </div>
+            <div class="mt-6 flex items-center justify-end gap-x-6">
+                <button v-on:click="clearForm" class="text-sm font-semibold leading-6 text-white">Cancel</button>
+
+                <Button
+                  :text="'List Property'"
+                  :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
+                  :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                  :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
+                  :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
+                  :isSubmitted="isSubmitted"
+                  :isValid="isValid"
+                  @onClick="listPropertyService"
+                />
             </div>
         </div>
-
-        <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button v-on:click="clearForm" class="text-sm font-semibold leading-6 text-white">Cancel</button>
-
-            <Button
-              :text="'List Property'"
-              :spinner="'animate-spin mr-1 h-3.5 w-3.5 text-white group-hover:text-gray-200'"
-              :btnDisabled="'opacity-50 cursor-not-allowed flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-              :btnValid="'flex-none rounded-md border-2 border-indigo-500 px-3 py-2 text-sm font-semibold text-indigo-500 hover:bg-indigo-500 hover:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'"
-              :btnSubmitted="'relative w-full inline-flex flex-1 bg-indigo-500 px-3 py-2 text-sm font-semibold text-white items-center justify-center rounded-md'"
-              :isSubmitted="isSubmitted"
-              :isValid="isValid"
-              @onClick="listPropertyService"
-            />
-        </div>
-    </div>
     </div>
 </template>

@@ -68,7 +68,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/dashboard',
+          path: '/dao/dashboard',
           name: 'dao.dashboard',
           component: () => import('../views/dao/dashboard.vue'),
           meta: {
@@ -76,7 +76,7 @@ const router = createRouter({
           },
         },
         {
-          path: '/mortgage',
+          path: '/dao/mortgage',
           name: 'dao.mortgage',
           children: [
             {
@@ -92,13 +92,18 @@ const router = createRouter({
           ]
         },
         {
-          path: '/proposal',
+          path: '/dao/proposal',
           name: 'dao.proposal',
           children: [
             {
               path: '',
               name: 'dao.proposal.overview',
               component: () => import('../views/dao/proposals/overview.proposal.vue'),
+            },
+            {
+              path: '/create',
+              name: 'dao.proposal.create',
+              component: () => import('../views/dao/proposals/form.proposal.vue'),
             }
           ]
         }

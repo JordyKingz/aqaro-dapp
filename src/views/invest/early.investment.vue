@@ -194,7 +194,7 @@ watch(tokenAmount, () => {
                                     {{tokenBalance}} Tokens Left For Sale
                                 </div>
                                 <div class="bg-gray-900 text-indigo-400 shadow rounded-lg">
-                                    {{tokensSold}} Tokens Sold {{rightChain}}
+                                    {{tokensSold}} Tokens Sold
                                 </div>
                             </div>
                             <div v-if="showStakeNotification" class="mt-4">
