@@ -115,10 +115,10 @@ const product = {
                     <p class="text-2xl tracking-tight text-white">{{ formatDollars(property.price) }}</p>
                     <p class="text-xl tracking-tight text-white">{{ Number(property.price / ETH_PRICE).toFixed(6) }}ETH</p>
 
-                    <p class="text-gray-400 mt-8">
-                        Sale start date: <br>
-                        {{contractOpenDate}}
-                    </p>
+<!--                    <p class="text-gray-400 mt-8">-->
+<!--                        Sale start date: <br>-->
+<!--                        {{contractOpenDate}}-->
+<!--                    </p>-->
 
                     <div class="mt-8 bg-gray-800 rounded-xl">
                         <div class="flex w-full items-center justify-between space-x-6 p-6">

@@ -10,8 +10,10 @@ const route = useRoute();
 const store = proposalStore();
 
 const proposals = ref<any[]>([]);
+const loading = ref<boolean>(false);
 
 onBeforeMount(async () => {
+    loading.value = true;
     await store.getAll()
         .then((response: any) => {
             if (response.status === 200) {
@@ -20,6 +22,8 @@ onBeforeMount(async () => {
         }).catch((error: any) => {
             console.log(error);
         });
+
+    loading.value = false;
 });
 
 function truncate(str: string) {
@@ -42,7 +46,7 @@ function truncate(str: string) {
                 </div>
             </div>
             <div class="grid grid-cols-12 gap-4 mt-8">
-                <div v-if="proposals.length > 0" class="col-span-12">
+                <div v-if="proposals.length > 0 && !loading" class="col-span-12">
                     <div v-for="(proposal, key) in proposals" :key="key" class="bg-gray-900 px-4 mb-4 py-6 shadow sm:rounded-lg sm:p-6">
                         <RouterLink :to="{name: 'dao.proposal.detail', params: {id: proposal.id}}">
                             <div>
@@ -71,7 +75,10 @@ function truncate(str: string) {
                         </RouterLink>
                     </div>
                 </div>
-                <div v-else class="bg-gray-900 col-span-12 px-4 py-6 text-white shadow sm:rounded-lg sm:p-6">
+                <div v-else-if="loading" class="bg-gray-900 col-span-12 px-4 py-6 text-white shadow sm:rounded-lg sm:p-6">
+                    Fetching data...
+                </div>
+                <div v-else-if="proposals.length === 0 && !loading" class="bg-gray-900 col-span-12 px-4 py-6 text-white shadow sm:rounded-lg sm:p-6">
                     No Recent Proposals
                 </div>
             </div>
