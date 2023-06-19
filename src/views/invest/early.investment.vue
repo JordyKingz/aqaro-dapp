@@ -166,8 +166,8 @@ watch(tokenAmount, () => {
                             which will be distributed over a period of 60 days.
                         </p>
                         <div class="mt-5">
-                            <a :href="`https://sepolia.etherscan.io/address/${AqaroEarlyInvestAddress}`" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
-                                Show Contract On (Sepolia)Etherscan <span aria-hidden="true">&rarr;</span>
+                            <a :href="`https://etherscan.io/address/${AqaroEarlyInvestAddress}`" target="_blank" class="text-base font-semibold leading-7 text-indigo-500">
+                                Show Contract On Etherscan <span aria-hidden="true">&rarr;</span>
                             </a>
                         </div>
                     </div>
