@@ -42,7 +42,7 @@ function truncate(str: string) {
                 </div>
             </div>
             <div class="grid grid-cols-12 gap-4 mt-8">
-                <div class="col-span-12">
+                <div v-if="proposals.length > 0" class="col-span-12">
                     <div v-for="(proposal, key) in proposals" :key="key" class="bg-gray-900 px-4 mb-4 py-6 shadow sm:rounded-lg sm:p-6">
                         <RouterLink :to="{name: 'dao.proposal.detail', params: {id: proposal.id}}">
                             <div>
@@ -70,6 +70,9 @@ function truncate(str: string) {
                             </div>
                         </RouterLink>
                     </div>
+                </div>
+                <div v-else class="bg-gray-900 col-span-12 px-4 py-6 text-white shadow sm:rounded-lg sm:p-6">
+                    No Recent Proposals
                 </div>
             </div>
         </div>
