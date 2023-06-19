@@ -57,26 +57,19 @@ const sidebarOpen = ref(false);
                             <nav class="flex flex-1 flex-col">
                                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
                                     <li>
-                                        <ul role="list" class="-mx-2 space-y-1">
-                                            <li v-for="item in navigation" :key="item.name">
-                                                <RouterLink :to="{name: item.href}" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
-                                                    <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'h-6 w-6 shrink-0']" aria-hidden="true" />
-                                                    {{ item.name }}
-                                                </RouterLink>
-                                            </li>
-                                        </ul>
+                                        <RouterLink :to="{name: 'dao.dashboard'}" class="group text-gray-700 hover:text-indigo-600 hover:bg-gray-700 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                                            <HomeIcon class="mr-4 flex-shrink-0 h-6 w-6 text-gray-300" aria-hidden="true" />
+                                            Dashboard
+                                        </RouterLink>
+<!--                                        <RouterLink :to="{name: 'dao.mortgage.overview'}" class="group text-gray-700 hover:text-indigo-600 hover:bg-gray-700 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">-->
+<!--                                            <HomeModernIcon class="mr-4 flex-shrink-0 h-6 w-6 text-gray-300" aria-hidden="true" />-->
+<!--                                            Mortgages-->
+<!--                                        </RouterLink>-->
+                                        <RouterLink :to="{name: 'dao.proposal.overview'}" class="group text-gray-700 hover:text-indigo-600 hover:bg-gray-700 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                                            <PresentationChartLineIcon class="mr-4 flex-shrink-0 h-6 w-6 text-gray-300" aria-hidden="true" />
+                                            Proposals
+                                        </RouterLink>
                                     </li>
-                                    <!--                                    <li>-->
-                                    <!--                                        <div class="text-xs font-semibold leading-6 text-gray-400">Your teams</div>-->
-                                    <!--                                        <ul role="list" class="-mx-2 mt-2 space-y-1">-->
-                                    <!--                                            <li v-for="team in teams" :key="team.name">-->
-                                    <!--                                                <a :href="team.href" :class="[team.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">-->
-                                    <!--                                                    <span :class="[team.current ? 'text-indigo-600 border-indigo-600' : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white']">{{ team.initial }}</span>-->
-                                    <!--                                                    <span class="truncate">{{ team.name }}</span>-->
-                                    <!--                                                </a>-->
-                                    <!--                                            </li>-->
-                                    <!--                                        </ul>-->
-                                    <!--                                    </li>-->
                                 </ul>
                             </nav>
                         </div>
@@ -98,26 +91,20 @@ const sidebarOpen = ref(false);
             <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
                     <li>
-                        <ul role="list" class="-mx-2 space-y-1">
-                            <li v-for="item in navigation" :key="item.name">
-                                <RouterLink :to="{name: item.href}" :class="[item.current ? 'bg-gray-800 text-indigo-600' : 'text-gray-400 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
-                                    <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'h-6 w-6 shrink-0']" aria-hidden="true" />
-                                    {{ item.name }}
-                                </RouterLink>
-                            </li>
-                        </ul>
+                        <RouterLink :to="{name: 'dao.dashboard'}" class="group text-gray-500 hover:bg-gray-700 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                            <HomeIcon class="mr-4 flex-shrink-0 h-6 w-6 text-gray-500" aria-hidden="true" />
+                            Dashboard
+                        </RouterLink>
+<!--                        <RouterLink :to="{name: 'dao.mortgage.overview'}" class="group text-gray-500 hover:bg-gray-700 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">-->
+<!--                            <HomeModernIcon class="mr-4 flex-shrink-0 h-6 w-6 text-gray-500" aria-hidden="true" />-->
+<!--                            Mortgages-->
+<!--                        </RouterLink>-->
+                        <RouterLink :to="{name: 'dao.proposal.overview'}" class="group text-gray-500 hover:bg-gray-700 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                            <PresentationChartLineIcon class="mr-4 flex-shrink-0 h-6 w-6 text-gray-500" aria-hidden="true" />
+                            Proposals
+                        </RouterLink>
                     </li>
-                    <!--                    <li>-->
-                    <!--                        <div class="text-xs font-semibold leading-6 text-gray-400">AQR Token</div>-->
-                    <!--                        <ul role="list" class="-mx-2 mt-2 space-y-1">-->
-                    <!--                            <li v-for="team in tokenInfo" :key="team.name">-->
-                    <!--                                <a :href="team.href" :class="[team.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">-->
-                    <!--                                    <span :class="[team.current ? 'text-indigo-600 border-indigo-600' : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white']">{{ team.initial }}</span>-->
-                    <!--                                    <span class="truncate">{{ team.name }}</span>-->
-                    <!--                                </a>-->
-                    <!--                            </li>-->
-                    <!--                        </ul>-->
-                    <!--                    </li>-->
+
                     <li class="-mx-6 mt-auto">
                         <span v-if="store.isConnected" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
 <!--                            <img class="h-8 w-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />-->
@@ -148,3 +135,12 @@ const sidebarOpen = ref(false);
 <!--        </a>-->
     </div>
 </template>
+<style scoped>
+.router-link-active {
+    background-color: #1f2937;
+    color: #4f46e5;
+}
+.router-link-active svg {
+    color: #4f46e5;
+}
+</style>

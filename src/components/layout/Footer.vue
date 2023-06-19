@@ -108,7 +108,7 @@ async function addTokenToMetaMask() {
             </div>
             <div class="pt-8 md:flex md:items-center md:justify-end">
                 <span v-on:click="addTokenToMetaMask" class="flex hover:cursor-pointer">
-                    <img src="/icons/metamask.svg" alt="metamask" class="h-8 w-8">
+                    <img src="@/assets/icons/metamask.svg" alt="metamask" class="h-8 w-8">
                     <!--                    <span class="text-orange-500 text-xs pt-2 pl-2">AQR Token</span>-->
                 </span>
             </div>

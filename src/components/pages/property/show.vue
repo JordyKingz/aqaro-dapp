@@ -137,10 +137,10 @@ const product = {
                                 </div>
                                 <p class="mt-1 truncate text-sm text-gray-500">{{ property.seller.wallet }}</p>
                                 <div class="truncate text-sm text-gray-500">
-                                    <a :href="`mailto:${property.seller.email}`" class="flex py-4 text-sm font-semibold text-gray-300">
-                                        <EnvelopeIcon class="h-5 w-5 text-gray-300" aria-hidden="true" />
-                                        <span class="pl-2">Email</span>
-                                    </a>
+<!--                                    <a :href="`mailto:${property.seller.email}`" class="flex py-4 text-sm font-semibold text-gray-300">-->
+<!--                                        <EnvelopeIcon class="h-5 w-5 text-gray-300" aria-hidden="true" />-->
+<!--                                        <span class="pl-2">Email</span>-->
+<!--                                    </a>-->
                                 </div>
                             </div>
                         </div>
