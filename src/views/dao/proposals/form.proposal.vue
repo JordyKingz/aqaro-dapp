@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {ref, watch} from "vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import Tiptap from "@/components/form/Tiptap.vue";
 import TiptapContent from "@/components/form/TiptapContent.vue";
 import Button from "@/components/form/button/Button.vue";
 import {proposalStore} from "@/stores/proposal.store";
 
+const router = useRouter();
 const route = useRoute();
 const store = walletConnectionStore();
 const propStore = proposalStore();
@@ -27,6 +28,8 @@ async function createProposal() {
             if (response.status === 201) {
                 isSubmitted.value = false;
                 clearForm();
+
+                await router.push({name: 'dao.proposal.overview'});
             }
         }).catch((error: any) => {
             isSubmitted.value = false;
@@ -48,7 +51,7 @@ watch(content, (value) => {
 </script>
 <template>
     <main class="lg:pl-72">
-        <div class="xl:pr-96">
+        <div>
             <div class="px-4 y-10 sm:px-6 lg:px-8 lg:py-6">
                 <div class="mx-auto max-w-7xl">
                     <div class="space-y-12">

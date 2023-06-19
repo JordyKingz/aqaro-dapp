@@ -158,31 +158,31 @@ const setTimeline = async () => {
                                     <div class="mt-2 space-y-4 text-sm text-gray-500">
                                         {{req.mortgage.amount.toString()}}
                                     </div>
-                                    <div class="mt-6 flex justify-between space-x-8">
-                                        <div class="flex space-x-6">
-                                            <span class="inline-flex items-center text-sm">
-                                                <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                    <HandThumbUpIcon class="h-5 w-5" aria-hidden="true" />
-    <!--                                                <span class="font-medium text-gray-900">{{ question.likes }}</span>-->
-                                                    <span class="sr-only">likes</span>
-                                                </button>
-                                            </span>
-                                            <span class="inline-flex items-center text-sm">
-                                                <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                    <ChatBubbleLeftEllipsisIcon class="h-5 w-5" aria-hidden="true" />
-    <!--                                                <span class="font-medium text-gray-900">{{ question.replies }}</span>-->
-                                                    <span class="sr-only">replies</span>
-                                                </button>
-                                            </span>
-                                            <span class="inline-flex items-center text-sm">
-                                                <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                                                    <EyeIcon class="h-5 w-5" aria-hidden="true" />
-    <!--                                                <span class="font-medium text-gray-900">{{ question.views }}</span>-->
-                                                    <span class="sr-only">views</span>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
+<!--                                    <div class="mt-6 flex justify-between space-x-8">-->
+<!--                                        <div class="flex space-x-6">-->
+<!--                                            <span class="inline-flex items-center text-sm">-->
+<!--                                                <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">-->
+<!--                                                    <HandThumbUpIcon class="h-5 w-5" aria-hidden="true" />-->
+<!--    &lt;!&ndash;                                                <span class="font-medium text-gray-900">{{ question.likes }}</span>&ndash;&gt;-->
+<!--                                                    <span class="sr-only">likes</span>-->
+<!--                                                </button>-->
+<!--                                            </span>-->
+<!--                                            <span class="inline-flex items-center text-sm">-->
+<!--                                                <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">-->
+<!--                                                    <ChatBubbleLeftEllipsisIcon class="h-5 w-5" aria-hidden="true" />-->
+<!--    &lt;!&ndash;                                                <span class="font-medium text-gray-900">{{ question.replies }}</span>&ndash;&gt;-->
+<!--                                                    <span class="sr-only">replies</span>-->
+<!--                                                </button>-->
+<!--                                            </span>-->
+<!--                                            <span class="inline-flex items-center text-sm">-->
+<!--                                                <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">-->
+<!--                                                    <EyeIcon class="h-5 w-5" aria-hidden="true" />-->
+<!--    &lt;!&ndash;                                                <span class="font-medium text-gray-900">{{ question.views }}</span>&ndash;&gt;-->
+<!--                                                    <span class="sr-only">views</span>-->
+<!--                                                </button>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                 </article>
                             </div>
                         </div>

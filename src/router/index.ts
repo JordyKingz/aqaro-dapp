@@ -85,7 +85,7 @@ const router = createRouter({
               component: () => import('../views/dao/mortgages/overview.mortgage.vue'),
             },
             {
-              path: '/request/:address',
+              path: 'request/:address',
               name: 'dao.mortgage.request.detail',
               component: () => import('../views/dao/mortgages/show.mortgage.vue'),
             }
@@ -101,9 +101,14 @@ const router = createRouter({
               component: () => import('../views/dao/proposals/overview.proposal.vue'),
             },
             {
-              path: '/create',
+              path: 'create',
               name: 'dao.proposal.create',
               component: () => import('../views/dao/proposals/form.proposal.vue'),
+            },
+            {
+                path: ':id',
+                name: 'dao.proposal.detail',
+                component: () => import('../views/dao/proposals/show.proposal.vue'),
             }
           ]
         }
