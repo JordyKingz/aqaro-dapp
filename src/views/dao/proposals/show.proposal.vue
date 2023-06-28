@@ -3,9 +3,13 @@ import {onBeforeMount, ref} from "vue";
 import {useRoute} from "vue-router";
 import {proposalStore} from "@/stores/proposal.store";
 import {HandThumbDownIcon, HandThumbUpIcon} from "@heroicons/vue/20/solid";
+import {tokenStore} from "@/stores/token.store";
+import {walletConnectionStore} from "@/stores/wallet.store";
 
 const route = useRoute();
 const store = proposalStore();
+const connectionStore = walletConnectionStore();
+const aqaroStore = tokenStore();
 
 const proposal = ref<any>({});
 
@@ -15,26 +19,32 @@ const dislikes = ref<any[]>([]);
 const loaded = ref<boolean>(false);
 onBeforeMount(async () => {
     if (route.params.id) {
-        await store.getById(`${route.params.id}`)
-            .then((response: any) => {
-                if (response.status === 200) {
-                    proposal.value = response.data.proposal;
-                    likes.value = response.data.proposal.likes;
-                    dislikes.value = response.data.proposal.dislikes;
-                }
-            }).catch((error: any) => {
-                console.log(error);
-            });
+        await fetchProposal();
     }
 
     loaded.value = true;
 });
 
+async function fetchProposal() {
+    await store.getById(`${route.params.id}`)
+      .then((response: any) => {
+          if (response.status === 200) {
+              proposal.value = response.data.proposal;
+              likes.value = response.data.proposal.likes;
+              dislikes.value = response.data.proposal.dislikes;
+          }
+      }).catch((error: any) => {
+          console.log(error);
+      });
+}
+
 async function clickLike() {
     await store.likeProposal(`${route.params.id}`)
-        .then((response: any) => {
+        .then(async (response: any) => {
             if (response.status === 200) {
-                likes.value.push(response.data.like);
+                // likes.value.push(response.data.like);
+
+                await fetchProposal();
             }
         }).catch((error: any) => {
             console.log(error);
@@ -43,9 +53,11 @@ async function clickLike() {
 
 async function clickDislike() {
     await store.dislikeProposal(`${route.params.id}`)
-        .then((response: any) => {
+        .then(async (response: any) => {
             if (response.status === 200) {
-                dislikes.value.push(response.data.dislike);
+                // dislikes.value.push(response.data.dislike);
+
+                await fetchProposal();
             }
         }).catch((error: any) => {
             console.log(error);
@@ -59,7 +71,7 @@ async function clickDislike() {
                 <div v-html="proposal.content" />
             </div>
             <div class="block mt-4">
-                <div class="flex space-x-6">
+                <div v-if="store.getCanVote"  class="flex space-x-6">
                         <span class="inline-flex items-center text-sm">
                             <button v-on:click="clickLike" type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                 <HandThumbUpIcon class="h-5 w-5" aria-hidden="true" />
@@ -74,6 +86,14 @@ async function clickDislike() {
                                 <span class="sr-only">replies</span>
                             </button>
                         </span>
+                </div>
+                <div v-else class="block mt-12">
+                    <p class="text-yellow-500">
+                        Only investors can vote on proposals...
+                    </p>
+                    <RouterLink :to="{name: 'early.investor'}" class="text-green-500">
+                        Invest now...
+                    </RouterLink>
                 </div>
             </div>
         </div>

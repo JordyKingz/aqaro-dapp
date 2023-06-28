@@ -37,6 +37,7 @@ const properties = ref<PropertyType[]>([]);
 const ETH_PRICE = ref(0);
 
 onBeforeMount(async() => {
+    properties.value = [];
     ETH_PRICE.value = await getEthPrice();
 
     if (store.isConnected) {
@@ -101,8 +102,8 @@ async function getPropertyByAddress(address: string) {
                 seller: result.seller,
                 thumbnail: ''
             }
-            const serviceResult = await propStore.getPropertyThumbnail(property.id);
-            property.thumbnail = serviceResult.data.thumbnail;
+            // const serviceResult = await propStore.getPropertyThumbnail(property.id);
+            // property.thumbnail = serviceResult.data.thumbnail;
             // @ts-ignore
             properties.value.push(property);
         })
@@ -113,6 +114,8 @@ async function getPropertyByAddress(address: string) {
 
 watch(store, async () => {
   if (store.isConnected) {
+      properties.value = [];
+      propertyContracts.value = [];
     await fetchData();
   } else {
     properties.value = [];

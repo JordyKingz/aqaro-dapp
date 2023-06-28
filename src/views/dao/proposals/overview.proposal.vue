@@ -5,15 +5,22 @@ import {useRoute} from "vue-router";
 import Feed from "@/components/pages/dao/dashboard/Feed.vue";
 import {proposalStore} from "@/stores/proposal.store";
 import {ChatBubbleLeftEllipsisIcon, EyeIcon, HandThumbUpIcon, HandThumbDownIcon} from "@heroicons/vue/20/solid";
+import {tokenStore} from "@/stores/token.store";
+import StakeVault from "@/chain/StakeVault";
 
 const route = useRoute();
 const store = proposalStore();
+const aqaroStore = tokenStore();
+const connectionStore = walletConnectionStore();
 
 const proposals = ref<any[]>([]);
 const loading = ref<boolean>(false);
+const canCreate = ref<boolean>(false);
 
 onBeforeMount(async () => {
     loading.value = true;
+    store.setCanVote(false);
+
     await store.getAll()
         .then((response: any) => {
             if (response.status === 200) {
@@ -23,8 +30,31 @@ onBeforeMount(async () => {
             console.log(error);
         });
 
+    await getHolderBalances();
+
     loading.value = false;
 });
+
+async function getHolderBalances() {
+    if (aqaroStore.getBalance !== '' && Number(aqaroStore.getBalance) > 0) {
+        canCreate.value = true;
+        store.setCanVote(true);
+    }
+
+    const contract = new StakeVault(connectionStore.getChainId);
+
+    await contract.balanceOf(connectionStore.getConnectedWallet)
+      .then((response) => {
+          if (Number(response.toString()) > 0) {
+              canCreate.value = true;
+              store.setCanVote(true);
+          }
+      }).catch(e => {
+          console.log(`overview.propsosal:getHolderBalance`)
+          console.log(e)
+      })
+
+}
 
 function truncate(str: string) {
     return str.length > 450 ? str.substring(0, 450) + "..." : str;
@@ -38,7 +68,7 @@ function truncate(str: string) {
                     <div class="flex-1">
 <!--                        Overview Proposals-->
                     </div>
-                    <div class="flex">
+                    <div v-if="canCreate" class="flex">
                         <RouterLink :to="{name: 'dao.proposal.create'}" class="border-2 border-indigo-500 px-2 py-2 rounded-lg text-indigo-500 hover:bg-indigo-500 hover:text-gray-900">
                             Create Proposal
                         </RouterLink>
