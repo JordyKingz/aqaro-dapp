@@ -8,6 +8,7 @@ import {ethers} from "ethers";
 import PropertyFactory from "@/chain/PropertyFactory";
 import {formatDollars, getEthPrice} from "../../utils/helpers";
 import Button from "@/components/form/button/Button.vue";
+import {Property as PropertyType} from "@/types/Property";
 
 const store = walletConnectionStore();
 const router = useRouter();
@@ -35,7 +36,7 @@ const isSubmitted = ref(false);
 
 const ETH_PRICE = ref(0);
 
-const property = ref<Property>({} as Property);
+const property = ref<PropertyType>({} as PropertyType);
 const bidOpen = ref(false);
 const contractOpenDate = ref(new Date());
 const propertyContractAddress = ref('');
@@ -84,10 +85,8 @@ async function getProperty(address: string) {
     const contract = new Property(store.getChainId, address);
 
     await contract.getPropertyInfo()
-        .then(async (result: Property) => {
+        .then(async (result: PropertyType) => {
             property.value = result;
-
-            console.log({property: property.value})
         })
         .catch((error: any) => {
             console.log(error);
@@ -121,7 +120,7 @@ async function requestMortgage() {
         KYCVerified: false
     }
 
-    const mortgageETHAmount = (Number((property.value.price / 1e6) / ETH_PRICE.value) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
+    const mortgageETHAmount = (Number((Number(property.value.price) / 1e6) / ETH_PRICE.value) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
     const mortgagePayment = {
         amountETH: ethers.utils.parseEther(mortgageETHAmount.toString()),
         amountUSD: (mortgageETHAmount * ETH_PRICE.value * 1e6),
@@ -140,7 +139,8 @@ async function requestMortgage() {
     await contractInstance.on('MortgageRequested', (mortgageContract: string, propertyContract: string, owner: any) => {
         if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
             console.log({mortgageContract, propertyContract, owner});
-            router.push({name: 'dao.mortgage.request.detail', params: {address: mortgageContract}});
+            // router.push({name: 'dao.mortgage.request.detail', params: {address: mortgageContract}});
+            router.push({name: 'dao.mortgage.overview'});
         }
     });
 
@@ -461,9 +461,9 @@ watch(monthlyMortgageAmount, () => {
                               Total Payments: {{totalMonthlyPayments}} <br>
                               Total Years: {{totalMortgageYears}} <br>
                               Mortgage End Date : {{mortgageEndDate.toLocaleDateString()}} <br>
-                              Total Mortgage amount: {{formatDollars(totalMortgage)}} <br>
-                              Total Interest paid: {{formatDollars(totalInterestPaid)}} <br>
-                              Total amount paid: {{formatDollars(totalAmountPaidOff)}} <br>
+                              Total Mortgage amount: {{formatDollars(`${totalMortgage}`)}} <br>
+                              Total Interest paid: {{formatDollars(`${totalInterestPaid}`)}} <br>
+                              Total amount paid: {{formatDollars(`${totalAmountPaidOff}`)}} <br>
                           </code>
                       </div>
                   </div>

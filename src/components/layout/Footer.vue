@@ -30,7 +30,7 @@ const navigation = {
         // { name: 'Contact', href: '#' },
     ],
     legal: [
-        { name: 'Lightpaper', href: 'Lightpaper_Aqaro.pdf' },
+        { name: 'Lightpaper', href: '@/assets/Lightpaper_Aqaro.pdf' },
         // { name: 'Terms', href: '#' },
     ],
     social: [

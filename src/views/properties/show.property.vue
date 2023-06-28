@@ -44,7 +44,7 @@ async function getPropertyChain(address: string) {
     const contract = new Property(store.getChainId, address);
 
     await contract.getPropertyInfo()
-        .then(async (result: Property) => {
+        .then(async (result: PropertyType) => {
             property.value = {
                 id: result.id.toString(),
                 service_id: result.service_id.toString(),

@@ -5,6 +5,7 @@ export const proposalStore = defineStore('proposals', {
     state: () => ({
         proposals: <any>[],
         createdProposal: <any>{},
+        canVote: false
     }),
     actions: {
         async listProposalService(dto: FormData) {
@@ -21,9 +22,13 @@ export const proposalStore = defineStore('proposals', {
         },
         async dislikeProposal(id: string) {
             return await axiosAuthInstance.post(`/proposal/${id}/dislike`);
+        },
+        setCanVote(bool: boolean) {
+            this.canVote = bool;
         }
     },
     getters: {
         getProposals: (state) => state.proposals,
+        getCanVote: (state) => state.canVote,
     },
 })

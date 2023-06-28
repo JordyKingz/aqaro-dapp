@@ -31,7 +31,7 @@ const isValid = ref(false);
 
 const env = import.meta.env.VITE_ENV;
 const rightChain = ref(true);
-const rightChainNr = SEPOLIA;
+const rightChainNr = HARDHAT;
 
 onBeforeMount(async () => {
     if (env !== 'development') {

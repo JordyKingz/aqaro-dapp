@@ -99,8 +99,8 @@ async function getPropertyByAddress(address: string) {
                 thumbnail: ''
             }
 
-            const serviceResult = await propStore.getPropertyThumbnail(property.id);
-            property.thumbnail = serviceResult.data.thumbnail;
+            // const serviceResult = await propStore.getPropertyThumbnail(property.id);
+            // property.thumbnail = serviceResult.data.thumbnail;
 
             // @ts-ignore
             properties.value.push(property)

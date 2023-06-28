@@ -164,31 +164,31 @@ const product = {
                         </div>
                     </div>
 
-                    <div class="mt-10">
-                        <h3 class="text-sm font-medium text-indigo-500">Highlights</h3>
+<!--                    <div class="mt-10">-->
+<!--                        <h3 class="text-sm font-medium text-indigo-500">Highlights</h3>-->
 
-                        <div class="mt-4">
-                            <ul role="list" class="list-disc space-y-2 pl-4 text-sm">
-                                <li v-for="highlight in product.highlights" :key="highlight" class="text-gray-400">
-                                    <span class="text-gray-400">{{ highlight }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+<!--                        <div class="mt-4">-->
+<!--                            <ul role="list" class="list-disc space-y-2 pl-4 text-sm">-->
+<!--                                <li v-for="highlight in product.highlights" :key="highlight" class="text-gray-400">-->
+<!--                                    <span class="text-gray-400">{{ highlight }}</span>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <div class="mt-10">
-                        <h2 class="text-sm font-medium text-indigo-500">Details</h2>
+<!--                    <div class="mt-10">-->
+<!--                        <h2 class="text-sm font-medium text-indigo-500">Details</h2>-->
 
-                        <div class="mt-4 space-y-6">
-                            <p class="text-sm text-gray-400">
-                                Located in the heart of downtown, this apartment offers easy access to a wide range of local amenities.
-                                Take a stroll to the nearby park and enjoy a picnic on a sunny day, or explore the bustling local market with its fresh produce and artisanal goods.
-                                For your daily needs, there are several grocery stores and convenience stores within walking distance, while a wide range of cafes, restaurants, and bars offer plenty of options for dining and entertainment.
-                                With excellent public transportation links nearby, you're just a short ride away from all that the city has to offer.
-                                Come see for yourself and discover the convenience and charm of this vibrant neighborhood.
-                            </p>
-                        </div>
-                    </div>
+<!--                        <div class="mt-4 space-y-6">-->
+<!--                            <p class="text-sm text-gray-400">-->
+<!--                                Located in the heart of downtown, this apartment offers easy access to a wide range of local amenities.-->
+<!--                                Take a stroll to the nearby park and enjoy a picnic on a sunny day, or explore the bustling local market with its fresh produce and artisanal goods.-->
+<!--                                For your daily needs, there are several grocery stores and convenience stores within walking distance, while a wide range of cafes, restaurants, and bars offer plenty of options for dining and entertainment.-->
+<!--                                With excellent public transportation links nearby, you're just a short ride away from all that the city has to offer.-->
+<!--                                Come see for yourself and discover the convenience and charm of this vibrant neighborhood.-->
+<!--                            </p>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>

@@ -66,15 +66,12 @@ export function formatDollars(value: string) {
 }
 
 export async function getEthPrice() {
-    const CURRENCY = 'usd';
-    const api = new CoingeckoApi();
-
-    // await api.getCoins('ethereum')
-    //     .then((result: any) => {
-    //         console.log(result);
-    //     });
+    return 1900;
 
 
-    const result = await api.getTokenPrice('ethereum', CURRENCY);
-    return result.data.ethereum.usd;
+    // const CURRENCY = 'usd';
+    // const api = new CoingeckoApi();
+    //
+    // const result = await api.getTokenPrice('ethereum', CURRENCY);
+    // return result.data.ethereum.usd;
 }
