@@ -26,7 +26,7 @@ const props = defineProps({
 
                     <img
                       v-else
-                        src="/properties/livingrooms/living-1.jpg"
+                        src="@/assets/properties/livingrooms/living-1.jpg"
                         :alt="property.addr.street" />
                 </div>
 
