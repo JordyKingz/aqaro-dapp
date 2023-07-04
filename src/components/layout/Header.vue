@@ -23,7 +23,7 @@ let connected = ref(false);
 const isSubmitted = ref(false);
 
 const rightChain = ref(true);
-const rightChainNr = HARDHAT;
+const rightChainNr = SEPOLIA;
 
 onBeforeMount(async() => {
     let token = store.getBearerToken;

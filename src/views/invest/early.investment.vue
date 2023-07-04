@@ -31,7 +31,7 @@ const showStakeNotification = ref(false);
 
 const env = import.meta.env.VITE_ENV;
 const rightChain = ref(true);
-const rightChainNr = HARDHAT;
+const rightChainNr = SEPOLIA;
 
 onBeforeMount(async () => {
     if (env !== 'development') {
