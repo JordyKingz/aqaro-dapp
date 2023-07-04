@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {walletConnectionStore} from "@/stores/wallet.store";
-import {onBeforeMount, ref, watch} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import AqaroPresale from "@/chain/AqaroPresale";
 import AqaroToken from "@/chain/AqaroToken";
 import {AqaroPresaleAddress, StakeVaultAddress} from "@/chain/config/smartContracts";
@@ -10,7 +10,9 @@ import {tokenStore} from "@/stores/token.store";
 import StakeVault from "@/chain/StakeVault";
 import {ETH, HARDHAT, SEPOLIA} from "@/chain/config/chains";
 import Allocation from "@/components/pages/token/Allocation.vue";
+import {useRoute} from "vue-router";
 
+const route = useRoute();
 const store = walletConnectionStore();
 const aqaroStore = tokenStore();
 
@@ -42,6 +44,16 @@ onBeforeMount(async () => {
     }
     if (store.isConnected && rightChain.value) {
         await initPage();
+    }
+});
+
+onMounted(async () => {
+    const anchor = route.query.link;
+    if (anchor) {
+        const element = document.getElementById(`${anchor}`);
+        if (element) {
+            element.scrollIntoView();
+        }
     }
 });
 
@@ -156,7 +168,7 @@ watch(tokenAmount, async (value) => {
 })
 </script>
 <template>
-    <div class="bg-gray-900">
+    <div id="stake-top" class="bg-gray-900">
         <div class="bg-gray-800">
             <div v-if="store.isConnected" class="mx-auto px-6 py-24 max-w-7xl">
                 <div class="grid grid-cols-8 gap-3">

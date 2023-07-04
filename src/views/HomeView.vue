@@ -102,8 +102,13 @@ async function getPropertyByAddress(address: string) {
                 seller: result.seller,
                 thumbnail: ''
             }
-            // const serviceResult = await propStore.getPropertyThumbnail(property.id);
-            // property.thumbnail = serviceResult.data.thumbnail;
+            try {
+                const serviceResult = await propStore.getPropertyThumbnail(property.id);
+                property.thumbnail = serviceResult.data.thumbnail;
+            } catch (e) {
+                console.log(e);
+            }
+
             // @ts-ignore
             properties.value.push(property);
         })

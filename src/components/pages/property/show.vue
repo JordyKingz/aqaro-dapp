@@ -55,42 +55,7 @@ defineProps({
         required: true
     },
 })
-const product = {
-    name: 'Basic Tee 6-Pack',
-    price: '$192',
-    href: '#',
-    breadcrumbs: [
-        { id: 1, name: 'Men', href: '#' },
-        { id: 2, name: 'Clothing', href: '#' },
-    ],
-    images: [
-        {
-            src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
-            alt: 'Two each of gray, white, and black shirts laying flat.',
-        },
-        {
-            src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
-            alt: 'Model wearing plain black basic tee.',
-        },
-        {
-            src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
-            alt: 'Model wearing plain gray basic tee.',
-        },
-        {
-            src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
-            alt: 'Model wearing plain white basic tee.',
-        },
-    ],
-    highlights: [
-        'Spacious 3-bedroom apartment',
-        'Over 100m² of luxurious living space',
-        'Bright and airy open plan living area',
-        'Fully equipped kitchen with high-quality finishes and fittings',
-        'Private balcony with peaceful garden view',
-    ],
-    details:
-        'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-}
+
 </script>
 <template>
     <div class="bg-gray-900">

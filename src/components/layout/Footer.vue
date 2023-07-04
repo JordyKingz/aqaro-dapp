@@ -16,6 +16,7 @@ const navigation = {
         { name: 'About', href: 'about', id: 'about-top' },
         { name: 'Properties', href: 'property.overview', id: 'property-top' },
         { name: 'Invest', href: 'early.investor', id: 'invest-top' },
+        { name: 'Stake', href: 'stake', id: 'stake-top' },
         { name: 'Mortgage Provider', href: 'mortgage.liquidity.provider', id: 'earn-top' },
 
         // { name: 'DAO', href: '#' },
@@ -28,10 +29,6 @@ const navigation = {
         // { name: 'About', href: '#' },
         // { name: 'Jobs', href: '#' },
         // { name: 'Contact', href: '#' },
-    ],
-    legal: [
-        { name: 'Lightpaper', href: '@/assets/Lightpaper_Aqaro.pdf' },
-        // { name: 'Terms', href: '#' },
     ],
     social: [
         {
@@ -63,7 +60,7 @@ async function addTokenToMetaMask() {
         })
         .then((success: any) => {
             if (success) {
-                console.log('FOO successfully added to wallet!');
+                console.log('AQR successfully added to wallet!');
             } else {
                 throw new Error('Something went wrong.');
             }
@@ -98,8 +95,8 @@ async function addTokenToMetaMask() {
                         <div class="mt-10 md:mt-0">
                             <h3 class="text-sm font-semibold leading-6 text-white">Legal</h3>
                             <ul role="list" class="mt-6 space-y-4">
-                                <li v-for="item in navigation.legal" :key="item.name">
-                                    <a :href="item.href" target="_blank" class="text-sm leading-6 text-gray-300 hover:text-white">{{ item.name }}</a>
+                                <li>
+                                    <a href="@/assets/Lightpaper_Aqaro.pdf" target="_blank" class="text-sm leading-6 text-gray-300 hover:text-white">Lightpaper</a>
                                 </li>
                             </ul>
                         </div>
