@@ -92,10 +92,10 @@ async function updateProperty(createdProp: any, sc_id: number, propertyAddress: 
         sc_id: Number(sc_id),
     }
     await propertiesStore.updatePropertyService(dto)
-        .then((response: any) => {
+        .then(async (response: any) => {
             if (response.status === 200) {
                 propertiesStore.addProperty(createdProp);
-                router.push({name: 'property.detail', params: {address: propertyAddress}});
+                await router.push({name: 'property.detail', params: {address: propertyAddress}});
             }
         }).catch((error: any) => {
           isSubmitted.value = false;
@@ -224,6 +224,12 @@ watch(property, () => {
                 <div class="border-b border-white/10 pb-12 text-gray-300">
     <!--                {{propertiesStore.properties}}-->
                     <h2 class="text-base font-semibold leading-7 text-white">Property Information</h2>
+
+                    <p class="mt-1 text-sm leading-6 text-gray-400">
+                        We create an NFT smart contract for your property and list it on the blockchain. You can then sell your property to anyone in the world.
+                    </p>
+
+
                     <p class="mt-1 text-sm leading-6 text-gray-400">This information will be displayed publicly so be careful what you share.</p>
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

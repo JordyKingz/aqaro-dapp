@@ -17,21 +17,6 @@ export async function connectMetaMask() {
                 store.setConnectedWallet(accounts[0]);
             })
             .catch((err: any) => console.log(err))
-
-        // @ts-ignore
-        window.ethereum.on('accountsChanged', async () => {
-            (window as any).ethereum.request({method: "eth_requestAccounts"})
-                .then(async (accounts: string[]) => {
-                    store.setConnectedWallet(accounts[0]);
-                })
-                .catch((err: any) => console.log(err))
-        });
-        // @ts-ignore
-        window.ethereum.on('chainChanged', (chainId: any) => {
-            console.log('chainChanged');
-            console.log(chainId);
-            setChainSettings();
-        });
     }
 }
 
@@ -39,6 +24,24 @@ export function formatAddress(address: string) {
     const first = address.substring(0, 6);
     const last = address.slice(-6);
     return `${first}...${last}`;
+}
+
+export async function setMetaMaskListeners() {
+    const store = walletConnectionStore();
+    // @ts-ignore
+    window.ethereum.on('accountsChanged', async () => {
+        (window as any).ethereum.request({method: "eth_requestAccounts"})
+            .then(async (accounts: string[]) => {
+                store.setConnectedWallet(accounts[0]);
+            })
+            .catch((err: any) => console.log(err))
+    });
+    // @ts-ignore
+    window.ethereum.on('chainChanged', (chainId: any) => {
+        console.log('chainChanged');
+        console.log(chainId);
+        setChainSettings();
+    });
 }
 
 export async function setChainSettings() {

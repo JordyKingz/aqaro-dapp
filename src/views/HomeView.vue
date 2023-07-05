@@ -116,17 +116,17 @@ async function getPropertyByAddress(address: string) {
             console.log(error);
         });
 }
-
-watch(store, async () => {
-  if (store.isConnected) {
-      properties.value = [];
-      propertyContracts.value = [];
-    await fetchData();
-  } else {
-    properties.value = [];
-    propertyContracts.value = [];
-  }
-});
+//
+// watch(store, async () => {
+//   if (store.isConnected) {
+//       properties.value = [];
+//       propertyContracts.value = [];
+//       await fetchData();
+//   } else {
+//     properties.value = [];
+//     propertyContracts.value = [];
+//   }
+// });
 </script>
 
 <template>

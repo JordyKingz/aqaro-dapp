@@ -123,7 +123,7 @@ async function requestMortgage() {
     const mortgageETHAmount = (Number((Number(property.value.price) / 1e6) / ETH_PRICE.value) + Number(mortgageRequest.value.extraMortgageAmount)) - Number(mortgageRequest.value.ownMoney);
     const mortgagePayment = {
         amountETH: ethers.utils.parseEther(mortgageETHAmount.toString()),
-        amountUSD: (mortgageETHAmount * ETH_PRICE.value * 1e6),
+        amountUSD: (mortgageETHAmount * ETH_PRICE.value * 1e6).toFixed(0),
         totalPayments: totalMonthlyPayments.value, // in months
         endDate: mortgageEndDate.value.getTime(),
         interestRate: interestRate.value * 1000,
@@ -140,15 +140,13 @@ async function requestMortgage() {
         if (owner.toString().toLowerCase() === store.getConnectedWallet.toString().toLowerCase()) {
             console.log({mortgageContract, propertyContract, owner});
             // router.push({name: 'dao.mortgage.request.detail', params: {address: mortgageContract}});
-            router.push({name: 'dao.mortgage.overview'});
+            router.push({name: 'dao.dashboard'});
         }
     });
 
     await contract.requestMortgage(propertyContractAddress.value, mortgageRequester, mortgagePayment)
         .then(async (result: any) => {
             await result.wait(1);
-
-            console.log(result);
         })
         .catch((error: any) => {
             isSubmitted.value = false;
@@ -324,6 +322,10 @@ watch(mortgageRequest, () => {
     }
 
     isValid.value = mortgageRequest.value.income !== '' && mortgageRequest.value.ownMoney !== '' && mortgageRequest.value.extraMortgageAmount !== '';
+
+    if (monthlyMortgageAmount.value > (Number(mortgageRequest.value.income) * 0.35) || monthlyMortgageAmount.value < Number(minMonthlyAmount)) {
+        isValid.value = false;
+    }
 }, {deep: true});
 
 watch(monthlyMortgageAmount, () => {
@@ -333,6 +335,10 @@ watch(monthlyMortgageAmount, () => {
     if (monthlyMortgageAmount.value !== monthlyMortgageAmountSet.value && monthlyMortgageAmount.value > 0) {
         monthlyMortgageAmountSet.value = monthlyMortgageAmount.value;
         calcMortgage();
+    }
+
+    if (monthlyMortgageAmount.value > (Number(mortgageRequest.value.income) * 0.35) || monthlyMortgageAmount.value < Number(minMonthlyAmount)) {
+        isValid.value = false;
     }
 })
 </script>
