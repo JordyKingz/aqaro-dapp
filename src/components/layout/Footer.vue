@@ -96,7 +96,7 @@ async function addTokenToMetaMask() {
                             <h3 class="text-sm font-semibold leading-6 text-white">Legal</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li>
-                                    <a href="@/assets/Lightpaper_Aqaro.pdf" target="_blank" class="text-sm leading-6 text-gray-300 hover:text-white">Lightpaper</a>
+                                    <a href="/Litepaper_Aqaro.pdf" target="_blank" class="text-sm leading-6 text-gray-300 hover:text-white">Litepaper</a>
                                 </li>
                             </ul>
                         </div>

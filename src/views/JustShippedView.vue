@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/vue/20/solid'
+import Roadmap from "@/components/pages/roadmap/Roadmap.vue";
 </script>
 
 <template>
@@ -70,6 +71,7 @@ import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/vue/20/solid'
                     Together, let's create a transparent, accessible, and equitable real estate ecosystem.
                 </p>
             </div>
+            <Roadmap />
         </div>
     </div>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {onBeforeMount, ref} from 'vue'
+import {onBeforeMount, ref, watch} from 'vue'
 import { Dialog, DialogPanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
-import {connectMetaMask, formatAddress, getSigner, setChainSettings} from "@/utils/helpers";
+import {connectMetaMask, formatAddress, getSigner, setChainSettings, setMetaMaskListeners} from "@/utils/helpers";
 import {walletConnectionStore} from "@/stores/wallet.store";
 import {useRouter} from "vue-router";
 import Button from "@/components/form/button/Button.vue";
@@ -18,12 +18,13 @@ const aqaroStore = tokenStore();
 const mobileMenuOpen = ref(false);
 
 let wallet = ref('');
+let fullWallet = ref('');
 let connected = ref(false);
 
 const isSubmitted = ref(false);
 
 const rightChain = ref(true);
-const rightChainNr = SEPOLIA;
+const rightChainNr = HARDHAT;
 
 onBeforeMount(async() => {
     let token = store.getBearerToken;
@@ -38,7 +39,9 @@ onBeforeMount(async() => {
         connected.value = true;
         store.setConnected(true);
         store.setConnectedWallet(address);
+        fullWallet.value = address;
         wallet.value = formatAddress(address);
+        await setMetaMaskListeners();
         await setChainSettings();
 
         if (store.getChainId !== rightChainNr) {
@@ -83,6 +86,7 @@ async function initConnection() {
         const signer = await getSigner();
         const signature = await signer.signMessage(message.data);
 
+        fullWallet.value = store.getConnectedWallet;
         try {
             const dto = {
                 address: store.getConnectedWallet,
@@ -138,6 +142,13 @@ async function disconnect() {
   connected.value = false;
   wallet.value = '';
 }
+
+// @ts-ignore
+watch(store, async()  => {
+    if (fullWallet.value !== store.getConnectedWallet) {
+        await initConnection();
+    }
+});
 </script>
 <template>
     <header class="bg-gray-900">

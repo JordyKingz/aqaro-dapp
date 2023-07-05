@@ -12,6 +12,7 @@ const store = walletConnectionStore();
 const propStore = propertyStore();
 const route = useRoute();
 
+const loaded = ref(false);
 const property = ref({} as PropertyType);
 const propFiles = ref([]);
 const highestBid = ref('0');
@@ -28,6 +29,8 @@ onBeforeMount(async () => {
 
         await getHighestBid(`${route.params.address}`);
     }
+
+    loaded.value = true;
 });
 
 onMounted(async () => {
@@ -113,7 +116,7 @@ async function getHighestBid(address: string) {
 </script>
 <template>
     <div class="bg-gray-900">
-      <Show id="property-top" v-if="store.isConnected"
+      <Show id="property-top" v-if="store.isConnected && loaded"
         :property="property"
         :files="propFiles"
         :contractOpenDate="contractOpenDate"
