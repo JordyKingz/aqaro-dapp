@@ -72,24 +72,40 @@ async function clickDislike() {
             </div>
             <div class="block mt-4">
                 <div v-if="store.getCanVote"  class="flex space-x-6">
+                    <span class="inline-flex items-center text-sm">
+                        <button v-on:click="clickLike" type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                            <HandThumbUpIcon class="h-5 w-5" aria-hidden="true" />
+                            <span class="font-medium text-gray-400">{{ likes.length }}</span>
+                            <span class="sr-only">likes</span>
+                        </button>
+                    </span>
+                    <span class="inline-flex items-center text-sm">
+                        <button v-on:click="clickDislike" type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                            <HandThumbDownIcon class="h-5 w-5" aria-hidden="true" />
+                            <span class="font-medium text-gray-400">{{ dislikes.length }}</span>
+                            <span class="sr-only">replies</span>
+                        </button>
+                    </span>
+                </div>
+                <div v-else class="block mt-12">
+                    <div class="flex space-x-6">
                         <span class="inline-flex items-center text-sm">
-                            <button v-on:click="clickLike" type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                            <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                 <HandThumbUpIcon class="h-5 w-5" aria-hidden="true" />
                                 <span class="font-medium text-gray-400">{{ likes.length }}</span>
                                 <span class="sr-only">likes</span>
                             </button>
                         </span>
-                    <span class="inline-flex items-center text-sm">
-                            <button v-on:click="clickDislike" type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                            <span class="inline-flex items-center text-sm">
+                            <button type="button" class="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                                 <HandThumbDownIcon class="h-5 w-5" aria-hidden="true" />
                                 <span class="font-medium text-gray-400">{{ dislikes.length }}</span>
                                 <span class="sr-only">replies</span>
                             </button>
                         </span>
-                </div>
-                <div v-else class="block mt-12">
-                    <p class="text-yellow-500">
-                        Only investors can vote on proposals...
+                    </div>
+                    <p class="text-white text-xs">
+                        Only with AQR tokens you can vote on this proposal.
                     </p>
                     <RouterLink :to="{name: 'early.investor'}" class="text-green-500">
                         Invest now...

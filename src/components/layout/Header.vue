@@ -24,7 +24,7 @@ let connected = ref(false);
 const isSubmitted = ref(false);
 
 const rightChain = ref(true);
-const rightChainNr = import.meta.env.VITE_CHAIN;
+const rightChainNr = SEPOLIA
 
 onBeforeMount(async() => {
     let token = store.getBearerToken;

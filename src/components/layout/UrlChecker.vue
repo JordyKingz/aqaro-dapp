@@ -8,7 +8,7 @@ const show = ref(true);
     <div v-show="show" class="relative bg-yellow-500 isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
         <p class="text-sm leading-6 text-gray-900">
             <span>
-                Verify our url, must be: <span class="font-bold">https://alpha-dev.aqaro.app</span>
+                Verify our url, must be: <span class="font-bold">https://aqaro.app</span>
             </span>
         </p>
         <div class="flex flex-1 justify-end">
