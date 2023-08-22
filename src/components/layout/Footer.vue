@@ -15,7 +15,7 @@ const navigation = {
         { name: 'Home', href: 'home', id: 'home-top' },
         { name: 'About', href: 'about', id: 'about-top' },
         { name: 'Properties', href: 'property.overview', id: 'property-top' },
-        { name: 'Invest', href: 'early.investor', id: 'invest-top' },
+        // { name: 'Invest', href: 'early.investor', id: 'invest-top' },
         { name: 'Stake', href: 'stake', id: 'stake-top' },
         { name: 'Mortgage Provider', href: 'mortgage.liquidity.provider', id: 'earn-top' },
 

@@ -268,7 +268,7 @@ watch(tokenAmount, async (value) => {
                                 It's a win-win situation where your investment works for you while contributing to the overall stability and growth of the Aqaro ecosystem.
                             </p>
                         </div>
-                        <Allocation/>
+<!--                        <Allocation/>-->
                     </div>
                 </div>
             </div>
