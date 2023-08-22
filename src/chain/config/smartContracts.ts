@@ -9,11 +9,11 @@
 // export const DistributorAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
 
 //////////SEPOLIA////////////////
-export const PropertyFactoryAddress = "0x9457403c4dD1f74F0725e329a09Ba6E236EF458D"; // AQARO
-export const MortgagePoolAddress = "0x97cD88678e370BF1CCaa2ac3D091FF753aa1abc1";
-export const MortgageFactoryAddress = "0xe56B611f0e1E7a0ab704615909b602936787d191";
-export const AqaroTokenAddress = "0x21e05E9C99d1431c307fAAb6b159584C643Fce85";
-export const AqaroEarlyInvestAddress = "0x14F23FeC9D006aD6B622A0F2E2e40fE62fBBB043";
+export const PropertyFactoryAddress = "0x5073B4951a0A5350e559fca3FCcD1CcA1631C459"; // AQARO
+export const MortgagePoolAddress = "0x6C5582d0c6ce09d36CF46659F3ab170Fa9687f30";
+export const MortgageFactoryAddress = "0xdE2995024EEbd8A4B695114Ab3c2B594bB3E2d7b";
+export const AqaroTokenAddress = "0x340C2c62a2D07ad2359b34B478b21723E51b24B9";
+export const AqaroEarlyInvestAddress = "0x399f65d7f43C2089604918e7329c761543613a3F";
 export const AqaroPresaleAddress = "";
-export const StakeVaultAddress = "0x23D63e4704A42F310DE139488697Fb74A43Dd84E";
-export const DistributorAddress = "0xB6bDa62769509dFfbA0B167f582410d3B8e688ED";
+export const StakeVaultAddress = "0x04Ef7fa3d9B8EB24BF7E63Caa5F9594e2c949960";
+export const DistributorAddress = "0x8609dF60Dc1AfCfd91E729CDAAcB8478B0CF2A09";

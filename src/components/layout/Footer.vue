@@ -15,7 +15,7 @@ const navigation = {
         { name: 'Home', href: 'home', id: 'home-top' },
         { name: 'About', href: 'about', id: 'about-top' },
         { name: 'Properties', href: 'property.overview', id: 'property-top' },
-        { name: 'Invest', href: 'early.investor', id: 'invest-top' },
+        // { name: 'Invest', href: 'early.investor', id: 'invest-top' },
         { name: 'Stake', href: 'stake', id: 'stake-top' },
         { name: 'Mortgage Provider', href: 'mortgage.liquidity.provider', id: 'earn-top' },
 
@@ -96,7 +96,7 @@ async function addTokenToMetaMask() {
                             <h3 class="text-sm font-semibold leading-6 text-white">Legal</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li>
-                                    <a href="/Aqaro_Litepaper.pdf" target="_blank" class="text-sm leading-6 text-gray-300 hover:text-white">Litepaper</a>
+                                    <a href="/Fantastic_Whitepaper_Aqaro.pdf" target="_blank" class="text-sm leading-6 text-gray-300 hover:text-white">Whitepaper</a>
                                 </li>
                             </ul>
                         </div>

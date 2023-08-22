@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <img class="absolute left-0 top-0 w-[38rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="/liq_providers_xl.png" alt="Provide ETH liquidity to earn interest" />
+                    <img class="absolute left-0 top-0 w-[38rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="@/assets/liq_providers_xl.png" alt="Provide ETH liquidity to earn interest" />
                 </div>
             </div>
         </div>
