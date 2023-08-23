@@ -33,8 +33,13 @@ const navigation = {
     social: [
         {
             name: 'Twitter',
-            href: 'https://twitter.com/developerjordy',
+            href: 'https://twitter.com/AqaroOfficial',
             icon: '',
+        },
+        {
+          name: 'Discord',
+          href: 'https://discord.com/invite/XgbZ4Vggth',
+          icon: '',
         },
         {
             name: 'GitHub',
