@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {RouterLink, RouterView, useRouter} from 'vue-router'
-import Header from './components/layout/Header.vue'
-import Footer from "@/components/layout/Footer.vue";
-import Banner from "@/components/layout/Banner.vue";
+import Header from '@/components/old/layout/Header.vue'
+import Footer from "@/components/old/layout/Footer.vue";
+import Banner from "@/components/old/layout/Banner.vue";
 import {onBeforeMount} from "vue";
-import UrlChecker from "@/components/layout/UrlChecker.vue";
+import UrlChecker from "@/components/old/layout/UrlChecker.vue";
 
 const router = useRouter();
 
