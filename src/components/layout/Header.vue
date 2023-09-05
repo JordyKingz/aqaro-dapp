@@ -5,13 +5,13 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import Logo from "@/components/logo/logo.vue";
 
 const navigation = [
-  { name: 'Ecosystem', href: '#' },
-  { name: 'Community', href: '#' },
-  { name: 'Governance', href: '#' },
-  { name: 'Developers', href: '#' },
-  { name: 'Blog', href: '#' },
-  { name: 'FAQ', href: '#' },
-  { name: 'Jobs', href: '#' },
+  // { name: 'Ecosystem', href: '#' },
+  // { name: 'Community', href: '#' },
+  // { name: 'Governance', href: '#' },
+  // { name: 'Developers', href: '#' },
+  // { name: 'Blog', href: '#' },
+  // { name: 'FAQ', href: '#' },
+  // { name: 'Jobs', href: '#' },
 ]
 
 const mobileMenuOpen = ref(false)
@@ -24,15 +24,15 @@ const mobileMenuOpen = ref(false)
         <Logo class="w-16" fillColor="fill-indigo-500" />
       </RouterLink>
       <div class="flex lg:hidden">
-        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="mobileMenuOpen = true">
-          <span class="sr-only">Open main menu</span>
-          <Bars3Icon class="h-6 w-6" aria-hidden="true" />
-        </button>
+<!--        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="mobileMenuOpen = true">-->
+<!--          <span class="sr-only">Open main menu</span>-->
+<!--          <Bars3Icon class="h-6 w-6" aria-hidden="true" />-->
+<!--        </button>-->
       </div>
-      <div class="hidden lg:flex lg:gap-x-12">
-        <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm font-semibold leading-6 text-gray-500">{{ item.name }}</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-300">Log in <span aria-hidden="true">&rarr;</span></a>
-      </div>
+<!--      <div class="hidden lg:flex lg:gap-x-12">-->
+<!--        <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm font-semibold leading-6 text-gray-500">{{ item.name }}</a>-->
+<!--        <a href="#" class="text-sm font-semibold leading-6 text-gray-300">Log in <span aria-hidden="true">&rarr;</span></a>-->
+<!--      </div>-->
     </nav>
     <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
       <div class="fixed inset-0 z-10" />
@@ -52,9 +52,9 @@ const mobileMenuOpen = ref(false)
             <div class="space-y-2 py-6">
               <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-500">{{ item.name }}</a>
             </div>
-            <div class="py-6">
-              <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300">Log in</a>
-            </div>
+<!--            <div class="py-6">-->
+<!--              <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300">Log in</a>-->
+<!--            </div>-->
           </div>
         </div>
       </DialogPanel>

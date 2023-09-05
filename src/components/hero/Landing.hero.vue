@@ -41,7 +41,7 @@ import Logo from "@/components/logo/logo.vue";
             </a>
           </div>
           <div class="px-4">
-            <a href="https://github.com" target="_blank">
+            <a href="https://github.com/aqaro-decentralized-real-estate" target="_blank">
               <img src="@/assets/icons/github.svg" alt="twitter" class="h-6 w-6" />
             </a>
           </div>
