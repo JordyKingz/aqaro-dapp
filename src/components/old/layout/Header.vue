@@ -151,7 +151,7 @@ watch(store, async()  => {
 });
 </script>
 <template>
-    <header class="bg-gray-900">
+    <header class="bg-black">
         <nav class="mx-auto flex max-w-7xl items-center justify-between h-28 p-6 lg:px-8" aria-label="Global">
             <div class="flex items-center gap-x-12">
                 <RouterLink :to="{name: 'home'}" class="-m-1.5 p-1.5">

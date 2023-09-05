@@ -7,9 +7,26 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '',
+      name: 'index',
+      component: () => import('@/views/Index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'landing',
+          component: () => import('../views/pages/LandingView.vue'),
+        },
+        {
+          path: '/about',
+          name: 'page.about',
+          component: () => import('../views/pages/AboutView.vue'),
+        },
+      ]
+    },
+    {
+      path: '',
       name: 'home',
-      component: () => import('../views/old/HomeView.vue'),
+      component: () => import('../views/pages/LandingView.vue'),
     },
     {
       path: '/about',
