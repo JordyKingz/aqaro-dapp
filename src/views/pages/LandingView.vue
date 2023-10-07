@@ -13,7 +13,7 @@ enum subscribeType {
 </script>
 <template>
   <LandingHero />
-  <Circle class="mb-20 z-10" />
+<!--  <Circle class="mb-20 z-10" />-->
 
   <div class="mx-auto relative z-20 max-w-7xl text-white pb-10 px-6 lg:px-8">
     <div>
@@ -33,7 +33,7 @@ enum subscribeType {
       </div>
     </div>
 
-    <div class="py-40">
+    <div class="pb-20">
       <div class="grid grid-cols-6 gap-4">
         <div class="col-span-6 lg:col-span-4">
           <h1 class="text-xl text-gray-200 uppercase">
